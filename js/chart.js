@@ -91,7 +91,7 @@ function renderBarPesertaWebinar() {
       labels,
       datasets: [
         {
-          label:           'Peserta (Zoom)',
+          label:           'Peserta (YT)',
           data:            webinars.map(w => w.jumlahPeserta),
           backgroundColor: '#03A0EE',
           borderRadius:    6,

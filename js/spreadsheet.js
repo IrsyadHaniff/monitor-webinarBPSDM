@@ -34,7 +34,7 @@ const CONFIG = {
    * URL Google Apps Script Web App.
    * Format: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'
    */
-  SPREADSHEET_URL: "https://script.google.com/macros/s/AKfycbyO8YNtvasX3-InJyn_mciMRtKYrTJcv9ipiAroP-e61HTSHYRt-AV1CYKcnBc5Su1S/exec",
+  SPREADSHEET_URL: "https://script.google.com/macros/s/AKfycbzwem56-K5cBkxKtp8cuifFZzCtpfxW6oyYD-eXE3fFJAsQjdr2nFnCqsuZ13IqFkzk/exec",
 
   DUMMY_PATH: "data/dummy.json",
   REFRESH_INTERVAL: 3600000,
@@ -124,11 +124,23 @@ async function loadDummyData() {
  * {
  *   webinars: [{ id, nama, tanggal, kuotaPeserta, jumlahPeserta,
  *                jumlahPenerimaSertifikat, jumlahMenontonYT,
- *                jumlahMenontonZoom, linkEviden, status, keterangan }],
+ *                jumlahMenontonZoom, narasumber, moderator,
+ *                keynoteSpeaker, kriteriaPeserta,
+ *                linkEviden, status, keterangan }],
  *   pelatihan: [{ id, nama, metode, tanggalMulai, tanggalSelesai,
  *                  jumlahPeserta, lulus, tidakLulus, proses,
  *                  keterangan, lokasiPelatihan, pic, linkEviden }]
  * }
+ *
+ * PENTING: Nama header kolom di Google Spreadsheet harus SAMA PERSIS
+ * dengan nama key di atas (case-sensitive), karena Apps Script
+ * menggunakan header baris pertama sebagai key JSON.
+ *
+ * Pemetaan header spreadsheet → key JSON:
+ *   "Narasumber"      → narasumber
+ *   "Moderator"       → moderator
+ *   "Keynote Speech"  → keynoteSpeaker   ← RENAME kolom ke "keynoteSpeaker" di spreadsheet
+ *   "Kriteria Peserta"→ kriteriaPeserta  ← RENAME kolom ke "kriteriaPeserta" di spreadsheet
  *
  * Contoh Apps Script (Code.gs):
  * --------------------------------
@@ -167,28 +179,101 @@ async function fetchSpreadsheet() {
 }
 
 function processData(rawData) {
-  window.AppData.webinars = rawData.webinars || [];
-  window.AppData.pelatihan = rawData.pelatihan || [];
+  // Filter dan normalisasi data webinar
+  let webinars = rawData.webinars || [];
+  webinars = webinars.filter(w => w.nama && String(w.nama).trim() !== '');
+  webinars = webinars.map(w => ({
+    ...w,
+    status: normalizeWebinarStatus(w.status),
+  }));
+
+  // Filter dan normalisasi data pelatihan
+  let pelatihan = rawData.pelatihan || [];
+  pelatihan = pelatihan.filter(p => p.nama && String(p.nama).trim() !== '');
+  pelatihan = pelatihan.map(p => ({
+    ...p,
+    proses: normalizeProsesStatus(p.proses),
+  }));
+
+  window.AppData.webinars  = webinars;
+  window.AppData.pelatihan = pelatihan;
   window.AppData.stats = hitungStatistik();
 }
+
+/**
+ * Normalisasi status webinar agar sesuai dengan filter badge.
+ * Spreadsheet bisa menggunakan variasi nama status.
+ */
+function normalizeWebinarStatus(status) {
+  const s = String(status || '').trim().toLowerCase();
+  if (s === 'selesai' || s === 'telah terselenggara' || s === 'telah diselenggarakan') return 'Selesai';
+  if (s === 'sedang berlangsung') return 'Sedang Berlangsung';
+  if (s === 'akan datang' || s === 'akan diselenggarakan' || s === 'belum dimulai' || s === '') return 'Akan Datang';
+  return status || 'Akan Datang';
+}
+
+/**
+ * Normalisasi proses pelatihan.
+ */
+function normalizeProsesStatus(proses) {
+  const s = String(proses || '').trim().toLowerCase();
+  if (s === 'telah terselenggara' || s === 'selesai') return 'Telah Terselenggara';
+  if (s === 'sedang berlangsung') return 'Sedang Berlangsung';
+  if (s === 'akan datang' || s === 'akan diselenggarakan' || s === '' || s === 'belum dimulai') return 'Akan Datang';
+  return proses || 'Akan Datang';
+}
+
+// function hitungStatistik() {
+//   const { webinars, pelatihan } = window.AppData;
+
+//   const totalWebinar = webinars.length;
+//   const totalPelatihan = pelatihan.length;
+//   const totalPesertaWebinar = webinars.reduce((s, w) => s + (w.jumlahPeserta || 0), 0);
+//   const totalSertifikat = webinars.reduce((s, w) => s + (w.jumlahPenerimaSertifikat || 0), 0);
+//   const totalYT = webinars.reduce((s, w) => s + (w.jumlahMenontonYT || 0), 0);
+//   const totalZoom = webinars.reduce((s, w) => s + (w.jumlahMenontonZoom || 0), 0);
+//   const totalPesertaPlt = pelatihan.reduce((s, p) => s + (p.jumlahPeserta || 0), 0);
+//   const totalLulus = pelatihan.reduce((s, p) => s + (p.lulus || 0), 0);
+//   const totalTidakLulus = pelatihan.reduce((s, p) => s + (p.tidakLulus || 0), 0);
+
+//   // Top webinar by YouTube viewers
+//   const topByYT = [...webinars].filter((w) => w.jumlahMenontonYT > 0).sort((a, b) => b.jumlahMenontonYT - a.jumlahMenontonYT);
+
+//   // Top webinar by Zoom
+//   const topByZoom = [...webinars].filter((w) => w.jumlahMenontonZoom > 0).sort((a, b) => b.jumlahMenontonZoom - a.jumlahMenontonZoom);
+
+//   return {
+//     totalWebinar,
+//     totalPelatihan,
+//     totalPesertaWebinar,
+//     totalSertifikat,
+//     totalYT,
+//     totalZoom,
+//     totalPesertaPlt,
+//     totalLulus,
+//     totalTidakLulus,
+//     topByYT,
+//     topByZoom,
+//   };
+// }
 
 function hitungStatistik() {
   const { webinars, pelatihan } = window.AppData;
 
+  // Hanya hitung pelatihan yang sudah berjalan (punya data peserta)
+  const pelatihanBerjalan = pelatihan.filter(p => p.proses !== "Akan Datang");
+
   const totalWebinar = webinars.length;
-  const totalPelatihan = pelatihan.length;
+  const totalPelatihan = pelatihanBerjalan.length; // ganti dari pelatihan.length
   const totalPesertaWebinar = webinars.reduce((s, w) => s + (w.jumlahPeserta || 0), 0);
   const totalSertifikat = webinars.reduce((s, w) => s + (w.jumlahPenerimaSertifikat || 0), 0);
   const totalYT = webinars.reduce((s, w) => s + (w.jumlahMenontonYT || 0), 0);
   const totalZoom = webinars.reduce((s, w) => s + (w.jumlahMenontonZoom || 0), 0);
-  const totalPesertaPlt = pelatihan.reduce((s, p) => s + (p.jumlahPeserta || 0), 0);
-  const totalLulus = pelatihan.reduce((s, p) => s + (p.lulus || 0), 0);
-  const totalTidakLulus = pelatihan.reduce((s, p) => s + (p.tidakLulus || 0), 0);
+  const totalPesertaPlt = pelatihanBerjalan.reduce((s, p) => s + (p.jumlahPeserta || 0), 0); // ganti dari pelatihan
+  const totalLulus = pelatihanBerjalan.reduce((s, p) => s + (p.lulus || 0), 0);
+  const totalTidakLulus = pelatihanBerjalan.reduce((s, p) => s + (p.tidakLulus || 0), 0);
 
-  // Top webinar by YouTube viewers
   const topByYT = [...webinars].filter((w) => w.jumlahMenontonYT > 0).sort((a, b) => b.jumlahMenontonYT - a.jumlahMenontonYT);
-
-  // Top webinar by Zoom
   const topByZoom = [...webinars].filter((w) => w.jumlahMenontonZoom > 0).sort((a, b) => b.jumlahMenontonZoom - a.jumlahMenontonZoom);
 
   return {
@@ -203,6 +288,7 @@ function hitungStatistik() {
     totalTidakLulus,
     topByYT,
     topByZoom,
+    totalPelatihanAkanDatang: pelatihan.length - pelatihanBerjalan.length, // opsional, buat info tambahan
   };
 }
 
@@ -287,18 +373,32 @@ function renderWebinarTable() {
   if (badge) badge.textContent = `${webinars.length} Webinar`;
 
   if (!webinars.length) {
-    tbody.innerHTML = emptyRow(9, "webinar", "Belum ada data webinar.");
+    tbody.innerHTML = emptyRow(13, "webinar", "Belum ada data webinar.");
     return;
   }
 
   tbody.innerHTML = webinars
     .map((w, i) => {
       const badgeCls = getStatusBadgeWebinar(w.status);
+
+      // Link eviden / teklap
       const evidenLink = w.linkEviden
         ? `<a href="${w.linkEviden}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" aria-label="Buka eviden kegiatan ${w.nama}"><i class="bi bi-box-arrow-up-right"></i> Buka</a>`
         : `<span style="font-size:11px;color:var(--text-muted)">—</span>`;
 
+      // Link upload teklap (gunakan field linkEviden sebagai link teklap, atau field tersendiri jika ada)
+      const teklapLink = w.linkEviden
+        ? `<a href="${w.linkEviden}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" style="font-size:11px"><i class="bi bi-cloud-upload"></i> Lihat</a>`
+        : `<span style="font-size:11px;color:var(--text-muted)">—</span>`;
+
       const pctSert = w.jumlahPeserta > 0 ? Math.round((w.jumlahPenerimaSertifikat / w.jumlahPeserta) * 100) : 0;
+
+      // Field narasumber, moderator, keynoteSpeaker, kriteriaPeserta
+      // Nama field harus sesuai dengan header kolom di spreadsheet (case-sensitive)
+      const narasumber   = w.narasumber    || w.Narasumber    || "—";
+      const moderator    = w.moderator     || w.Moderator     || "—";
+      const keynote      = w.keynoteSpeaker || w["Keynote Speech"] || w.keynoteSpeech || "—";
+      const kriteria     = w.kriteriaPeserta || w["Kriteria Peserta"] || "—";
 
       return `
       <tr data-status="${w.status}">
@@ -308,7 +408,7 @@ function renderWebinarTable() {
           <div style="font-size:11px;color:var(--text-muted)">${w.id}</div>
         </td>
         <td style="white-space:nowrap">${formatTanggal(w.tanggal)}</td>
-        
+        <td style="text-align:center">${teklapLink}</td>
         <td style="text-align:center">
           <div style="font-weight:700;font-size:15px;color:var(--color-secondary)">${formatNumber(w.jumlahPeserta)}</div>
         </td>
@@ -322,6 +422,10 @@ function renderWebinarTable() {
             ${formatNumber(w.jumlahMenontonYT)}
           </div>
         </td>
+        <td style="font-size:12px;white-space:normal;min-width:140px">${narasumber.replace(/\n/g, "<br>")}</td>
+        <td style="font-size:12px;white-space:normal;min-width:140px">${moderator}</td>
+        <td style="font-size:12px;white-space:normal;min-width:140px">${keynote}</td>
+        <td style="font-size:12px;white-space:normal;min-width:180px;color:var(--text-secondary)">${kriteria}</td>
         <td><span class="badge ${badgeCls}">${w.status}</span></td>
         <td>${evidenLink}</td>
       </tr>`;
