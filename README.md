@@ -5,7 +5,7 @@
 [![CSS3](https://img.shields.io/badge/CSS-3-blue)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-Dashboard monitoring webinar modern untuk **Pusat Pengembangan Kompetensi ASN**. Dibangun dengan HTML5, CSS3, dan Vanilla JavaScript ES6+ — tanpa framework frontend.
+Dashboard monitoring webinar modern untuk **Pusat Pengembangan Kompetensi**. Dibangun dengan HTML5, CSS3, dan Vanilla JavaScript ES6+ — tanpa framework frontend.
 
 ---
 
@@ -195,4 +195,4 @@ firebase deploy
 
 ## 📄 Lisensi
 
-Internal Pusbangkom ASN — Seluruh hak cipta dilindungi.
+Internal Pusbangkom — Seluruh hak cipta dilindungi.

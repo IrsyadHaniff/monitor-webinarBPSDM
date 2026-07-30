@@ -37,7 +37,7 @@ const CONFIG = {
   SPREADSHEET_URL: "https://script.google.com/macros/s/AKfycbyO8YNtvasX3-InJyn_mciMRtKYrTJcv9ipiAroP-e61HTSHYRt-AV1CYKcnBc5Su1S/exec",
 
   DUMMY_PATH: "data/dummy.json",
-  REFRESH_INTERVAL: 30000,
+  REFRESH_INTERVAL: 3600000,
   FETCH_TIMEOUT: 15000,
 };
 
@@ -308,7 +308,7 @@ function renderWebinarTable() {
           <div style="font-size:11px;color:var(--text-muted)">${w.id}</div>
         </td>
         <td style="white-space:nowrap">${formatTanggal(w.tanggal)}</td>
-        <td style="text-align:center;font-weight:600">${formatNumber(w.kuotaPeserta)}</td>
+        
         <td style="text-align:center">
           <div style="font-weight:700;font-size:15px;color:var(--color-secondary)">${formatNumber(w.jumlahPeserta)}</div>
         </td>
