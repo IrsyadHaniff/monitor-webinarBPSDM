@@ -49,6 +49,10 @@ function initTheme() {
 
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
+  const toggleBtn = document.getElementById('dark-mode-toggle');
+  if (toggleBtn) {
+    toggleBtn.setAttribute('aria-checked', theme === 'dark' ? 'true' : 'false');
+  }
   if (typeof updateChartTheme === 'function') {
     setTimeout(updateChartTheme, 50);
   }
