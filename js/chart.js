@@ -67,10 +67,38 @@ function renderCharts() {
 }
 
 function updateChartTheme() {
-  Chart.defaults.color            = getCSSVar('--text-secondary');
-  Chart.defaults.scale.grid.color = getCSSVar('--border-color');
-  Chart.defaults.scale.ticks.color = getCSSVar('--text-muted');
-  Object.values(ChartInstances).forEach(c => c && c.update());
+  const textSecondary = getCSSVar('--text-secondary');
+  const textMuted     = getCSSVar('--text-muted');
+  const borderColor   = getCSSVar('--border-color');
+  const textPrimary   = getCSSVar('--text-primary');
+
+  // Update global defaults (berlaku untuk chart yang baru dibuat)
+  Chart.defaults.color             = textSecondary;
+  Chart.defaults.scale.grid.color  = borderColor;
+  Chart.defaults.scale.ticks.color = textMuted;
+
+  // Update setiap chart instance yang sudah ada secara eksplisit
+  Object.values(ChartInstances).forEach(chart => {
+    if (!chart) return;
+
+    // Update legend label color
+    if (chart.options.plugins?.legend?.labels) {
+      chart.options.plugins.legend.labels.color = textSecondary;
+    }
+
+    // Update setiap scale (x, y, dll) yang ada di chart
+    Object.keys(chart.options.scales || {}).forEach(scaleKey => {
+      const scale = chart.options.scales[scaleKey];
+      if (scale) {
+        if (!scale.ticks) scale.ticks = {};
+        scale.ticks.color = textMuted;
+        if (!scale.grid) scale.grid = {};
+        scale.grid.color = borderColor;
+      }
+    });
+
+    chart.update();
+  });
 }
 
 /* =====================================================
