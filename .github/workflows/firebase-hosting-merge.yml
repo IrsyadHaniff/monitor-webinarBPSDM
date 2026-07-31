@@ -14,6 +14,6 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_MONITORWEBINARPUSBANGKOM }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_DATAMONITORINGPUSBANGKOM }}
           channelId: live
-          projectId: monitorwebinarpusbangkom
+          projectId: datamonitoringpusbangkom
