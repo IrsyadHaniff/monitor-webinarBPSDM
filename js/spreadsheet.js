@@ -223,57 +223,23 @@ function normalizeProsesStatus(proses) {
   return proses || 'Akan Datang';
 }
 
-// function hitungStatistik() {
-//   const { webinars, pelatihan } = window.AppData;
-
-//   const totalWebinar = webinars.length;
-//   const totalPelatihan = pelatihan.length;
-//   const totalPesertaWebinar = webinars.reduce((s, w) => s + (w.jumlahPeserta || 0), 0);
-//   const totalSertifikat = webinars.reduce((s, w) => s + (w.jumlahPenerimaSertifikat || 0), 0);
-//   const totalYT = webinars.reduce((s, w) => s + (w.jumlahMenontonYT || 0), 0);
-//   const totalZoom = webinars.reduce((s, w) => s + (w.jumlahMenontonZoom || 0), 0);
-//   const totalPesertaPlt = pelatihan.reduce((s, p) => s + (p.jumlahPeserta || 0), 0);
-//   const totalLulus = pelatihan.reduce((s, p) => s + (p.lulus || 0), 0);
-//   const totalTidakLulus = pelatihan.reduce((s, p) => s + (p.tidakLulus || 0), 0);
-
-//   // Top webinar by YouTube viewers
-//   const topByYT = [...webinars].filter((w) => w.jumlahMenontonYT > 0).sort((a, b) => b.jumlahMenontonYT - a.jumlahMenontonYT);
-
-//   // Top webinar by Zoom
-//   const topByZoom = [...webinars].filter((w) => w.jumlahMenontonZoom > 0).sort((a, b) => b.jumlahMenontonZoom - a.jumlahMenontonZoom);
-
-//   return {
-//     totalWebinar,
-//     totalPelatihan,
-//     totalPesertaWebinar,
-//     totalSertifikat,
-//     totalYT,
-//     totalZoom,
-//     totalPesertaPlt,
-//     totalLulus,
-//     totalTidakLulus,
-//     topByYT,
-//     topByZoom,
-//   };
-// }
-
 function hitungStatistik() {
   const { webinars, pelatihan } = window.AppData;
 
-  // Hanya hitung pelatihan yang sudah berjalan (punya data peserta)
-  const pelatihanBerjalan = pelatihan.filter(p => p.proses !== "Akan Datang");
-
   const totalWebinar = webinars.length;
-  const totalPelatihan = pelatihanBerjalan.length; // ganti dari pelatihan.length
+  const totalPelatihan = pelatihan.length;
   const totalPesertaWebinar = webinars.reduce((s, w) => s + (w.jumlahPeserta || 0), 0);
   const totalSertifikat = webinars.reduce((s, w) => s + (w.jumlahPenerimaSertifikat || 0), 0);
   const totalYT = webinars.reduce((s, w) => s + (w.jumlahMenontonYT || 0), 0);
   const totalZoom = webinars.reduce((s, w) => s + (w.jumlahMenontonZoom || 0), 0);
-  const totalPesertaPlt = pelatihanBerjalan.reduce((s, p) => s + (p.jumlahPeserta || 0), 0); // ganti dari pelatihan
-  const totalLulus = pelatihanBerjalan.reduce((s, p) => s + (p.lulus || 0), 0);
-  const totalTidakLulus = pelatihanBerjalan.reduce((s, p) => s + (p.tidakLulus || 0), 0);
+  const totalPesertaPlt = pelatihan.reduce((s, p) => s + (p.jumlahPeserta || 0), 0);
+  const totalLulus = pelatihan.reduce((s, p) => s + (p.lulus || 0), 0);
+  const totalTidakLulus = pelatihan.reduce((s, p) => s + (p.tidakLulus || 0), 0);
 
+  // Top webinar by YouTube viewers
   const topByYT = [...webinars].filter((w) => w.jumlahMenontonYT > 0).sort((a, b) => b.jumlahMenontonYT - a.jumlahMenontonYT);
+
+  // Top webinar by Zoom
   const topByZoom = [...webinars].filter((w) => w.jumlahMenontonZoom > 0).sort((a, b) => b.jumlahMenontonZoom - a.jumlahMenontonZoom);
 
   return {
@@ -288,9 +254,43 @@ function hitungStatistik() {
     totalTidakLulus,
     topByYT,
     topByZoom,
-    totalPelatihanAkanDatang: pelatihan.length - pelatihanBerjalan.length, // opsional, buat info tambahan
   };
 }
+
+// function hitungStatistik() {
+//   const { webinars, pelatihan } = window.AppData;
+
+//   // Hanya hitung pelatihan yang sudah berjalan (punya data peserta)
+//   const pelatihanBerjalan = pelatihan.filter(p => p.proses !== "Akan Datang");
+
+//   const totalWebinar = webinars.length;
+//   const totalPelatihan = pelatihanBerjalan.length; // ganti dari pelatihan.length
+//   const totalPesertaWebinar = webinars.reduce((s, w) => s + (w.jumlahPeserta || 0), 0);
+//   const totalSertifikat = webinars.reduce((s, w) => s + (w.jumlahPenerimaSertifikat || 0), 0);
+//   const totalYT = webinars.reduce((s, w) => s + (w.jumlahMenontonYT || 0), 0);
+//   const totalZoom = webinars.reduce((s, w) => s + (w.jumlahMenontonZoom || 0), 0);
+//   const totalPesertaPlt = pelatihanBerjalan.reduce((s, p) => s + (p.jumlahPeserta || 0), 0); // ganti dari pelatihan
+//   const totalLulus = pelatihanBerjalan.reduce((s, p) => s + (p.lulus || 0), 0);
+//   const totalTidakLulus = pelatihanBerjalan.reduce((s, p) => s + (p.tidakLulus || 0), 0);
+
+//   const topByYT = [...webinars].filter((w) => w.jumlahMenontonYT > 0).sort((a, b) => b.jumlahMenontonYT - a.jumlahMenontonYT);
+//   const topByZoom = [...webinars].filter((w) => w.jumlahMenontonZoom > 0).sort((a, b) => b.jumlahMenontonZoom - a.jumlahMenontonZoom);
+
+//   return {
+//     totalWebinar,
+//     totalPelatihan,
+//     totalPesertaWebinar,
+//     totalSertifikat,
+//     totalYT,
+//     totalZoom,
+//     totalPesertaPlt,
+//     totalLulus,
+//     totalTidakLulus,
+//     topByYT,
+//     topByZoom,
+//     totalPelatihanAkanDatang: pelatihan.length - pelatihanBerjalan.length, // opsional, buat info tambahan
+//   };
+// }
 
 /* =====================================================
    4. UPDATE DASHBOARD — STAT CARDS
@@ -403,8 +403,8 @@ function renderWebinarTable() {
       return `
       <tr data-status="${w.status}">
         <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
-        <td>
-          <div style="font-weight:700;color:var(--text-primary);line-height:1.4;margin-bottom:2px">${w.nama}</div>
+        <td style="max-width:350px; white-space:normal; overflow-wrap:break-word;">
+          <div style="font-weight:700;color:var(--text-primary);line-height:1.4;margin-bottom:2px;">${w.nama}</div>
           <div style="font-size:11px;color:var(--text-muted)">${w.id}</div>
         </td>
         <td style="white-space:nowrap">${formatTanggal(w.tanggal)}</td>
@@ -420,6 +420,12 @@ function renderWebinarTable() {
           <div style="font-weight:700;color:#DC2626;display:flex;align-items:center;gap:4px;justify-content:center">
             <i class="bi bi-youtube" style="font-size:14px"></i>
             ${formatNumber(w.jumlahMenontonYT)}
+          </div>
+        </td>
+        <td style="text-align:center">
+          <div style="font-weight:700;color:#2D8CFF;display:flex;align-items:center;gap:4px;justify-content:center">
+            <i class="bi bi-camera-video-fill" style="font-size:14px"></i>
+            ${formatNumber(w.jumlahMenontonZoom)}
           </div>
         </td>
         <td style="font-size:12px;white-space:normal;min-width:140px">${narasumber.replace(/\n/g, "<br>")}</td>
