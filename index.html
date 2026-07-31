@@ -1,131 +1,121 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id" data-theme="light">
-<head>
-  <!-- =====================================================
+  <head>
+    <!-- =====================================================
        META & SEO
        ===================================================== -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <!-- Primary SEO -->
-  <title>Dashboard Monitoring Webinar & Pelatihan | Pusbangkom</title>
-  <meta name="description" content="Dashboard rekap penyelenggaraan webinar dan monitoring pelatihan Pusat Pengembangan Kompetensi ASN. Pantau peserta, sertifikat, dan statistik penonton secara realtime." />
-  <meta name="keywords" content="dashboard webinar, monitoring pelatihan, Pusbangkom, ASN, rekap webinar, sertifikat, ATR/BPN, BKN" />
-  <meta name="author" content="Pusat Pengembangan Kompetensi ASN" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://monitor-pusbangkom.web.app/" />
+    <!-- Primary SEO -->
+    <title>Dashboard Monitoring Webinar & Pelatihan | Pusbangkom</title>
+    <meta name="description" content="Dashboard rekap penyelenggaraan webinar dan monitoring pelatihan Pusat Pengembangan Kompetensi ASN. Pantau peserta, sertifikat, dan statistik penonton secara realtime." />
+    <meta name="keywords" content="dashboard webinar, monitoring pelatihan, Pusbangkom, ASN, rekap webinar, sertifikat, ATR/BPN, BKN" />
+    <meta name="author" content="Pusat Pengembangan Kompetensi ASN" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://monitor-pusbangkom.web.app/" />
 
-  <!-- Open Graph -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://monitor-pusbangkom.web.app/" />
-  <meta property="og:title"       content="Dashboard Monitoring Webinar & Pelatihan | Pusbangkom" />
-  <meta property="og:description" content="Dashboard rekap penyelenggaraan webinar dan monitoring pelatihan." />
-  <meta property="og:image"       content="https://monitor-pusbangkom.web.app/assets/img/og-image.webp" />
-  <meta property="og:locale"      content="id_ID" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://monitor-pusbangkom.web.app/" />
+    <meta property="og:title" content="Dashboard Monitoring Webinar & Pelatihan | Pusbangkom" />
+    <meta property="og:description" content="Dashboard rekap penyelenggaraan webinar dan monitoring pelatihan." />
+    <meta property="og:image" content="https://monitor-pusbangkom.web.app/assets/img/og-image.webp" />
+    <meta property="og:locale" content="id_ID" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:title"       content="Dashboard Monitoring Webinar & Pelatihan | Pusbangkom" />
-  <meta name="twitter:description" content="Dashboard rekap webinar dan monitoring pelatihan Pusbangkom." />
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dashboard Monitoring Webinar & Pelatihan | Pusbangkom" />
+    <meta name="twitter:description" content="Dashboard rekap webinar dan monitoring pelatihan Pusbangkom." />
 
-  <!-- =====================================================
+    <!-- =====================================================
        FAVICON & PWA
        ===================================================== -->
-  <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico" />
-  <link rel="apple-touch-icon"         href="assets/icon/apple-touch-icon.png" />
-  <link rel="manifest"                 href="manifest.json" />
-  <meta name="theme-color"            content="#F0C332" />
+    <link rel="icon" type="image/x-icon" href="img/icon.webp" />
+    <link rel="apple-touch-icon" href="img/icon.webp" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#F0C332" />
 
-  <!-- =====================================================
+    <!-- =====================================================
        PRELOAD CRITICAL RESOURCES
        ===================================================== -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <!-- =====================================================
+    <!-- =====================================================
        FONTS & ICONS
        ===================================================== -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Bootstrap 5 -->
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        crossorigin="anonymous" />
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-  <!-- DataTables + Bootstrap 5 -->
-  <link rel="stylesheet"
-        href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- DataTables + Bootstrap 5 -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css" />
 
-  <!-- App Styles -->
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/responsive.css" />
+    <!-- App Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
 
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Pusat Pengembangan Kompetensi",
-    "alternateName": "Pusbangkom",
-    "url": "https://monitor-pusbangkom.web.app/"
-  }
-  </script>
-</head>
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Pusat Pengembangan Kompetensi",
+        "alternateName": "Pusbangkom",
+        "url": "https://monitor-pusbangkom.web.app/"
+      }
+    </script>
+  </head>
 
-<body>
-  <!-- Skip to content (Accessibility) -->
-  <a href="#main-content" class="skip-to-content" tabindex="1">Langsung ke Konten</a>
+  <body>
+    <!-- Skip to content (Accessibility) -->
+    <a href="#main-content" class="skip-to-content" tabindex="1">Langsung ke Konten</a>
 
-  <div class="app-wrapper">
-
-    <!-- ===================================================
+    <div class="app-wrapper">
+      <!-- ===================================================
          SIDEBAR
          =================================================== -->
-    <aside id="sidebar" class="sidebar" role="navigation" aria-label="Navigasi Utama">
-
-      <!-- Brand -->
-      <div class="sidebar-brand">
-        <div class="sidebar-logo" aria-hidden="true">
-          <img src="img/icon.webp" alt="">
-        </div>
-      </div>
-
-      <!-- Navigation -->
-      <nav class="sidebar-nav" role="menubar">
-        <div class="nav-section-label">Menu Utama</div>
-
-        <div class="nav-item active" data-page="dashboard" role="menuitem" tabindex="0"
-             data-label="Dashboard" aria-label="Dashboard" aria-current="page">
-          <i class="bi bi-speedometer2" aria-hidden="true"></i>
-          <span class="nav-label">Dashboard</span>
+      <aside id="sidebar" class="sidebar" role="navigation" aria-label="Navigasi Utama">
+        <!-- Brand -->
+        <div class="sidebar-brand">
+          <div class="sidebar-logo" aria-hidden="true">
+            <img src="img/icon.webp" alt="" />
+          </div>
         </div>
 
-        <div class="nav-item" data-page="webinar" role="menuitem" tabindex="0"
-             data-label="Rekap Webinar" aria-label="Rekap Webinar">
-          <i class="bi bi-camera-video-fill" aria-hidden="true"></i>
-          <span class="nav-label">Rekap Webinar</span>
-        </div>
+        <!-- Navigation -->
+        <nav class="sidebar-nav" role="menubar">
+          <div class="nav-section-label">Menu Utama</div>
 
-        <div class="nav-item" data-page="pelatihan" role="menuitem" tabindex="0"
-             data-label="Monitoring Pelatihan" aria-label="Monitoring Pelatihan">
-          <i class="bi bi-journal-text" aria-hidden="true"></i>
-          <span class="nav-label">Monitoring Pelatihan</span>
-        </div>
+          <div class="nav-item active" data-page="dashboard" role="menuitem" tabindex="0" data-label="Dashboard" aria-label="Dashboard" aria-current="page">
+            <i class="bi bi-speedometer2" aria-hidden="true"></i>
+            <span class="nav-label">Dashboard</span>
+          </div>
 
-        <div class="nav-section-label" style="margin-top:8px">Analitik</div>
+          <div class="nav-item" data-page="webinar" role="menuitem" tabindex="0" data-label="Rekap Webinar" aria-label="Rekap Webinar">
+            <i class="bi bi-camera-video-fill" aria-hidden="true"></i>
+            <span class="nav-label">Rekap Webinar</span>
+          </div>
 
-        <div class="nav-item" data-page="statistik" role="menuitem" tabindex="0"
-             data-label="Statistik" aria-label="Statistik">
-          <i class="bi bi-bar-chart-line-fill" aria-hidden="true"></i>
-          <span class="nav-label">Statistik</span>
-        </div>
-      </nav>
+          <div class="nav-item" data-page="pelatihan" role="menuitem" tabindex="0" data-label="Monitoring Pelatihan" aria-label="Monitoring Pelatihan">
+            <i class="bi bi-journal-text" aria-hidden="true"></i>
+            <span class="nav-label">Monitoring Pelatihan</span>
+          </div>
 
-      <!-- Footer -->
-      <!-- <div class="sidebar-footer">
+          <div class="nav-section-label" style="margin-top: 8px">Analitik</div>
+
+          <div class="nav-item" data-page="statistik" role="menuitem" tabindex="0" data-label="Statistik" aria-label="Statistik">
+            <i class="bi bi-bar-chart-line-fill" aria-hidden="true"></i>
+            <span class="nav-label">Statistik</span>
+          </div>
+        </nav>
+
+        <!-- Footer -->
+        <!-- <div class="sidebar-footer">
         <div class="sidebar-user" role="button" tabindex="0" aria-label="Profil Admin">
           <div class="sidebar-avatar" aria-hidden="true">A</div>
           <div class="sidebar-user-info">
@@ -134,38 +124,35 @@
           </div>
         </div>
       </div> -->
-    </aside>
+      </aside>
 
-    <!-- Mobile overlay -->
-    <div id="sidebar-overlay" class="sidebar-overlay" role="presentation" aria-hidden="true"></div>
+      <!-- Mobile overlay -->
+      <div id="sidebar-overlay" class="sidebar-overlay" role="presentation" aria-hidden="true"></div>
 
-    <!-- ===================================================
+      <!-- ===================================================
          MAIN CONTENT
          =================================================== -->
-    <div id="main-content" class="main-content" role="main">
+      <div id="main-content" class="main-content" role="main">
+        <!-- TOPBAR -->
+        <header id="topbar" class="topbar" role="banner">
+          <button id="topbar-toggle" class="topbar-toggle" aria-label="Buka/Tutup Sidebar" aria-expanded="true" aria-controls="sidebar">
+            <i class="bi bi-list" aria-hidden="true"></i>
+          </button>
 
-      <!-- TOPBAR -->
-      <header id="topbar" class="topbar" role="banner">
-        <button id="topbar-toggle" class="topbar-toggle"
-                aria-label="Buka/Tutup Sidebar" aria-expanded="true"
-                aria-controls="sidebar">
-          <i class="bi bi-list" aria-hidden="true"></i>
-        </button>
+          <div class="topbar-title" aria-live="polite">
+            <span id="topbar-page-title">Dashboard</span>
+            <span aria-hidden="true"> — </span>
+            <span style="color: var(--color-primary-dark); font-size: 12px; font-weight: 500">Monitoring Pelatihan dan Webinar</span>
+          </div>
 
-        <div class="topbar-title" aria-live="polite">
-          <span id="topbar-page-title">Dashboard</span>
-          <span aria-hidden="true"> — </span>
-          <span style="color:var(--color-primary-dark);font-size:12px;font-weight:500">Monitoring Pelatihan dan Webinar</span>
-        </div>
+          <!-- Date & Time -->
+          <div class="topbar-datetime" role="timer" aria-live="polite" aria-label="Waktu saat ini">
+            <span id="topbar-date" class="topbar-date">Selasa, 29 Jul 2026</span>
+            <span id="topbar-time" class="topbar-time">00:00:00</span>
+          </div>
 
-        <!-- Date & Time -->
-        <div class="topbar-datetime" role="timer" aria-live="polite" aria-label="Waktu saat ini">
-          <span id="topbar-date" class="topbar-date">Selasa, 29 Jul 2026</span>
-          <span id="topbar-time" class="topbar-time">00:00:00</span>
-        </div>
-
-        <!-- Search -->
-        <!-- <div class="topbar-search" role="search">
+          <!-- Search -->
+          <!-- <div class="topbar-search" role="search">
           <i class="bi bi-search" aria-hidden="true"></i>
           <input type="search" id="topbar-search"
                  placeholder="Cari webinar, pelatihan..."
@@ -173,560 +160,523 @@
                  autocomplete="off" spellcheck="false" />
         </div> -->
 
-        <!-- Actions -->
-        <div class="topbar-actions">
-          <button class="topbar-btn" onclick="loadData()" aria-label="Refresh data" title="Refresh Data">
-            <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
-          </button>
+          <!-- Actions -->
+          <div class="topbar-actions">
+            <button class="topbar-btn" onclick="loadData()" aria-label="Refresh data" title="Refresh Data">
+              <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
+            </button>
 
-          <!-- <button id="dark-mode-toggle" class="dark-mode-toggle"
+            <button id="dark-mode-toggle" class="dark-mode-toggle"
                   role="switch" aria-checked="false"
                   aria-label="Aktifkan/Nonaktifkan mode gelap"
                   title="Toggle Dark Mode">
-          </button> -->
+            </button>
 
-          <!-- <div class="topbar-profile" role="button" tabindex="0" aria-label="Menu profil admin">
+            <!-- <div class="topbar-profile" role="button" tabindex="0" aria-label="Menu profil admin">
             <div class="topbar-avatar" aria-hidden="true">A</div>
             <span class="topbar-profile-name">Admin</span>
             <i class="bi bi-chevron-down" style="font-size:11px;color:var(--text-muted)" aria-hidden="true"></i>
           </div> -->
-        </div>
-      </header>
+          </div>
+        </header>
 
-      <!-- Sync status bar -->
-      <div id="refresh-bar" class="refresh-bar hidden" role="status" aria-live="polite"></div>
+        <!-- Sync status bar -->
+        <div id="refresh-bar" class="refresh-bar hidden" role="status" aria-live="polite"></div>
 
-      <!-- Global Error Banner -->
-      <div id="global-error" style="display:none" role="alert"></div>
+        <!-- Global Error Banner -->
+        <div id="global-error" style="display: none" role="alert"></div>
 
-      <!-- ================================================
+        <!-- ================================================
            PAGE CONTENT
            ================================================ -->
-      <main id="page-content" class="page-content" tabindex="-1">
-
-        <!-- ============================================
+        <main id="page-content" class="page-content" tabindex="-1">
+          <!-- ============================================
              PAGE 1: DASHBOARD
              ============================================ -->
-        <section id="page-dashboard" class="section-page active" aria-labelledby="heading-dashboard">
-
-          <div class="page-header">
-            <div class="page-breadcrumb">
-              <span>Pusbangkom</span>
-              <span class="sep"><i class="bi bi-chevron-right"></i></span>
-              <span class="current">Dashboard</span>
-            </div>
-            <h1 id="heading-dashboard" class="page-title">Ringkasan <span>Dashboard</span></h1>
-            <p class="page-subtitle">
-              Rekap keseluruhan penyelenggaraan webinar dan pelatihan. Data diperbarui otomatis setiap 30 detik.
-            </p>
-            <div id="last-updated" style="font-size:11px;color:var(--text-muted);margin-top:4px" aria-live="polite"></div>
-          </div>
-
-          <!-- STAT CARDS -->
-          <div class="stats-grid" role="region" aria-label="Statistik Ringkasan">
-
-            <article class="stat-card card-primary" aria-label="Total Webinar">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-camera-video-fill"></i></div>
-                <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>20%</div>
+          <section id="page-dashboard" class="section-page active" aria-labelledby="heading-dashboard">
+            <div class="page-header">
+              <div class="page-breadcrumb">
+                <span>Pusbangkom</span>
+                <span class="sep"><i class="bi bi-chevron-right"></i></span>
+                <span class="current">Dashboard</span>
               </div>
-              <div class="stat-value" id="stat-total-webinar" aria-live="polite">0</div>
-              <div class="stat-label">Total Webinar</div>
-              <div class="stat-progress"><div class="stat-progress-bar" style="width:100%"></div></div>
-            </article>
-
-            <article class="stat-card card-info" aria-label="Total Pelatihan">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-journal-text"></i></div>
-                <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>15%</div>
-              </div>
-              <div class="stat-value" id="stat-total-pelatihan" aria-live="polite">0</div>
-              <div class="stat-label">Total Pelatihan</div>
-              <div class="stat-progress"><div class="stat-progress-bar" style="width:100%"></div></div>
-            </article>
-
-            <article class="stat-card card-secondary" aria-label="Total Peserta Webinar">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
-                <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>12%</div>
-              </div>
-              <div class="stat-value" id="stat-total-peserta-webinar" aria-live="polite">0</div>
-              <div class="stat-label">Peserta Webinar</div>
-              <div class="stat-progress"><div class="stat-progress-bar" id="progress-peserta-web" style="width:0%"></div></div>
-            </article>
-
-            <article class="stat-card card-success" aria-label="Total Penerima Sertifikat Webinar">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-award-fill"></i></div>
-                <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>8%</div>
-              </div>
-              <div class="stat-value" id="stat-sertifikat-webinar" aria-live="polite">0</div>
-              <div class="stat-label">Penerima Sertifikat Webinar</div>
-              <div class="stat-progress"><div class="stat-progress-bar" id="progress-sertifikat-web" style="width:0%"></div></div>
-            </article>
-
-            <article class="stat-card card-danger" aria-label="Total Penonton YouTube">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-youtube"></i></div>
-                <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>18%</div>
-              </div>
-              <div class="stat-value" id="stat-total-yt" aria-live="polite">0</div>
-              <div class="stat-label">Total Penonton YouTube</div>
-              <div class="stat-progress"><div class="stat-progress-bar" id="progress-yt" style="width:0%"></div></div>
-            </article>
-
-            <article class="stat-card card-warning" aria-label="Total Peserta Pelatihan">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
-                <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>5%</div>
-              </div>
-              <div class="stat-value" id="stat-total-peserta-plt" aria-live="polite">0</div>
-              <div class="stat-label">Peserta Pelatihan</div>
-              <div class="stat-progress"><div class="stat-progress-bar" id="progress-peserta-plt" style="width:0%"></div></div>
-            </article>
-          </div>
-
-          <!-- CHARTS -->
-          <div class="charts-grid" role="region" aria-label="Grafik Analitik">
-
-            <!-- Bar: Peserta Webinar -->
-            <div class="card">
-              <div class="card-header">
-                <h2 class="card-title"><i class="bi bi-bar-chart-fill"></i> Peserta Webinar</h2>
-                <span class="card-action" onclick="navigateTo('webinar')" role="button" tabindex="0">Lihat Semua</span>
-              </div>
-              <div class="card-body chart-wrapper">
-                <canvas id="chart-bar-peserta" role="img" aria-label="Bar chart peserta per webinar"></canvas>
-              </div>
+              <h1 id="heading-dashboard" class="page-title">Ringkasan <span>Dashboard</span></h1>
+              <p class="page-subtitle">Rekap keseluruhan penyelenggaraan webinar dan pelatihan. Data diperbarui otomatis setiap 1 jam.</p>
+              <div id="last-updated" style="font-size: 11px; color: var(--text-muted); margin-top: 4px" aria-live="polite"></div>
             </div>
 
-            <!-- Doughnut: Penonton YT vs Zoom -->
-            <div class="card">
-              <div class="card-header">
-                <h2 class="card-title"><i class="bi bi-pie-chart-fill"></i> Penonton YT vs Zoom</h2>
-              </div>
-              <div class="card-body chart-wrapper">
-                <canvas id="chart-doughnut-viewer" role="img" aria-label="Doughnut chart perbandingan penonton YouTube dan Zoom"></canvas>
-              </div>
+            <!-- STAT CARDS -->
+            <div class="stats-grid" role="region" aria-label="Statistik Ringkasan">
+              <article class="stat-card card-primary" aria-label="Total Webinar">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-camera-video-fill"></i></div>
+                </div>
+                <div class="stat-value" id="stat-total-webinar" aria-live="polite">0</div>
+                <div class="stat-label">Total Webinar</div>
+                <div class="stat-progress"><div class="stat-progress-bar" style="width: 100%"></div></div>
+              </article>
+
+              <article class="stat-card card-info" aria-label="Total Pelatihan">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-journal-text"></i></div>
+                </div>
+                <div class="stat-value" id="stat-total-pelatihan" aria-live="polite">0</div>
+                <div class="stat-label">Total Pelatihan</div>
+                <div class="stat-progress"><div class="stat-progress-bar" style="width: 100%"></div></div>
+              </article>
+
+              <article class="stat-card card-secondary" aria-label="Total Peserta Webinar">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-people-fill"></i></div>
+                </div>
+                <div class="stat-value" id="stat-total-peserta-webinar" aria-live="polite">0</div>
+                <div class="stat-label">Peserta Webinar</div>
+                <div class="stat-progress"><div class="stat-progress-bar" id="progress-peserta-web" style="width: 0%"></div></div>
+              </article>
+
+              <article class="stat-card card-success" aria-label="Total Penerima Sertifikat Webinar">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-award-fill"></i></div>
+                </div>
+                <div class="stat-value" id="stat-sertifikat-webinar" aria-live="polite">0</div>
+                <div class="stat-label">Penerima Sertifikat Webinar</div>
+                <div class="stat-progress"><div class="stat-progress-bar" id="progress-sertifikat-web" style="width: 0%"></div></div>
+              </article>
+
+              <article class="stat-card card-danger" aria-label="Total Penonton YouTube">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-youtube"></i></div>
+                </div>
+                <div class="stat-value" id="stat-total-yt" aria-live="polite">0</div>
+                <div class="stat-label">Total Penonton YouTube</div>
+                <div class="stat-progress"><div class="stat-progress-bar" id="progress-yt" style="width: 0%"></div></div>
+              </article>
+
+              <article class="stat-card card-warning" aria-label="Total Peserta Pelatihan">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
+                  <!-- <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>5%</div> -->
+                </div>
+                <div class="stat-value" id="stat-total-peserta-plt" aria-live="polite">0</div>
+                <div class="stat-label">Peserta Pelatihan</div>
+                <div class="stat-progress"><div class="stat-progress-bar" id="progress-peserta-plt" style="width: 0%"></div></div>
+              </article>
             </div>
 
-            <!-- Bar: Peserta Pelatihan -->
-            <div class="card">
-              <div class="card-header">
-                <h2 class="card-title"><i class="bi bi-bar-chart-steps"></i> Peserta Pelatihan</h2>
-                <span class="card-action" onclick="navigateTo('pelatihan')" role="button" tabindex="0">Lihat Semua</span>
+            <!-- CHARTS -->
+            <div class="charts-grid" role="region" aria-label="Grafik Analitik">
+              <!-- Bar: Peserta Webinar -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title"><i class="bi bi-bar-chart-fill"></i> Peserta Webinar</h2>
+                  <span class="card-action" onclick="navigateTo('webinar')" role="button" tabindex="0">Lihat Semua</span>
+                </div>
+                <div class="card-body chart-wrapper">
+                  <canvas id="chart-bar-peserta" role="img" aria-label="Bar chart peserta per webinar"></canvas>
+                </div>
               </div>
-              <div class="card-body chart-wrapper">
-                <canvas id="chart-bar-pelatihan" role="img" aria-label="Bar chart peserta pelatihan lulus vs tidak lulus"></canvas>
+
+              <!-- Doughnut: Penonton YT end Zoom -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title"><i class="bi bi-pie-chart-fill"></i> Penonton YT and Zoom</h2>
+                </div>
+                <div class="card-body chart-wrapper">
+                  <canvas id="chart-doughnut-viewer" role="img" aria-label="Doughnut chart perbandingan penonton YouTube dan Zoom"></canvas>
+                </div>
+              </div>
+
+              <!-- Bar: Peserta Pelatihan -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title"><i class="bi bi-bar-chart-steps"></i> Peserta Pelatihan</h2>
+                  <span class="card-action" onclick="navigateTo('pelatihan')" role="button" tabindex="0">Lihat Semua</span>
+                </div>
+                <div class="card-body chart-wrapper">
+                  <canvas id="chart-bar-pelatihan" role="img" aria-label="Bar chart peserta pelatihan lulus vs tidak lulus"></canvas>
+                </div>
+              </div>
+
+              <!-- Line: Tren Penonton YT -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title"><i class="bi bi-graph-up"></i> Tren Penonton YouTube</h2>
+                </div>
+                <div class="card-body chart-wrapper">
+                  <canvas id="chart-line-yt" role="img" aria-label="Line chart tren penonton YouTube per webinar"></canvas>
+                </div>
               </div>
             </div>
+          </section>
 
-            <!-- Line: Tren Penonton YT -->
-            <div class="card">
-              <div class="card-header">
-                <h2 class="card-title"><i class="bi bi-graph-up"></i> Tren Penonton YouTube</h2>
-              </div>
-              <div class="card-body chart-wrapper">
-                <canvas id="chart-line-yt" role="img" aria-label="Line chart tren penonton YouTube per webinar"></canvas>
-              </div>
-            </div>
-          </div>
-
-        </section>
-
-        <!-- ============================================
+          <!-- ============================================
              PAGE 2: REKAP WEBINAR
              ============================================ -->
-        <section id="page-webinar" class="section-page" aria-labelledby="heading-webinar">
-
-          <div class="page-header">
-            <div class="page-breadcrumb">
-              <span>Pusbangkom</span>
-              <span class="sep"><i class="bi bi-chevron-right"></i></span>
-              <span class="current">Rekap Webinar</span>
+          <section id="page-webinar" class="section-page" aria-labelledby="heading-webinar">
+            <div class="page-header">
+              <div class="page-breadcrumb">
+                <span>Pusbangkom</span>
+                <span class="sep"><i class="bi bi-chevron-right"></i></span>
+                <span class="current">Rekap Webinar</span>
+              </div>
+              <h1 id="heading-webinar" class="page-title">Rekap Penyelenggaraan <span>Webinar</span></h1>
+              <p class="page-subtitle">Rekap seluruh webinar yang telah terselenggara beserta jumlah peserta, penerima sertifikat, dan penonton YouTube.</p>
             </div>
-            <h1 id="heading-webinar" class="page-title">Rekap Penyelenggaraan <span>Webinar</span></h1>
-            <p class="page-subtitle">Rekap seluruh webinar yang telah terselenggara beserta jumlah peserta, penerima sertifikat, dan penonton YouTube.</p>
-          </div>
 
-          <!-- Filter + Actions -->
-          <div class="card" style="margin-bottom:20px">
-            <div class="card-body" style="padding:14px 20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-              <span style="font-size:13px;font-weight:600;color:var(--text-secondary)">
-                <i class="bi bi-funnel-fill" style="color:var(--color-primary-dark)"></i> Filter Status:
-              </span>
-              <button class="btn btn-ghost btn-sm filter-webinar-btn active" data-filter="all">Semua</button>
-              <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Selesai">
-                <span class="badge-dot-sm" style="background:var(--color-success);display:inline-block"></span> Selesai
-              </button>
-              <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Sedang Berlangsung">
-                <span class="badge-dot-sm" style="background:var(--color-warning);display:inline-block"></span> Sedang Berlangsung
-              </button>
-              <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Akan Datang">
-                <span class="badge-dot-sm" style="background:var(--color-secondary);display:inline-block"></span> Akan Datang
-              </button>
-              <div style="margin-left:auto;display:flex;gap:8px">
-                <button class="btn btn-ghost btn-sm" onclick="exportWebinarCSV()" aria-label="Export CSV">
-                  <i class="bi bi-download"></i> Export CSV
-                </button>
-                <button class="btn btn-primary btn-sm" onclick="loadData()">
-                  <i class="bi bi-arrow-clockwise"></i> Refresh
-                </button>
+            <!-- Filter + Actions -->
+            <div class="card" style="margin-bottom: 20px">
+              <div class="card-body" style="padding: 14px 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center">
+                <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary)"> <i class="bi bi-funnel-fill" style="color: var(--color-primary-dark)"></i> Filter Status: </span>
+                <button class="btn btn-ghost btn-sm filter-webinar-btn active" data-filter="all">Semua</button>
+                <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Selesai"><span class="badge-dot-sm" style="background: var(--color-success); display: inline-block"></span> Selesai</button>
+                <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Sedang Berlangsung"><span class="badge-dot-sm" style="background: var(--color-warning); display: inline-block"></span> Sedang Berlangsung</button>
+                <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Akan Datang"><span class="badge-dot-sm" style="background: var(--color-secondary); display: inline-block"></span> Akan Datang</button>
+                <div style="margin-left: auto; display: flex; gap: 8px">
+                  <button class="btn btn-ghost btn-sm" onclick="exportWebinarCSV()" aria-label="Export CSV"><i class="bi bi-download"></i> Export CSV</button>
+                  <button class="btn btn-primary btn-sm" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Webinar Table -->
-          <div class="card card-table">
-            <div class="card-header">
-              <h2 class="card-title">
-                <i class="bi bi-table"></i>
-                Rekap Penyelenggaraan Webinar Tahun 2026
-              </h2>
-              <span class="badge badge-secondary" id="webinar-count-badge">10 Webinar</span>
+            <!-- Webinar Table -->
+            <div class="card card-table">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <i class="bi bi-table"></i>
+                  Rekap Penyelenggaraan Webinar Tahun 2026
+                </h2>
+                <span class="badge badge-secondary" id="webinar-count-badge">10 Webinar</span>
+              </div>
+              <div class="table-wrapper" style="overflow-x: auto">
+                <table class="data-table" id="webinar-table-main" role="table" aria-label="Tabel rekap webinar">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 40px; text-align: center">No</th>
+                      <th scope="col" style="min-width: 260px">Nama Webinar</th>
+                      <th scope="col" style="min-width: 130px">Tanggal Penyelenggaraan</th>
+                      <th scope="col" style="min-width: 120px">Link Upload Teklap</th>
+                      <th scope="col" style="text-align: center">Jumlah Peserta</th>
+                      <th scope="col" style="text-align: center">Jumlah Penerima Sertifikat</th>
+                      <th scope="col" style="text-align: center">Jumlah yang Menonton YT</th>
+                      <th scope="col" style="text-align: center">Jumlah yang Menonton Zoom</th>
+                      <th scope="col" style="min-width: 140px">Narasumber</th>
+                      <th scope="col" style="min-width: 140px">Moderator</th>
+                      <th scope="col" style="min-width: 140px">Keynote Speech</th>
+                      <th scope="col" style="min-width: 180px">Kriteria Peserta</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Eviden</th>
+                    </tr>
+                  </thead>
+                  <tbody id="webinar-tbody">
+                    <tr>
+                      <td colspan="13">
+                        <div class="skeleton skeleton-line" style="height: 40px; margin: 8px 0"></div>
+                        <div class="skeleton skeleton-line" style="height: 40px; margin: 8px 0"></div>
+                        <div class="skeleton skeleton-line" style="height: 40px; margin: 8px 0"></div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="table-wrapper" style="overflow-x:auto">
-              <table class="data-table" id="webinar-table-main" role="table" aria-label="Tabel rekap webinar">
-                <thead>
-                  <tr>
-                    <th scope="col" style="width:40px;text-align:center">No</th>
-                    <th scope="col" style="min-width:260px">Nama Webinar</th>
-                    <th scope="col" style="min-width:130px">Tanggal Penyelenggaraan</th>
-                    <th scope="col" style="min-width:120px">Link Upload Teklap</th>
-                    <th scope="col" style="text-align:center">Jumlah Peserta</th>
-                    <th scope="col" style="text-align:center">Jumlah Penerima Sertifikat</th>
-                    <th scope="col" style="text-align:center">Jumlah yang Menonton YT</th>
-                    <th scope="col" style="min-width:140px">Narasumber</th>
-                    <th scope="col" style="min-width:140px">Moderator</th>
-                    <th scope="col" style="min-width:140px">Keynote Speech</th>
-                    <th scope="col" style="min-width:180px">Kriteria Peserta</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Eviden</th>
-                  </tr>
-                </thead>
-                <tbody id="webinar-tbody">
-                  <tr><td colspan="13">
-                    <div class="skeleton skeleton-line" style="height:40px;margin:8px 0"></div>
-                    <div class="skeleton skeleton-line" style="height:40px;margin:8px 0"></div>
-                    <div class="skeleton skeleton-line" style="height:40px;margin:8px 0"></div>
-                  </td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          </section>
 
-        </section>
-
-        <!-- ============================================
+          <!-- ============================================
              PAGE 3: MONITORING PELATIHAN
              ============================================ -->
-        <section id="page-pelatihan" class="section-page" aria-labelledby="heading-pelatihan">
-
-          <div class="page-header">
-            <div class="page-breadcrumb">
-              <span>Pusbangkom</span>
-              <span class="sep"><i class="bi bi-chevron-right"></i></span>
-              <span class="current">Monitoring Pelatihan</span>
+          <section id="page-pelatihan" class="section-page" aria-labelledby="heading-pelatihan">
+            <div class="page-header">
+              <div class="page-breadcrumb">
+                <span>Pusbangkom</span>
+                <span class="sep"><i class="bi bi-chevron-right"></i></span>
+                <span class="current">Monitoring Pelatihan</span>
+              </div>
+              <h1 id="heading-pelatihan" class="page-title">Monitoring <span>Pelatihan</span></h1>
+              <p class="page-subtitle">Pantau perkembangan seluruh program pelatihan beserta status kelulusan dan progress pelaksanaan.</p>
             </div>
-            <h1 id="heading-pelatihan" class="page-title">Monitoring <span>Pelatihan</span></h1>
-            <p class="page-subtitle">Pantau perkembangan seluruh program pelatihan beserta status kelulusan dan progress pelaksanaan.</p>
-          </div>
 
-          <!-- Summary -->
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
-            <article class="stat-card card-secondary" style="cursor:default">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-journal-check"></i></div>
-              </div>
-              <div class="stat-value" id="plt-total">0</div>
-              <div class="stat-label">Total Pelatihan</div>
-            </article>
-            <article class="stat-card card-success" style="cursor:default">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
-              </div>
-              <div class="stat-value" id="plt-lulus">0</div>
-              <div class="stat-label">Total Peserta Lulus</div>
-            </article>
-            <article class="stat-card card-danger" style="cursor:default">
-              <div class="stat-card-header">
-                <div class="stat-icon"><i class="bi bi-person-x-fill"></i></div>
-              </div>
-              <div class="stat-value" id="plt-tidak-lulus">0</div>
-              <div class="stat-label">Total Tidak Lulus</div>
-            </article>
-          </div>
+            <!-- Summary -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px">
+              <article class="stat-card card-secondary" style="cursor: default">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-journal-check"></i></div>
+                </div>
+                <div class="stat-value" id="plt-total">0</div>
+                <div class="stat-label">Total Pelatihan</div>
+              </article>
+              <article class="stat-card card-success" style="cursor: default">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
+                </div>
+                <div class="stat-value" id="plt-lulus">0</div>
+                <div class="stat-label">Total Peserta Lulus</div>
+              </article>
+              <article class="stat-card card-danger" style="cursor: default">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-person-x-fill"></i></div>
+                </div>
+                <div class="stat-value" id="plt-tidak-lulus">0</div>
+                <div class="stat-label">Total Tidak Lulus</div>
+              </article>
+            </div>
 
-          <!-- Filter -->
-          <div class="card" style="margin-bottom:20px">
-            <div class="card-body" style="padding:14px 20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
-              <span style="font-size:13px;font-weight:600;color:var(--text-secondary)">
-                <i class="bi bi-funnel-fill" style="color:var(--color-primary-dark)"></i> Filter:
-              </span>
-              <button class="btn btn-ghost btn-sm filter-plt-btn active" data-filter-plt="all">Semua</button>
-              <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Telah Terselenggara">
-                <span class="badge-dot-sm" style="background:var(--color-success);display:inline-block"></span> Telah Terselenggara
-              </button>
-              <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Sedang Berlangsung">
-                <span class="badge-dot-sm" style="background:var(--color-warning);display:inline-block"></span> Sedang Berlangsung
-              </button>
-              <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Akan Datang">
-                <span class="badge-dot-sm" style="background:var(--color-secondary);display:inline-block"></span> Akan Datang
-              </button>
-              <div style="margin-left:auto;display:flex;gap:8px">
-                <button class="btn btn-ghost btn-sm" onclick="exportPelatihanCSV()">
-                  <i class="bi bi-download"></i> Export CSV
-                </button>
-                <button class="btn btn-primary btn-sm" onclick="loadData()">
-                  <i class="bi bi-arrow-clockwise"></i> Refresh
-                </button>
+            <!-- Filter -->
+            <div class="card" style="margin-bottom: 20px">
+              <div class="card-body" style="padding: 14px 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center">
+                <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary)"> <i class="bi bi-funnel-fill" style="color: var(--color-primary-dark)"></i> Filter: </span>
+                <button class="btn btn-ghost btn-sm filter-plt-btn active" data-filter-plt="all">Semua</button>
+                <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Telah Terselenggara"><span class="badge-dot-sm" style="background: var(--color-success); display: inline-block"></span> Telah Terselenggara</button>
+                <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Sedang Berlangsung"><span class="badge-dot-sm" style="background: var(--color-warning); display: inline-block"></span> Sedang Berlangsung</button>
+                <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Akan Datang"><span class="badge-dot-sm" style="background: var(--color-secondary); display: inline-block"></span> Akan Datang</button>
+                <div style="margin-left: auto; display: flex; gap: 8px">
+                  <button class="btn btn-ghost btn-sm" onclick="exportPelatihanCSV()"><i class="bi bi-download"></i> Export CSV</button>
+                  <button class="btn btn-primary btn-sm" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Pelatihan Table -->
-          <div class="card card-table">
-            <div class="card-header">
-              <h2 class="card-title">
-                <i class="bi bi-table"></i>
-                Monitoring Pelatihan Tahun 2026
-              </h2>
-              <span class="badge badge-info" id="pelatihan-count-badge">8 Pelatihan</span>
+            <!-- Pelatihan Table -->
+            <div class="card card-table">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <i class="bi bi-table"></i>
+                  Monitoring Pelatihan Tahun 2026
+                </h2>
+                <span class="badge badge-info" id="pelatihan-count-badge">8 Pelatihan</span>
+              </div>
+              <div class="table-wrapper" style="overflow-x: auto">
+                <table class="data-table" id="pelatihan-table-main" role="table" aria-label="Tabel monitoring pelatihan">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 40px; text-align: center">No</th>
+                      <th scope="col" style="min-width: 220px">Nama Pelatihan</th>
+                      <th scope="col">Metode</th>
+                      <th scope="col" style="min-width: 180px">Tanggal Penyelenggaraan</th>
+                      <th scope="col" style="text-align: center">Peserta<br /><small style="font-weight: 400; opacity: 0.7">Lulus</small></th>
+                      <th scope="col" style="text-align: center">Peserta<br /><small style="font-weight: 400; opacity: 0.7">Tidak Lulus</small></th>
+                      <th scope="col" style="text-align: center">Jumlah Peserta</th>
+                      <th scope="col">Proses</th>
+                      <th scope="col" style="min-width: 200px">Keterangan</th>
+                      <th scope="col">Lokasi Pelatihan</th>
+                      <th scope="col">PIC</th>
+                      <th scope="col">Eviden</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pelatihan-tbody">
+                    <tr>
+                      <td colspan="12">
+                        <div class="skeleton skeleton-line" style="height: 40px; margin: 8px 0"></div>
+                        <div class="skeleton skeleton-line" style="height: 40px; margin: 8px 0"></div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="table-wrapper" style="overflow-x:auto">
-              <table class="data-table" id="pelatihan-table-main" role="table" aria-label="Tabel monitoring pelatihan">
-                <thead>
-                  <tr>
-                    <th scope="col" style="width:40px;text-align:center">No</th>
-                    <th scope="col" style="min-width:220px">Nama Pelatihan</th>
-                    <th scope="col">Metode</th>
-                    <th scope="col" style="min-width:180px">Tanggal Penyelenggaraan</th>
-                    <th scope="col" style="text-align:center">Sertla<br><small style="font-weight:400;opacity:.7">Lulus</small></th>
-                    <th scope="col" style="text-align:center">Sertla<br><small style="font-weight:400;opacity:.7">Tidak Lulus</small></th>
-                    <th scope="col" style="text-align:center">Jumlah Peserta</th>
-                    <th scope="col">Proses</th>
-                    <th scope="col" style="min-width:200px">Keterangan</th>
-                    <th scope="col">Lokasi Pelatihan</th>
-                    <th scope="col">PIC</th>
-                    <th scope="col">Eviden</th>
-                  </tr>
-                </thead>
-                <tbody id="pelatihan-tbody">
-                  <tr><td colspan="12">
-                    <div class="skeleton skeleton-line" style="height:40px;margin:8px 0"></div>
-                    <div class="skeleton skeleton-line" style="height:40px;margin:8px 0"></div>
-                  </td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          </section>
 
-        </section>
-
-        <!-- ============================================
+          <!-- ============================================
              PAGE 4: STATISTIK
              ============================================ -->
-        <section id="page-statistik" class="section-page" aria-labelledby="heading-statistik">
-
-          <div class="page-header">
-            <div class="page-breadcrumb">
-              <span>Pusbangkom</span>
-              <span class="sep"><i class="bi bi-chevron-right"></i></span>
-              <span class="current">Statistik</span>
+          <section id="page-statistik" class="section-page" aria-labelledby="heading-statistik">
+            <div class="page-header">
+              <div class="page-breadcrumb">
+                <span>Pusbangkom</span>
+                <span class="sep"><i class="bi bi-chevron-right"></i></span>
+                <span class="current">Statistik</span>
+              </div>
+              <h1 id="heading-statistik" class="page-title">Statistik <span>Penonton</span></h1>
+              <p class="page-subtitle">Ranking webinar berdasarkan jumlah penonton terbanyak di YouTube dan Zoom. Identifikasi konten yang paling diminati peserta.</p>
             </div>
-            <h1 id="heading-statistik" class="page-title">Statistik <span>Penonton</span></h1>
-            <p class="page-subtitle">Ranking webinar berdasarkan jumlah penonton terbanyak di YouTube dan Zoom. Identifikasi konten yang paling diminati peserta.</p>
-          </div>
 
-          <!-- Top 3 Highlight Cards -->
-          <div id="top3-cards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
-            <!-- Diisi JS -->
-          </div>
+            <!-- Top 3 Highlight Cards -->
+            <div id="top3-cards" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px">
+              <!-- Diisi JS -->
+            </div>
 
-          <!-- Charts row -->
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+            <!-- Charts row -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px">
+              <!-- Bar Horizontal: Top YouTube -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">
+                    <i class="bi bi-youtube" style="color: #ff0000"></i>
+                    Top Penonton YouTube
+                  </h2>
+                  <span class="badge" style="background: #fee2e2; color: #dc2626; font-size: 11px">per Webinar</span>
+                </div>
+                <div class="card-body" style="height: 320px">
+                  <canvas id="chart-top-yt" role="img" aria-label="Bar chart top webinar penonton YouTube"></canvas>
+                </div>
+              </div>
 
-            <!-- Bar Horizontal: Top YouTube -->
-            <div class="card">
+              <!-- Bar Horizontal: Top Zoom -->
+              <div class="card">
+                <div class="card-header">
+                  <h2 class="card-title">
+                    <i class="bi bi-camera-video-fill" style="color: #2d8cff"></i>
+                    Top Peserta Zoom
+                  </h2>
+                  <span class="badge" style="background: #dbeafe; color: #1d4ed8; font-size: 11px">per Webinar</span>
+                </div>
+                <div class="card-body" style="height: 320px">
+                  <canvas id="chart-top-zoom" role="img" aria-label="Bar chart top webinar peserta Zoom"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tabel Ranking Lengkap -->
+            <div class="card card-table">
               <div class="card-header">
                 <h2 class="card-title">
-                  <i class="bi bi-youtube" style="color:#FF0000"></i>
-                  Top Penonton YouTube
+                  <i class="bi bi-trophy-fill" style="color: var(--color-primary-dark)"></i>
+                  Ranking Lengkap — Semua Webinar
                 </h2>
-                <span class="badge" style="background:#FEE2E2;color:#DC2626;font-size:11px">per Webinar</span>
               </div>
-              <div class="card-body" style="height:320px">
-                <canvas id="chart-top-yt" role="img" aria-label="Bar chart top webinar penonton YouTube"></canvas>
+              <div class="table-wrapper" style="overflow-x: auto">
+                <table class="data-table" role="table" aria-label="Tabel ranking penonton webinar">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 50px; text-align: center">Rank</th>
+                      <th scope="col" style="min-width: 260px">Nama Webinar</th>
+                      <th scope="col">Tanggal</th>
+                      <th scope="col" style="text-align: center"><i class="bi bi-youtube" style="color: #ff0000"></i> Penonton YT</th>
+                      <th scope="col" style="text-align: center"><i class="bi bi-camera-video-fill" style="color: #2d8cff"></i> Peserta Zoom</th>
+                      <th scope="col" style="text-align: center">Sertifikat</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ranking-tbody">
+                    <!-- Diisi JS -->
+                  </tbody>
+                </table>
               </div>
             </div>
+          </section>
+        </main>
 
-            <!-- Bar Horizontal: Top Zoom -->
-            <div class="card">
-              <div class="card-header">
-                <h2 class="card-title">
-                  <i class="bi bi-camera-video-fill" style="color:#2D8CFF"></i>
-                  Top Peserta Zoom
-                </h2>
-                <span class="badge" style="background:#DBEAFE;color:#1D4ED8;font-size:11px">per Webinar</span>
-              </div>
-              <div class="card-body" style="height:320px">
-                <canvas id="chart-top-zoom" role="img" aria-label="Bar chart top webinar peserta Zoom"></canvas>
-              </div>
-            </div>
-          </div>
+        <!-- Footer -->
+        <footer style="text-align: center; padding: 16px 24px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-color)">© 2026 <strong>Pusat Pengembangan Kompetensi</strong></footer>
+      </div>
+      <!-- /main-content -->
+    </div>
+    <!-- /app-wrapper -->
 
-          <!-- Tabel Ranking Lengkap -->
-          <div class="card card-table">
-            <div class="card-header">
-              <h2 class="card-title">
-                <i class="bi bi-trophy-fill" style="color:var(--color-primary-dark)"></i>
-                Ranking Lengkap — Semua Webinar
-              </h2>
-            </div>
-            <div class="table-wrapper" style="overflow-x:auto">
-              <table class="data-table" role="table" aria-label="Tabel ranking penonton webinar">
-                <thead>
-                  <tr>
-                    <th scope="col" style="width:50px;text-align:center">Rank</th>
-                    <th scope="col" style="min-width:260px">Nama Webinar</th>
-                    <th scope="col">Tanggal</th>
-                    <th scope="col" style="text-align:center">
-                      <i class="bi bi-youtube" style="color:#FF0000"></i> Penonton YT
-                    </th>
-                    <th scope="col" style="text-align:center">
-                      <i class="bi bi-camera-video-fill" style="color:#2D8CFF"></i> Peserta Zoom
-                    </th>
-                    <th scope="col" style="text-align:center">Sertifikat</th>
-                    <th scope="col">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="ranking-tbody">
-                  <!-- Diisi JS -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-        </section>
-
-      </main>
-
-      <!-- Footer -->
-      <footer style="text-align:center;padding:16px 24px;font-size:11px;color:var(--text-muted);border-top:1px solid var(--border-color)">
-        © 2026 <strong>Pusat Pengembangan Kompetensi</strong>
-      </footer>
-
-    </div><!-- /main-content -->
-  </div><!-- /app-wrapper -->
-
-  <!-- ===================================================
+    <!-- ===================================================
        DETAIL MODAL
        =================================================== -->
-  <div id="detail-modal" class="modal-overlay" role="dialog"
-       aria-labelledby="modal-title" aria-modal="true">
-    <div class="modal-box" role="document">
-      <div class="modal-header">
-        <h2 class="modal-title" id="modal-title">Detail</h2>
-        <button id="modal-close-btn" class="modal-close" aria-label="Tutup modal">
-          <i class="bi bi-x-lg" aria-hidden="true"></i>
-        </button>
+    <div id="detail-modal" class="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+      <div class="modal-box" role="document">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modal-title">Detail</h2>
+          <button id="modal-close-btn" class="modal-close" aria-label="Tutup modal">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="modal-body" id="modal-content"></div>
       </div>
-      <div class="modal-body" id="modal-content"></div>
     </div>
-  </div>
 
-  <!-- LOADING OVERLAY -->
-  <div id="loading-overlay" class="loading-overlay" role="status" aria-live="polite">
-    <div class="loading-card">
-      <div class="loading-spinner" aria-hidden="true"></div>
-      <div class="loading-text">Memuat data...</div>
+    <!-- LOADING OVERLAY -->
+    <div id="loading-overlay" class="loading-overlay" role="status" aria-live="polite">
+      <div class="loading-card">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <div class="loading-text">Memuat data...</div>
+      </div>
     </div>
-  </div>
 
-  <!-- TOAST CONTAINER -->
-  <div id="toast-container" class="toast-container" role="region" aria-label="Notifikasi" aria-live="polite"></div>
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container" class="toast-container" role="region" aria-label="Notifikasi" aria-live="polite"></div>
 
-  <!-- ===================================================
+    <!-- ===================================================
        SCRIPTS
        =================================================== -->
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js" defer></script>
-  <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js" defer></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js" defer></script>
 
-  <script src="js/chart.js" defer></script>
-  <script src="js/spreadsheet.js" defer></script>
-  <script src="js/app.js" defer></script>
+    <script src="js/chart.js" defer></script>
+    <script src="js/spreadsheet.js" defer></script>
+    <script src="js/app.js" defer></script>
 
-  <script>
-    /* =====================================================
+    <script>
+      /* =====================================================
        FILTER — WEBINAR TABLE
        ===================================================== */
-    document.addEventListener('click', function(e) {
-      // Filter Webinar
-      const btnWeb = e.target.closest('.filter-webinar-btn');
-      if (btnWeb) {
-        document.querySelectorAll('.filter-webinar-btn').forEach(b => b.classList.remove('active'));
-        btnWeb.classList.add('active');
-        const filter = btnWeb.getAttribute('data-filter');
-        document.querySelectorAll('#webinar-tbody tr[data-status]').forEach(row => {
-          const st = row.getAttribute('data-status');
-          row.style.display = (filter === 'all' || st === filter) ? '' : 'none';
-        });
-      }
-      // Filter Pelatihan
-      const btnPlt = e.target.closest('.filter-plt-btn');
-      if (btnPlt) {
-        document.querySelectorAll('.filter-plt-btn').forEach(b => b.classList.remove('active'));
-        btnPlt.classList.add('active');
-        const filter = btnPlt.getAttribute('data-filter-plt');
-        document.querySelectorAll('#pelatihan-tbody tr[data-proses]').forEach(row => {
-          const pr = row.getAttribute('data-proses');
-          row.style.display = (filter === 'all' || pr === filter) ? '' : 'none';
-        });
-      }
-    });
+      document.addEventListener("click", function (e) {
+        // Filter Webinar
+        const btnWeb = e.target.closest(".filter-webinar-btn");
+        if (btnWeb) {
+          document.querySelectorAll(".filter-webinar-btn").forEach((b) => b.classList.remove("active"));
+          btnWeb.classList.add("active");
+          const filter = btnWeb.getAttribute("data-filter");
+          document.querySelectorAll("#webinar-tbody tr[data-status]").forEach((row) => {
+            const st = row.getAttribute("data-status");
+            row.style.display = filter === "all" || st === filter ? "" : "none";
+          });
+        }
+        // Filter Pelatihan
+        const btnPlt = e.target.closest(".filter-plt-btn");
+        if (btnPlt) {
+          document.querySelectorAll(".filter-plt-btn").forEach((b) => b.classList.remove("active"));
+          btnPlt.classList.add("active");
+          const filter = btnPlt.getAttribute("data-filter-plt");
+          document.querySelectorAll("#pelatihan-tbody tr[data-proses]").forEach((row) => {
+            const pr = row.getAttribute("data-proses");
+            row.style.display = filter === "all" || pr === filter ? "" : "none";
+          });
+        }
+      });
 
-    /* =====================================================
+      /* =====================================================
        EXPORT UTILITIES
        ===================================================== */
-    function exportWebinarCSV() {
-      const webinars = window.AppData?.webinars || [];
-      if (!webinars.length) { showToast('info','Export CSV','Tidak ada data untuk diekspor.'); return; }
-      const header = ['No','Nama Webinar','Tanggal','Kuota Peserta','Jumlah Peserta','Penerima Sertifikat','Penonton YT','Penonton Zoom','Status'];
-      const rows = webinars.map((w,i) => [i+1, w.nama, w.tanggal, w.kuotaPeserta, w.jumlahPeserta, w.jumlahPenerimaSertifikat, w.jumlahMenontonYT, w.jumlahMenontonZoom, w.status]);
-      downloadFile('rekap-webinar-2026.csv','text/csv;charset=utf-8;', [header,...rows].map(r=>r.map(v=>`"${v}"`).join(',')).join('\n'));
-      showToast('success','Export Berhasil',`${webinars.length} webinar berhasil diekspor.`);
-    }
+      function exportWebinarCSV() {
+        const webinars = window.AppData?.webinars || [];
+        if (!webinars.length) {
+          showToast("info", "Export CSV", "Tidak ada data untuk diekspor.");
+          return;
+        }
+        const header = ["No", "Nama Webinar", "Tanggal", "Kuota Peserta", "Jumlah Peserta", "Penerima Sertifikat", "Penonton YT", "Penonton Zoom", "Status"];
+        const rows = webinars.map((w, i) => [i + 1, w.nama, w.tanggal, w.kuotaPeserta, w.jumlahPeserta, w.jumlahPenerimaSertifikat, w.jumlahMenontonYT, w.jumlahMenontonZoom, w.status]);
+        downloadFile("rekap-webinar-2026.csv", "text/csv;charset=utf-8;", [header, ...rows].map((r) => r.map((v) => `"${v}"`).join(",")).join("\n"));
+        showToast("success", "Export Berhasil", `${webinars.length} webinar berhasil diekspor.`);
+      }
 
-    function exportPelatihanCSV() {
-      const data = window.AppData?.pelatihan || [];
-      if (!data.length) { showToast('info','Export CSV','Tidak ada data untuk diekspor.'); return; }
-      const header = ['No','Nama Pelatihan','Metode','Tanggal Mulai','Tanggal Selesai','Lulus','Tidak Lulus','Jumlah Peserta','Proses','Keterangan','Lokasi','PIC'];
-      const rows = data.map((p,i) => [i+1, p.nama, p.metode, p.tanggalMulai, p.tanggalSelesai, p.lulus, p.tidakLulus, p.jumlahPeserta, p.proses, p.keterangan, p.lokasiPelatihan, p.pic]);
-      downloadFile('monitoring-pelatihan-2026.csv','text/csv;charset=utf-8;', [header,...rows].map(r=>r.map(v=>`"${v}"`).join(',')).join('\n'));
-      showToast('success','Export Berhasil',`${data.length} pelatihan berhasil diekspor.`);
-    }
+      function exportPelatihanCSV() {
+        const data = window.AppData?.pelatihan || [];
+        if (!data.length) {
+          showToast("info", "Export CSV", "Tidak ada data untuk diekspor.");
+          return;
+        }
+        const header = ["No", "Nama Pelatihan", "Metode", "Tanggal Mulai", "Tanggal Selesai", "Lulus", "Tidak Lulus", "Jumlah Peserta", "Proses", "Keterangan", "Lokasi", "PIC"];
+        const rows = data.map((p, i) => [i + 1, p.nama, p.metode, p.tanggalMulai, p.tanggalSelesai, p.lulus, p.tidakLulus, p.jumlahPeserta, p.proses, p.keterangan, p.lokasiPelatihan, p.pic]);
+        downloadFile("monitoring-pelatihan-2026.csv", "text/csv;charset=utf-8;", [header, ...rows].map((r) => r.map((v) => `"${v}"`).join(",")).join("\n"));
+        showToast("success", "Export Berhasil", `${data.length} pelatihan berhasil diekspor.`);
+      }
 
-    function downloadFile(filename, mimeType, content) {
-      const blob = new Blob([content], { type: mimeType });
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href = url; a.download = filename; a.click();
-      URL.revokeObjectURL(url);
-    }
+      function downloadFile(filename, mimeType, content) {
+        const blob = new Blob([content], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
 
-    /* =====================================================
+      /* =====================================================
        SAVED SPREADSHEET URL
        ===================================================== */
-    document.addEventListener('DOMContentLoaded', function() {
-      const saved = localStorage.getItem('pmw-spreadsheet-url');
-      if (saved && window.CONFIG) {
-        window.CONFIG.SPREADSHEET_URL = saved;
-        window.CONFIG.USE_DUMMY = false;
-      }
-    });
-  </script>
-</body>
+      document.addEventListener("DOMContentLoaded", function () {
+        const saved = localStorage.getItem("pmw-spreadsheet-url");
+        if (saved && window.CONFIG) {
+          window.CONFIG.SPREADSHEET_URL = saved;
+          window.CONFIG.USE_DUMMY = false;
+        }
+      });
+    </script>
+  </body>
 </html>
