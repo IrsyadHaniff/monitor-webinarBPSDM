@@ -1,6 +1,6 @@
 /**
  * spreadsheet.js — Data Engine v2.0
- * Dashboard Monitoring Webinar & Pelatihan | Pusbangkom ASN
+ * Dashboard Monitoring Webinar & Pelatihan | Pusbangkom
  * =====================================================
  * Sumber data: dummy.json (saat ini)
  * Untuk connect ke Google Spreadsheet:

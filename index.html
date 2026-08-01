@@ -8,21 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-  <!-- Primary SEO -->
-  <title>Dashboard Monitoring Webinar & Pelatihan | Pusbangkom</title>
-  <meta name="description" content="Dashboard rekap penyelenggaraan webinar dan monitoring pelatihan Pusat Pengembangan Kompetensi. Pantau peserta, sertifikat, dan statistik penonton secara realtime." />
-  <meta name="keywords" content="dashboard webinar, monitoring pelatihan, Pusbangkom, rekap webinar, sertifikat, ATR/BPN, BKN" />
-  <meta name="author" content="Pusat Pengembangan Kompetensi ASN" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://monitorwebinarpusbangkom.web.app/" />
+    <!-- Primary SEO -->
+    <title>Dashboard Monitoring Webinar & Pelatihan | Pusbangkom</title>
+    <meta name="description" content="Dashboard rekap penyelenggaraan webinar dan monitoring pelatihan Pusat Pengembangan Kompetensi. Pantau peserta, sertifikat, dan statistik penonton secara realtime." />
+    <meta name="keywords" content="dashboard webinar, monitoring pelatihan, Pusbangkom, rekap webinar, sertifikat, ATR/BPN, BKN" />
+    <meta name="author" content="Pusat Pengembangan Kompetensi" />
+    <meta name="author" content="Developed by Irsyad Hanif Munawar" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://datamonitoringpusbangkom.web.app/" />
 
-  <!-- Open Graph -->
-  <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://monitorwebinarpusbangkom.web.app/" />
-  <meta property="og:title"       content="Dashboard Monitoring Webinar & Pelatihan | Pusbangkom" />
-  <meta property="og:description" content="Dashboard rekap penyelenggaraan webinar dan monitoring pelatihan." />
-  <meta property="og:image"       content="https://monitorwebinarpusbangkom.web.app/assets/img/og-image.webp" />
-  <meta property="og:locale"      content="id_ID" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://datamonitoringpusbangkom.web.app/" />
+    <meta property="og:title" content="Dashboard Monitoring Webinar & Pelatihan | Pusbangkom" />
+    <meta property="og:description" content="Dashboard rekap penyelenggaraan webinar dan monitoring pelatihan." />
+    <meta property="og:image" content="https://datamonitoringpusbangkom.web.app/img/icon.webp" />
+    <meta property="og:locale" content="id_ID" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -32,10 +33,10 @@
     <!-- =====================================================
        FAVICON & PWA
        ===================================================== -->
-  <link rel="icon" type="image/x-icon" href="img/icon.webp" />
-  <link rel="apple-touch-icon"         href="img/icon.webp" />
-  <link rel="manifest"                 href="manifest.json" />
-  <meta name="theme-color"            content="#F0C332" />
+    <link rel="icon" type="image/x-icon" href="img/icon.webp" />
+    <link rel="apple-touch-icon" href="img/icon.webp" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#F0C332" />
 
     <!-- =====================================================
        PRELOAD CRITICAL RESOURCES
@@ -59,26 +60,38 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/responsive.css" />
 
-  <!-- JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Pusat Pengembangan Kompetensi",
-    "alternateName": "Pusbangkom",
-    "url": "https://monitorwebinarpusbangkom.web.app/"
-  }
-  </script>
-</head>
+    <!-- JSON-LD -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Dashboard Monitoring Data Pusat Pengembangan Kompetensi",
+      "alternateName": "Pusbangkom",
+      "url": "https://datamonitoringpusbangkom.web.app/",
+      "creator": {
+        "@type": "Person",
+        "name": "Irsyad Hanif Munawar",
+        "url": "https://www.linkedin.com/in/irsydhanif/"
+      },
+      "developer": {
+        "@type": "Person",
+        "name": "Irsyad Hanif Munawar",
+        "url": "https://www.linkedin.com/in/irsydhanif/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Pusat Pengembangan Kompetensi"
+      }
+    }
+    </script>
+  </head>
 
   <body>
     <!-- Skip to content (Accessibility) -->
     <a href="#main-content" class="skip-to-content" tabindex="1">Langsung ke Konten</a>
 
     <div class="app-wrapper">
-      <!-- ===================================================
-         SIDEBAR
-         =================================================== -->
+      <!-- == SIDEBAR ==-->
       <aside id="sidebar" class="sidebar" role="navigation" aria-label="Navigasi Utama">
         <!-- Brand -->
         <div class="sidebar-brand">
@@ -87,7 +100,7 @@
           </div>
         </div>
 
-        <!-- Navigation -->
+        <!-- == Navigation ==-->
         <nav class="sidebar-nav" role="menubar">
           <div class="nav-section-label">Menu Utama</div>
 
@@ -126,12 +139,10 @@
       </div> -->
       </aside>
 
-      <!-- Mobile overlay -->
+      <!--== Mobile overlay ==-->
       <div id="sidebar-overlay" class="sidebar-overlay" role="presentation" aria-hidden="true"></div>
 
-      <!-- ===================================================
-         MAIN CONTENT
-         =================================================== -->
+      <!--== MAIN CONTENT ==-->
       <div id="main-content" class="main-content" role="main">
         <!-- TOPBAR -->
         <header id="topbar" class="topbar" role="banner">
@@ -160,23 +171,23 @@
                  autocomplete="off" spellcheck="false" />
         </div> -->
 
-          <!-- Actions -->
+          <!--== Actions ==-->
           <div class="topbar-actions">
             <button class="topbar-btn" onclick="loadData()" aria-label="Refresh data" title="Refresh Data">
               <i class="bi bi-arrow-clockwise" aria-hidden="true"></i>
             </button>
 
-            <button id="dark-mode-toggle" class="dark-mode-toggle topbar-btn"
-                  role="switch" aria-checked="false"
-                  aria-label="Aktifkan/Nonaktifkan mode gelap"
-                  title="Toggle Dark Mode">
+            <button id="dark-mode-toggle" class="dark-mode-toggle topbar-btn" role="switch" aria-checked="false" aria-label="Aktifkan/Nonaktifkan mode gelap" title="Toggle Dark Mode">
               <svg id="icon-sun" class="dm-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 5V3m0 18v-2M7.05 7.05 5.636 5.636m12.728 12.728L16.95 16.95M5 12H3m18 0h-2M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 5V3m0 18v-2M7.05 7.05 5.636 5.636m12.728 12.728L16.95 16.95M5 12H3m18 0h-2M7.05 16.95l-1.414 1.414M18.364 5.636 16.95 7.05M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                />
               </svg>
               <svg id="icon-moon" class="dm-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 21a9 9 0 0 1-.5-17.986V3c-.354.966-.5 1.911-.5 3a9 9 0 0 0 9 9c.239 0 .254.018.488 0A9.004 9.004 0 0 1 12 21Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21a9 9 0 0 1-.5-17.986V3c-.354.966-.5 1.911-.5 3a9 9 0 0 0 9 9c.239 0 .254.018.488 0A9.004 9.004 0 0 1 12 21Z" />
               </svg>
             </button>
 
@@ -188,19 +199,15 @@
           </div>
         </header>
 
-        <!-- Sync status bar -->
+        <!--== Sync status bar ==-->
         <div id="refresh-bar" class="refresh-bar hidden" role="status" aria-live="polite"></div>
 
-        <!-- Global Error Banner -->
+        <!--== Global Error Banner ==-->
         <div id="global-error" style="display: none" role="alert"></div>
 
-        <!-- ================================================
-           PAGE CONTENT
-           ================================================ -->
+        <!--==PAGE CONTENT ==-->
         <main id="page-content" class="page-content" tabindex="-1">
-          <!-- ============================================
-             PAGE 1: DASHBOARD
-             ============================================ -->
+          <!-- == PAGE 1: DASHBOARD ==-->
           <section id="page-dashboard" class="section-page active" aria-labelledby="heading-dashboard">
             <div class="page-header">
               <div class="page-breadcrumb">
@@ -317,9 +324,7 @@
             </div>
           </section>
 
-          <!-- ============================================
-             PAGE 2: REKAP WEBINAR
-             ============================================ -->
+          <!--== PAGE 2: REKAP WEBINAR ==-->
           <section id="page-webinar" class="section-page" aria-labelledby="heading-webinar">
             <div class="page-header">
               <div class="page-breadcrumb">
@@ -389,9 +394,7 @@
             </div>
           </section>
 
-          <!-- ============================================
-             PAGE 3: MONITORING PELATIHAN
-             ============================================ -->
+          <!-- == PAGE 3: MONITORING PELATIHAN ==-->
           <section id="page-pelatihan" class="section-page" aria-labelledby="heading-pelatihan">
             <div class="page-header">
               <div class="page-breadcrumb">
@@ -483,9 +486,7 @@
             </div>
           </section>
 
-          <!-- ============================================
-             PAGE 4: STATISTIK
-             ============================================ -->
+          <!--== PAGE 4: STATISTIK ==-->
           <section id="page-statistik" class="section-page" aria-labelledby="heading-statistik">
             <div class="page-header">
               <div class="page-breadcrumb">
@@ -570,9 +571,7 @@
     </div>
     <!-- /app-wrapper -->
 
-    <!-- ===================================================
-       DETAIL MODAL
-       =================================================== -->
+    <!--== DETAIL MODAL ==-->
     <div id="detail-modal" class="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-modal="true">
       <div class="modal-box" role="document">
         <div class="modal-header">
@@ -639,7 +638,7 @@
       });
 
       /* =====================================================
-       EXPORT UTILITIES
+       EXPORT CSV
        ===================================================== */
       function exportWebinarCSV() {
         const webinars = window.AppData?.webinars || [];
@@ -647,8 +646,8 @@
           showToast("info", "Export CSV", "Tidak ada data untuk diekspor.");
           return;
         }
-        const header = ["No", "Nama Webinar", "Tanggal", "Kuota Peserta", "Jumlah Peserta", "Penerima Sertifikat", "Penonton YT", "Penonton Zoom", "Status"];
-        const rows = webinars.map((w, i) => [i + 1, w.nama, w.tanggal, w.kuotaPeserta, w.jumlahPeserta, w.jumlahPenerimaSertifikat, w.jumlahMenontonYT, w.jumlahMenontonZoom, w.status]);
+        const header = ["No", "Nama Webinar", "Tanggal", "Jumlah Peserta", "Penerima Sertifikat", "Penonton YT", "Penonton Zoom", "Status"];
+        const rows = webinars.map((w, i) => [i + 1, w.nama, w.tanggal, w.jumlahPeserta, w.jumlahPenerimaSertifikat, w.jumlahMenontonYT, w.jumlahMenontonZoom, w.status]);
         downloadFile("rekap-webinar-2026.csv", "text/csv;charset=utf-8;", [header, ...rows].map((r) => r.map((v) => `"${v}"`).join(",")).join("\n"));
         showToast("success", "Export Berhasil", `${webinars.length} webinar berhasil diekspor.`);
       }

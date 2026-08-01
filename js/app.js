@@ -1,6 +1,6 @@
 /**
  * app.js — Application Initializer v2.0
- * Dashboard Monitoring Webinar & Pelatihan | Pusbangkom ASN
+ * Dashboard Monitoring Webinar & Pelatihan | Pusbangkom
  * =====================================================
  * Mengelola:
  *  - Navigasi sidebar SPA (dashboard, webinar, pelatihan, statistik)
@@ -325,3 +325,9 @@ window.addEventListener('scroll', () => {
    11. EXPOSE navigateTo GLOBALLY
    ===================================================== */
 window.navigateTo = navigateTo;
+
+
+console.log(
+  "%cDashboard Monitoring Data Pusbangkom\nDeveloped by Irsyad Hanif Munawar",
+  "color:#F0C332;font-size:6px;font-weight:bold;"
+);

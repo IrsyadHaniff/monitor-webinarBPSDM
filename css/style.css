@@ -1,6 +1,7 @@
 /* =========================================================
    Dashboard Monitoring Webinar — Main Stylesheet
    Pusbangkom | Version 1.0.0
+   Developed by Irsyad Hanif Munawar
    ========================================================= */
 
 /* ---- Google Fonts Import ---- */
@@ -1012,7 +1013,7 @@ button { cursor: pointer; font-family: var(--font-family); }
 .badge-secondary{ background: var(--color-secondary-soft); color: var(--color-secondary-dark); }
 .badge-info     { background: var(--color-info-soft);      color: var(--color-info); }
 .badge-muted    { background: var(--color-gray-100);       color: var(--color-gray-600); }
-
+/* darkmode by Irsyad Hanif Munawar 2026*/
 [data-theme="dark"] .badge-muted { background: var(--color-gray-800); color: var(--color-gray-300); }
 
 /* =========================================================

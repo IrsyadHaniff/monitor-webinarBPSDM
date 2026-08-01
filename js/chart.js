@@ -1,6 +1,6 @@
 /**
  * chart.js — Chart Rendering Engine v2.0
- * Dashboard Monitoring Webinar & Pelatihan | Pusbangkom ASN
+ * Dashboard Monitoring Webinar & Pelatihan | Pusbangkom
  * =====================================================
  * Charts:
  *  1. Bar     — Peserta Webinar per webinar (Dashboard)
