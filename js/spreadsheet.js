@@ -34,7 +34,7 @@ const CONFIG = {
    * URL Google Apps Script Web App.
    * Format: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'
    */
-  SPREADSHEET_URL: "https://script.google.com/macros/s/AKfycbzwem56-K5cBkxKtp8cuifFZzCtpfxW6oyYD-eXE3fFJAsQjdr2nFnCqsuZ13IqFkzk/exec",
+  SPREADSHEET_URL: "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoavRjKFIWSgK45-rweqNGYy2WneFn1-G4hu-OCqNsvgxaVyTYePQjg/exec",
 
   DUMMY_PATH: "data/dummy.json",
   REFRESH_INTERVAL: 3600000,
