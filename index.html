@@ -1,9 +1,7 @@
 <!doctype html>
 <html lang="id" data-theme="light">
   <head>
-    <!-- =====================================================
-       META & SEO
-       ===================================================== -->
+    <!--== META & SEO ==-->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -62,27 +60,27 @@
 
     <!-- JSON-LD -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Dashboard Monitoring Data Pusbangkom ATR BPN",
-      "alternateName": "Pusbangkom",
-      "url": "https://datamonitoringpusbangkom.web.app/",
-      "creator": {
-        "@type": "Person",
-        "name": "Irsyad Hanif Munawar",
-        "url": "https://www.linkedin.com/in/irsydhanif/"
-      },
-      "developer": {
-        "@type": "Person",
-        "name": "Irsyad Hanif Munawar",
-        "url": "https://www.linkedin.com/in/irsydhanif/"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Pusat Pengembangan Kompetensi"
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Dashboard Monitoring Data Pusbangkom ATR BPN",
+        "alternateName": "Pusbangkom",
+        "url": "https://datamonitoringpusbangkom.web.app/",
+        "creator": {
+          "@type": "Person",
+          "name": "Irsyad Hanif Munawar",
+          "url": "https://www.linkedin.com/in/irsydhanif/"
+        },
+        "developer": {
+          "@type": "Person",
+          "name": "Irsyad Hanif Munawar",
+          "url": "https://www.linkedin.com/in/irsydhanif/"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Pusat Pengembangan Kompetensi"
+        }
       }
-    }
     </script>
   </head>
 
@@ -152,7 +150,7 @@
 
           <div class="topbar-title" aria-live="polite">
             <span id="topbar-page-title">Dashboard</span>
-            <span aria-hidden="true"> — </span>
+            <span aria-hidden="true"> - </span>
             <span style="color: var(--color-primary-dark); font-size: 12px; font-weight: 500">Monitoring Pelatihan dan Webinar</span>
           </div>
 
@@ -209,26 +207,35 @@
         <main id="page-content" class="page-content" tabindex="-1">
           <!-- == PAGE 1: DASHBOARD ==-->
           <section id="page-dashboard" class="section-page active" aria-labelledby="heading-dashboard">
-            <div class="page-header">
-              <div class="page-breadcrumb">
-                <span>Pusbangkom</span>
-                <span class="sep"><i class="bi bi-chevron-right"></i></span>
-                <span class="current">Dashboard</span>
+            <!-- DASHBOARD HERO: teks kiri + banner kanan -->
+            <div class="dashboard-hero">
+              <div class="dashboard-hero-text">
+                <div class="page-breadcrumb">
+                  <span>Pusbangkom</span>
+                  <span class="sep"><i class="bi bi-chevron-right"></i></span>
+                  <span class="current">Dashboard</span>
+                </div>
+                <h1 id="heading-dashboard" class="page-title">Ringkasan <span>Dashboard</span></h1>
+                <p class="page-subtitle">Rekap keseluruhan penyelenggaraan webinar dan pelatihan. Data diperbarui otomatis setiap 1 jam.</p>
+                <div id="last-updated" style="font-size: 11px; color: var(--text-muted); margin-top: 8px" aria-live="polite"></div>
               </div>
-              <h1 id="heading-dashboard" class="page-title">Ringkasan <span>Dashboard</span></h1>
-              <p class="page-subtitle">Rekap keseluruhan penyelenggaraan webinar dan pelatihan. Data diperbarui otomatis setiap 1 jam.</p>
-              <div id="last-updated" style="font-size: 11px; color: var(--text-muted); margin-top: 4px" aria-live="polite"></div>
+              <div class="dashboard-hero-banner" role="img" aria-label="Banner BPSDM ATR/BPN Pusbangkom">
+                <img src="img/banner/bannerBangkom.webp" alt="Banner BPSDM Kementerian ATR/BPN - Pusat Pengembangan Kompetensi" class="dashboard-hero-img" loading="eager" />
+              </div>
             </div>
 
             <!-- STAT CARDS -->
             <div class="stats-grid" role="region" aria-label="Statistik Ringkasan">
               <article class="stat-card card-primary" aria-label="Total Webinar">
+                <!-- <div class="stat-ghost-icon" aria-hidden="true"><i class="bi bi-camera-video-fill"></i></div> -->
                 <div class="stat-card-header">
                   <div class="stat-icon"><i class="bi bi-camera-video-fill"></i></div>
                 </div>
                 <div class="stat-value" id="stat-total-webinar" aria-live="polite">0</div>
                 <div class="stat-label">Total Webinar</div>
-                <div class="stat-progress"><div class="stat-progress-bar" style="width: 100%"></div></div>
+                <div class="stat-progress">
+                  <div class="stat-progress-bar" style="width: 100%"></div>
+                </div>
               </article>
 
               <article class="stat-card card-info" aria-label="Total Pelatihan">
@@ -237,7 +244,9 @@
                 </div>
                 <div class="stat-value" id="stat-total-pelatihan" aria-live="polite">0</div>
                 <div class="stat-label">Total Pelatihan</div>
-                <div class="stat-progress"><div class="stat-progress-bar" style="width: 100%"></div></div>
+                <div class="stat-progress">
+                  <div class="stat-progress-bar" style="width: 100%"></div>
+                </div>
               </article>
 
               <article class="stat-card card-secondary" aria-label="Total Peserta Webinar">
@@ -246,7 +255,9 @@
                 </div>
                 <div class="stat-value" id="stat-total-peserta-webinar" aria-live="polite">0</div>
                 <div class="stat-label">Peserta Webinar</div>
-                <div class="stat-progress"><div class="stat-progress-bar" id="progress-peserta-web" style="width: 0%"></div></div>
+                <div class="stat-progress">
+                  <div class="stat-progress-bar" id="progress-peserta-web" style="width: 0%"></div>
+                </div>
               </article>
 
               <article class="stat-card card-success" aria-label="Total Penerima Sertifikat Webinar">
@@ -255,7 +266,9 @@
                 </div>
                 <div class="stat-value" id="stat-sertifikat-webinar" aria-live="polite">0</div>
                 <div class="stat-label">Penerima Sertifikat Webinar</div>
-                <div class="stat-progress"><div class="stat-progress-bar" id="progress-sertifikat-web" style="width: 0%"></div></div>
+                <div class="stat-progress">
+                  <div class="stat-progress-bar" id="progress-sertifikat-web" style="width: 0%"></div>
+                </div>
               </article>
 
               <article class="stat-card card-danger" aria-label="Total Penonton YouTube">
@@ -264,17 +277,20 @@
                 </div>
                 <div class="stat-value" id="stat-total-yt" aria-live="polite">0</div>
                 <div class="stat-label">Total Penonton YouTube</div>
-                <div class="stat-progress"><div class="stat-progress-bar" id="progress-yt" style="width: 0%"></div></div>
+                <div class="stat-progress">
+                  <div class="stat-progress-bar" id="progress-yt" style="width: 0%"></div>
+                </div>
               </article>
 
               <article class="stat-card card-warning" aria-label="Total Peserta Pelatihan">
                 <div class="stat-card-header">
                   <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
-                  <!-- <div class="stat-trend up"><i class="bi bi-arrow-up-short"></i>5%</div> -->
                 </div>
                 <div class="stat-value" id="stat-total-peserta-plt" aria-live="polite">0</div>
                 <div class="stat-label">Peserta Pelatihan</div>
-                <div class="stat-progress"><div class="stat-progress-bar" id="progress-peserta-plt" style="width: 0%"></div></div>
+                <div class="stat-progress">
+                  <div class="stat-progress-bar" id="progress-peserta-plt" style="width: 0%"></div>
+                </div>
               </article>
             </div>
 
@@ -610,8 +626,8 @@
 
     <script>
       /* =====================================================
-       FILTER — WEBINAR TABLE
-       ===================================================== */
+     FILTER — WEBINAR TABLE
+     ===================================================== */
       document.addEventListener("click", function (e) {
         // Filter Webinar
         const btnWeb = e.target.closest(".filter-webinar-btn");
@@ -638,8 +654,8 @@
       });
 
       /* =====================================================
-       EXPORT CSV
-       ===================================================== */
+     EXPORT CSV
+     ===================================================== */
       function exportWebinarCSV() {
         const webinars = window.AppData?.webinars || [];
         if (!webinars.length) {
@@ -675,8 +691,8 @@
       }
 
       /* =====================================================
-       SAVED SPREADSHEET URL
-       ===================================================== */
+     SAVED SPREADSHEET URL
+     ===================================================== */
       document.addEventListener("DOMContentLoaded", function () {
         const saved = localStorage.getItem("pmw-spreadsheet-url");
         if (saved && window.CONFIG) {

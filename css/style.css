@@ -459,6 +459,85 @@ button { cursor: pointer; font-family: var(--font-family); }
   transition: background var(--transition-slow);
 }
 
+.topbar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.topbar-subtitle {
+  color: var(--color-primary-dark);
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* === DASHBOARD HERO (teks kiri + banner kanan) === */
+.dashboard-hero {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: stretch;
+  gap: 0;
+  background: var(--surface-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  margin-bottom: var(--space-xl);
+  height: clamp(160px, 18vw, 220px);
+}
+
+.dashboard-hero-text {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-width: 260px;
+  max-width: 380px;
+  z-index: 1;
+}
+
+.dashboard-hero-text .page-breadcrumb {
+  margin-bottom: 6px;
+}
+
+.dashboard-hero-text .page-title {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  margin-bottom: 4px;
+}
+
+.dashboard-hero-text .page-subtitle {
+  font-size: 12.5px;
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+.dashboard-hero-banner {
+  overflow: hidden;
+  position: relative;
+  flex: 1;
+  min-height: 160px;
+  max-height: 220px;
+}
+
+.dashboard-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center right;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.dashboard-hero:hover .dashboard-hero-img {
+  transform: scale(1.02);
+}
+
+
 .topbar-toggle {
   width: 36px;
   height: 36px;
@@ -497,6 +576,7 @@ button { cursor: pointer; font-family: var(--font-family); }
   flex-direction: column;
   align-items: flex-end;
   gap: 1px;
+  flex-shrink: 0;
 }
 
 .topbar-date {
@@ -795,6 +875,38 @@ button { cursor: pointer; font-family: var(--font-family); }
   justify-content: center;
   font-size: 22px;
   color: var(--card-color, var(--color-primary));
+}
+
+/* Ghost icon (background decorative) */
+.stat-ghost-icon {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 72px;
+  color: var(--card-color, var(--color-primary));
+  opacity: 0.08;
+  pointer-events: none;
+  line-height: 1;
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.stat-card:hover .stat-ghost-icon {
+  opacity: 0.13;
+  transform: scale(1.05) rotate(-4deg);
+}
+
+.stat-trend-text {
+  font-size: 11px;
+  color: var(--color-success);
+  font-weight: 600;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.stat-trend-text i {
+  font-size: 14px;
 }
 
 .stat-trend {
