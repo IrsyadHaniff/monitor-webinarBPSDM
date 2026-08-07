@@ -16,6 +16,7 @@ window.AppData = {
   webinars: [],
   pelatihan: [],
   alumni: [],
+  rekapAlumni: [], // daftar unit kerja & provinsi dari sheet Rekap_Alumni
   stats: {},
   lastUpdated: null,
   isLoading: false,
@@ -145,25 +146,206 @@ async function loadDummyData() {
  *
  * Contoh Apps Script (Code.gs):
  * --------------------------------
- * function doGet() {
- *   const ss = SpreadsheetApp.openById('YOUR_SPREADSHEET_ID');
- *   const data = {
- *     webinars:  getRows(ss, 'Webinar'),
- *     pelatihan: getRows(ss, 'Pelatihan'),
- *   };
- *   return ContentService
- *     .createTextOutput(JSON.stringify(data))
- *     .setMimeType(ContentService.MimeType.JSON);
- * }
- * function getRows(ss, sheetName) {
- *   const sheet = ss.getSheetByName(sheetName);
- *   const [headers, ...rows] = sheet.getDataRange().getValues();
- *   return rows.map(row => {
- *     const obj = {};
- *     headers.forEach((h, i) => { if(h) obj[h] = row[i]; });
- *     return obj;
- *   });
- * }
+ * // ambil data dari id spredsheet
+function doGet() {
+
+  const ss = SpreadsheetApp.openById(
+    "1r4a4apyQ-BIP52lFiPFTp7I8-UUq_34rBHPtNGNcgF4"
+  );
+
+  return ContentService
+    .createTextOutput(
+      JSON.stringify({
+        webinars: getWebinar(ss),
+        pelatihan: getPelatihan(ss),
+        alumni: getAlumni(ss)
+      })
+    )
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// =========================
+// WEBINAR
+// =========================
+
+function getWebinar(ss){
+
+  const sheet = ss.getSheetByName("Webinar");
+
+  if(!sheet) return [];
+
+  const values = sheet.getDataRange().getValues();
+
+  const result = [];
+
+  // data mulai baris ke-6
+  for(let i=5;i<values.length;i++){
+
+    const r = values[i];
+
+    if(!r[1]) continue;
+
+    result.push({
+
+      id : "WEB"+String(r[0]).padStart(3,"0"),
+
+      nama : r[1],
+
+      tanggal : formatDate(r[2]),
+
+      linkEviden : r[3],
+
+      jumlahPeserta : Number(r[4])||0,
+
+      jumlahPenerimaSertifikat : Number(r[5])||0,
+
+      jumlahMenontonYT : Number(r[6])||0,
+
+      jumlahMenontonZoom : Number(r[7])||0,
+
+      narasumber : r[8],
+
+      moderator : r[9],
+
+      keynoteSpeaker : r[10],
+
+      kriteriaPeserta : r[11],
+
+      status : "Selesai",
+
+      keterangan : ""
+
+    });
+
+  }
+
+  return result;
+
+}
+
+// =========================
+// PELATIHAN
+// =========================
+
+function getPelatihan(ss){
+
+  const sheet = ss.getSheetByName("Pelatihan");
+
+  if(!sheet) return [];
+
+  const values = sheet.getDataRange().getValues();
+
+  const header = values[0];
+
+  const result = [];
+
+  function col(name){
+    return header.indexOf(name);
+  }
+
+  for(let i=1;i<values.length;i++){
+
+    const r = values[i];
+
+    if(!r[col("Nama Pelatihan")]) continue;
+
+    result.push({
+
+      id : "PLT"+String(r[col("No")]).padStart(3,"0"),
+
+      nama : r[col("Nama Pelatihan")],
+
+      metode : r[col("Metode")],
+
+      tanggalMulai : formatDate(r[col("Tanggal Penyelenggaraan")]),
+
+      tanggalSelesai : "",
+
+      lulus: Number(r[60]) || 0,
+      
+      tidakLulus: Number(r[61]) || 0,
+
+      jumlahPeserta : Number(r[col("Jumlah Peserta")])||0,
+
+      proses : r[col("Proses")],
+
+      keterangan : r[col("Keterangan")],
+
+      lokasiPelatihan : r[col("Lokasi Pelatihan")],
+
+      pic : r[col("PIC")],
+
+      linkEviden : r[col("Link Upload Eviden Kegiatan")]
+
+    });
+
+  }
+
+  return result;
+
+}
+
+// =========================
+// Monitoring Alumni
+// =========================
+function getAlumni(ss) {
+  const sheet = ss.getSheetByName("Monitoring_Alumni");
+  if (!sheet) return [];
+
+  const dataRange    = sheet.getDataRange();
+  const values       = dataRange.getValues();        // untuk data biasa
+  const displayValues = dataRange.getDisplayValues(); // ← untuk NIP (hindari presisi float)
+
+  const header = values[0];
+
+  function col(name) {
+    return header.indexOf(name);
+  }
+
+  const result = [];
+
+  for (let i = 1; i < values.length; i++) {
+    const r  = values[i];
+    const rd = displayValues[i];
+
+    // Lewati baris kosong
+    if (!r[col("Nip")] && !r[col("Nama")]) continue;
+
+    result.push({
+      no       : r[col("No")],
+      nip      : String(rd[col("Nip")] || "").trim(),
+      nama     : String(r[col("Nama")] || "").trim(),
+      jabatan  : String(r[col("Jabatan")] || "").trim(),
+      unitKerja: String(r[col("Unit Kerja")] || "").trim(),
+      provinsi : String(r[col("Provinsi")] || "").trim(),
+      pkp      : String(r[col("Pkp")] || "").trim(),
+      pka      : String(r[col("Pka")] || "").trim()
+    });
+  }
+
+  return result;
+}
+
+
+  // =========================
+  // Mengubah nilai bertipe Date menjadi
+  // format "yyyy-MM-dd" (zona waktu Asia/Jakarta).
+
+  function formatDate(d){
+
+    if(d instanceof Date){
+
+      return Utilities.formatDate(
+        d,
+        "Asia/Jakarta",
+        "yyyy-MM-dd"
+      );
+
+    }
+
+    return d;
+
+  }
  */
 async function fetchSpreadsheet() {
   if (!CONFIG.SPREADSHEET_URL) {
@@ -213,9 +395,15 @@ function processData(rawData) {
     pka        : String(a.Pka        || a.pka        || a.PKA        || '').trim(),
   }));
 
-  window.AppData.webinars  = webinars;
-  window.AppData.pelatihan = pelatihan;
-  window.AppData.alumni    = alumni;
+  // Simpan rekapAlumni (referensi unit kerja & provinsi dari Rekap_Alumni)
+  const rekapAlumni = (rawData.rekapAlumni || []).filter(
+    r => r.unitKerja && String(r.unitKerja).trim() !== ''
+  );
+
+  window.AppData.webinars    = webinars;
+  window.AppData.pelatihan   = pelatihan;
+  window.AppData.alumni      = alumni;
+  window.AppData.rekapAlumni = rekapAlumni;
   window.AppData.stats = hitungStatistik();
 
   // Populate dropdown alumni setelah data siap
@@ -767,14 +955,25 @@ function formatWaktu(date) {
  * Dropdown Unit Kerja dan Provinsi dari data alumni.
  */
 function populateAlumniDropdowns() {
-  const alumni = window.AppData.alumni || [];
+  const rekapAlumni = window.AppData.rekapAlumni || [];
+  const alumni      = window.AppData.alumni      || [];
 
   const unitKerjaSet = new Set();
   const provinsiSet  = new Set();
-  alumni.forEach(a => {
-    if (a.unitKerja) unitKerjaSet.add(a.unitKerja);
-    if (a.provinsi)  provinsiSet.add(a.provinsi);
-  });
+
+  if (rekapAlumni.length > 0) {
+    // Prioritaskan data dari Rekap_Alumni (daftar lengkap unit kerja ATR/BPN)
+    rekapAlumni.forEach(r => {
+      if (r.unitKerja) unitKerjaSet.add(r.unitKerja);
+      if (r.provinsi)  provinsiSet.add(r.provinsi);
+    });
+  } else {
+    // Fallback: ambil dari data alumni jika rekapAlumni belum tersedia
+    alumni.forEach(a => {
+      if (a.unitKerja) unitKerjaSet.add(a.unitKerja);
+      if (a.provinsi)  provinsiSet.add(a.provinsi);
+    });
+  }
 
   // Simpan nilai yang sudah dipilih
   const currentUK   = document.getElementById('alumni-filter-unit-kerja')?.value || '';
