@@ -145,6 +145,7 @@ const PAGE_TITLES = {
   dashboard: 'Dashboard',
   webinar:   'Rekap Webinar',
   pelatihan: 'Monitoring Pelatihan',
+  alumni:    'Monitoring Alumni',
   statistik: 'Statistik',
 };
 
@@ -204,6 +205,12 @@ function onPageEnter(page) {
       if (typeof renderRankingTable === 'function') renderRankingTable();
     }
   }
+  if (page === 'alumni') {
+    // Populate dropdown jika data sudah tersedia
+    if (window.AppData.alumni?.length && typeof populateAlumniDropdowns === 'function') {
+      populateAlumniDropdowns();
+    }
+  }
 }
 
 /* =====================================================
@@ -218,6 +225,240 @@ window.addEventListener('load', () => {
   const hash = location.hash.replace('#','');
   if (hash && PAGE_TITLES[hash]) navigateTo(hash);
 });
+
+/* =====================================================
+   5b. ALUMNI SEARCH HANDLERS
+   ===================================================== */
+function handleAlumniSearch() {
+  const query     = (document.getElementById('alumni-search-input')?.value || '').trim();
+  const unitKerja = document.getElementById('alumni-filter-unit-kerja')?.value || '';
+  const provinsi  = document.getElementById('alumni-filter-provinsi')?.value  || '';
+
+  if (!query && !unitKerja && !provinsi) {
+    if (typeof showToast === 'function') showToast('info', 'Pencarian Alumni', 'Masukkan kata kunci atau pilih filter terlebih dahulu.');
+    return;
+  }
+
+  if (typeof searchAlumni !== 'function') {
+    if (typeof showToast === 'function') showToast('error', 'Error', 'Fungsi pencarian belum siap. Coba refresh halaman.');
+    return;
+  }
+
+  const results = searchAlumni(query, unitKerja, provinsi);
+  if (typeof renderAlumniResults === 'function') {
+    renderAlumniResults(results);
+  }
+
+  if (results.length === 0) {
+    if (typeof showToast === 'function') showToast('info', 'Hasil Pencarian', `Tidak ada alumni yang cocok dengan filter yang dipilih.`);
+  } else {
+    if (typeof showToast === 'function') showToast('success', 'Hasil Ditemukan', `${results.length} alumni ditemukan.`);
+  }
+}
+
+function handleAlumniReset() {
+  const input = document.getElementById('alumni-search-input');
+  if (input) input.value = '';
+
+  // Reset searchable dropdowns
+  sdSetValue('unit-kerja', '', 'Semua Unit Kerja');
+  sdSetValue('provinsi', '', 'Semua Provinsi');
+
+  const resultSection = document.getElementById('alumni-result-section');
+  if (resultSection) resultSection.style.display = 'none';
+}
+
+// Enter key di input pencarian alumni
+document.addEventListener('DOMContentLoaded', () => {
+  const alumniInput = document.getElementById('alumni-search-input');
+  if (alumniInput) {
+    alumniInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleAlumniSearch();
+    });
+  }
+});
+
+window.handleAlumniSearch = handleAlumniSearch;
+window.handleAlumniReset  = handleAlumniReset;
+
+/* =====================================================
+   5c. SEARCHABLE DROPDOWN — Core Logic
+   ===================================================== */
+
+/**
+ * Konfigurasi semua searchable dropdown di halaman.
+ * Setiap entri: { id: 'key', defaultLabel: '...' }
+ */
+const SD_CONFIGS = [
+  { id: 'unit-kerja', defaultLabel: 'Semua Unit Kerja' },
+  { id: 'provinsi',   defaultLabel: 'Semua Provinsi'   },
+];
+
+/** Buka/tutup satu dropdown, tutup yang lain */
+function sdToggle(id) {
+  const wrap = document.getElementById(`dropdown-${id}`);
+  if (!wrap) return;
+  const isOpen = wrap.classList.contains('open');
+  sdCloseAll();
+  if (!isOpen) {
+    wrap.classList.add('open');
+    wrap.querySelector('.sd-selected')?.setAttribute('aria-expanded', 'true');
+    // Fokus ke input search
+    setTimeout(() => {
+      wrap.querySelector('.sd-search-input')?.focus();
+    }, 50);
+  }
+}
+
+function sdCloseAll() {
+  document.querySelectorAll('.searchable-dropdown.open').forEach(wrap => {
+    wrap.classList.remove('open');
+    wrap.querySelector('.sd-selected')?.setAttribute('aria-expanded', 'false');
+    // Clear search
+    const searchEl = wrap.querySelector('.sd-search-input');
+    if (searchEl) { searchEl.value = ''; sdFilterOptions(wrap.id.replace('dropdown-', '')); }
+  });
+}
+
+/** Set nilai hidden input + tampilan teks */
+function sdSetValue(id, value, label) {
+  const hidden = document.getElementById(`alumni-filter-${id}`);
+  const textEl = document.getElementById(`sd-${id}-text`);
+  const config = SD_CONFIGS.find(c => c.id === id);
+
+  if (hidden) hidden.value = value;
+  if (textEl) {
+    textEl.textContent = label || config?.defaultLabel || value || '';
+    textEl.classList.toggle('placeholder', !value);
+  }
+
+  // Update selected state pada options
+  const optionsEl = document.getElementById(`sd-${id}-options`);
+  if (optionsEl) {
+    optionsEl.querySelectorAll('.sd-option').forEach(opt => {
+      opt.classList.toggle('selected', opt.dataset.value === value);
+    });
+  }
+
+  sdCloseAll();
+}
+
+/** Filter opsi berdasarkan teks pencarian (dengan highlight) */
+function sdFilterOptions(id) {
+  const searchEl  = document.getElementById(`sd-${id}-search`);
+  const optionsEl = document.getElementById(`sd-${id}-options`);
+  if (!searchEl || !optionsEl) return;
+
+  const query = searchEl.value.trim().toLowerCase();
+  const opts  = optionsEl.querySelectorAll('.sd-option');
+  let visibleCount = 0;
+
+  opts.forEach(opt => {
+    const original = opt.dataset.label || '';
+    const match    = original.toLowerCase().includes(query);
+    opt.style.display = match ? '' : 'none';
+    if (match) {
+      visibleCount++;
+      // Highlight teks yang cocok
+      if (query) {
+        const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        opt.innerHTML = original.replace(re, '<mark>$1</mark>');
+        // Pertahankan data-* attributes
+        opt.dataset.value = opt.dataset.value;
+        opt.dataset.label = original;
+      } else {
+        opt.textContent = original;
+      }
+    }
+  });
+
+  // Tampilkan/sembunyikan empty state
+  let emptyEl = optionsEl.querySelector('.sd-empty');
+  if (visibleCount === 0) {
+    if (!emptyEl) {
+      emptyEl = document.createElement('div');
+      emptyEl.className = 'sd-empty';
+      optionsEl.appendChild(emptyEl);
+    }
+    emptyEl.textContent = `Tidak ada hasil untuk "${searchEl.value}"`;
+    emptyEl.style.display = '';
+  } else if (emptyEl) {
+    emptyEl.style.display = 'none';
+  }
+}
+
+/** Isi opsi dropdown dari array data */
+function sdPopulate(id, values, defaultLabel) {
+  const optionsEl = document.getElementById(`sd-${id}-options`);
+  if (!optionsEl) return;
+
+  const config = SD_CONFIGS.find(c => c.id === id);
+  const defLabel = defaultLabel || config?.defaultLabel || 'Semua';
+
+  // Option "Semua"
+  let html = `<div class="sd-option selected" data-value="" data-label="${defLabel}" onclick="sdSetValue('${id}', '', '${defLabel}')">${defLabel}</div>`;
+  values.forEach(v => {
+    const label = v || '(Tidak diketahui)';
+    html += `<div class="sd-option" data-value="${v}" data-label="${label}" onclick="sdSetValue('${id}', '${v.replace(/'/g, "\\'")}', '${label.replace(/'/g, "\\'")}')">${label}</div>`;
+  });
+  optionsEl.innerHTML = html;
+}
+
+/** Init event listeners untuk semua searchable dropdown */
+function initSearchableDropdowns() {
+  SD_CONFIGS.forEach(({ id }) => {
+    const selectedEl = document.getElementById(`sd-${id}-selected`);
+    const searchEl   = document.getElementById(`sd-${id}-search`);
+
+    // Toggle buka/tutup saat klik area trigger
+    selectedEl?.addEventListener('click', (e) => { e.stopPropagation(); sdToggle(id); });
+
+    // Keyboard pada trigger
+    selectedEl?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        sdToggle(id);
+      }
+      if (e.key === 'Escape') sdCloseAll();
+    });
+
+    // Input search → filter + keyboard nav
+    searchEl?.addEventListener('input', () => sdFilterOptions(id));
+    searchEl?.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { sdCloseAll(); selectedEl?.focus(); }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const first = document.querySelector(`#sd-${id}-options .sd-option:not([style*="display: none"])`);
+        first?.focus();
+      }
+    });
+
+    // Keyboard navigation dalam options
+    const optionsEl = document.getElementById(`sd-${id}-options`);
+    optionsEl?.addEventListener('keydown', (e) => {
+      const visOpts = [...optionsEl.querySelectorAll('.sd-option:not([style*="display: none"])')];
+      const cur = document.activeElement;
+      const idx = visOpts.indexOf(cur);
+      if (e.key === 'ArrowDown') { e.preventDefault(); visOpts[idx + 1]?.focus(); }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); idx > 0 ? visOpts[idx - 1]?.focus() : searchEl?.focus(); }
+      if (e.key === 'Enter')     { e.preventDefault(); cur?.click(); }
+      if (e.key === 'Escape')    { sdCloseAll(); selectedEl?.focus(); }
+    });
+  });
+
+  // Tutup dropdown saat klik di luar
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.searchable-dropdown')) sdCloseAll();
+  });
+}
+
+// Jalankan setelah DOM ready
+document.addEventListener('DOMContentLoaded', initSearchableDropdowns);
+
+// Expose ke global agar bisa dipanggil dari spreadsheet.js
+window.sdPopulate = sdPopulate;
+window.sdSetValue = sdSetValue;
+
 
 /* =====================================================
    6. MODAL

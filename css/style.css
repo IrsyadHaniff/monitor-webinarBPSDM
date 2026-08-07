@@ -123,6 +123,28 @@
 }
 
 /* =========================================================
+   2b. DARK MODE — SELECT & OPTION ALUMNI
+   ========================================================= */
+[data-theme="dark"] select {
+  background-color: #1e2330;
+  color: #E8ECF1;
+  border-color: rgba(255,255,255,.1);
+  color-scheme: dark;
+}
+
+[data-theme="dark"] select option {
+  background-color: #1e2330;
+  color: #E8ECF1;
+}
+
+[data-theme="dark"] select option:hover,
+[data-theme="dark"] select option:focus,
+[data-theme="dark"] select option:checked {
+  background-color: #2a3045;
+  color: #F0C332;
+}
+
+/* =========================================================
    3. RESET & BASE
    ========================================================= */
 *, *::before, *::after {
@@ -1815,4 +1837,204 @@ button { cursor: pointer; font-family: var(--font-family); }
 @keyframes toastIn {
   from { opacity: 0; transform: translateX(20px); }
   to   { opacity: 1; transform: translateX(0); }
+}
+
+/* =========================================================
+   SEARCHABLE DROPDOWN — Custom Select with Search
+   ========================================================= */
+.searchable-dropdown {
+  position: relative;
+  width: 100%;
+  user-select: none;
+}
+
+.sd-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+  min-height: 42px;
+}
+
+.sd-selected:hover,
+.sd-selected:focus {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px var(--color-secondary-soft);
+}
+
+.searchable-dropdown.open .sd-selected {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px var(--color-secondary-soft);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.sd-selected-text {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+
+.sd-selected-text.placeholder {
+  color: var(--text-muted);
+}
+
+.sd-arrow {
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.searchable-dropdown.open .sd-arrow {
+  transform: rotate(180deg);
+}
+
+/* Panel */
+.sd-panel {
+  position: absolute;
+  top: calc(100% - 2px);
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  background: var(--bg-card);
+  border: 1.5px solid var(--color-secondary);
+  border-top: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  animation: sdPanelIn 0.18s ease;
+}
+
+.searchable-dropdown.open .sd-panel {
+  display: flex;
+}
+
+@keyframes sdPanelIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Search input inside panel */
+.sd-search-wrap {
+  position: relative;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-sidebar);
+}
+
+.sd-search-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.sd-search-input {
+  width: 100%;
+  padding: 7px 10px 7px 30px;
+  border: 1.5px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 12px;
+  color: var(--text-primary);
+  background: var(--bg-card);
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: var(--font-family);
+}
+
+.sd-search-input:focus {
+  border-color: var(--color-secondary);
+}
+
+/* Options list */
+.sd-options {
+  max-height: 220px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.sd-options::-webkit-scrollbar { width: 4px; }
+.sd-options::-webkit-scrollbar-track { background: transparent; }
+.sd-options::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+
+/* Individual option */
+.sd-option {
+  padding: 9px 14px;
+  font-size: 12.5px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sd-option:hover,
+.sd-option.focused {
+  background: var(--color-secondary-soft);
+  color: var(--color-secondary-dark);
+}
+
+.sd-option.selected {
+  background: var(--color-secondary-soft);
+  color: var(--color-secondary-dark);
+  font-weight: 600;
+}
+
+.sd-option.selected::after {
+  content: '\F633';
+  font-family: 'bootstrap-icons';
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--color-secondary);
+}
+
+/* Highlight matched text */
+.sd-option mark {
+  background: rgba(3, 160, 238, 0.18);
+  color: var(--color-secondary-dark);
+  border-radius: 2px;
+  padding: 0 1px;
+  font-weight: 600;
+}
+
+/* Empty state */
+.sd-empty {
+  padding: 16px 14px;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .sd-selected {
+  background: var(--bg-card);
+}
+
+[data-theme="dark"] .sd-panel {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+[data-theme="dark"] .sd-option mark {
+  background: rgba(3, 160, 238, 0.25);
 }

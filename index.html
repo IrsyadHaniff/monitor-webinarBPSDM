@@ -117,6 +117,11 @@
             <span class="nav-label">Monitoring Pelatihan</span>
           </div>
 
+          <div class="nav-item" data-page="alumni" role="menuitem" tabindex="0" data-label="Monitoring Alumni" aria-label="Monitoring Alumni">
+            <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
+            <span class="nav-label">Monitoring Alumni</span>
+          </div>
+
           <div class="nav-section-label" style="margin-top: 8px">Analitik</div>
 
           <div class="nav-item" data-page="statistik" role="menuitem" tabindex="0" data-label="Statistik" aria-label="Statistik">
@@ -502,7 +507,151 @@
             </div>
           </section>
 
-          <!--== PAGE 4: STATISTIK ==-->
+          <!--== PAGE 4: MONITORING ALUMNI ==-->
+          <section id="page-alumni" class="section-page" aria-labelledby="heading-alumni">
+            <div class="page-header">
+              <div class="page-breadcrumb">
+                <span>Pusbangkom</span>
+                <span class="sep"><i class="bi bi-chevron-right"></i></span>
+                <span class="current">Monitoring Alumni</span>
+              </div>
+              <h1 id="heading-alumni" class="page-title">Monitoring <span>Alumni</span></h1>
+              <p class="page-subtitle">Temukan rekam jejak alumni berdasarkan NIP, nama, unit kerja, atau provinsi penempatan.</p>
+            </div>
+
+            <!-- SEARCH CARD -->
+            <div class="card" style="margin-bottom: 24px; overflow: visible">
+              <div class="card-body" style="padding: 28px 32px">
+                <!-- Label pencarian -->
+                <div style="text-align:center; margin-bottom: 20px">
+                  <div style="font-size:13px; color: var(--color-secondary); font-weight:600; letter-spacing:0.02em">
+                    <i class="bi bi-info-circle"></i>
+                    Temukan rekam jejak alumni berdasarkan NIP, nama, unit kerja, atau provinsi penempatan.
+                  </div>
+                </div>
+
+                <!-- Form baris filter -->
+                <div style="display: grid; grid-template-columns: 1fr 220px 180px auto; gap: 16px; align-items: end" id="alumni-filter-row">
+                  <!-- NIP / Nama -->
+                  <div>
+                    <label for="alumni-search-input" style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; display:block; margin-bottom:6px">NAMA LENGKAP / NIP</label>
+                    <div style="position:relative">
+                      <i class="bi bi-search" style="position:absolute; left:12px; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:13px"></i>
+                      <input
+                        type="text"
+                        id="alumni-search-input"
+                        placeholder="Contoh: Ridwan atau 198203..."
+                        autocomplete="off"
+                        style="width:100%; padding: 10px 12px 10px 34px; border:1.5px solid var(--border-color); border-radius:8px; font-size:13px; color:var(--text-primary); background:var(--bg-card); outline:none; transition: border-color 0.2s"
+                        onfocus="this.style.borderColor='var(--color-secondary)'"
+                        onblur="this.style.borderColor='var(--border-color)'"
+                        aria-label="Cari berdasarkan nama atau NIP"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Unit Kerja -->
+                  <div>
+                    <label style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; display:block; margin-bottom:6px">UNIT KERJA</label>
+                    <div class="searchable-dropdown" id="dropdown-unit-kerja">
+                      <div class="sd-selected" id="sd-unit-kerja-selected" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter unit kerja alumni">
+                        <span class="sd-selected-text" id="sd-unit-kerja-text">Semua Unit Kerja</span>
+                        <i class="bi bi-chevron-down sd-arrow"></i>
+                      </div>
+                      <div class="sd-panel" id="sd-unit-kerja-panel" role="listbox">
+                        <div class="sd-search-wrap">
+                          <i class="bi bi-search sd-search-icon"></i>
+                          <input type="text" class="sd-search-input" id="sd-unit-kerja-search" placeholder="Cari unit kerja..." autocomplete="off" aria-label="Cari unit kerja" />
+                        </div>
+                        <div class="sd-options" id="sd-unit-kerja-options">
+                          <!-- Diisi di JS -->
+                        </div>
+                      </div>
+                      <input type="hidden" id="alumni-filter-unit-kerja" value="" />
+                    </div>
+                  </div>
+
+                  <!-- Provinsi -->
+                  <div>
+                    <label style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; display:block; margin-bottom:6px">PROVINSI</label>
+                    <div class="searchable-dropdown" id="dropdown-provinsi">
+                      <div class="sd-selected" id="sd-provinsi-selected" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="Filter provinsi alumni">
+                        <span class="sd-selected-text" id="sd-provinsi-text">Semua Provinsi</span>
+                        <i class="bi bi-chevron-down sd-arrow"></i>
+                      </div>
+                      <div class="sd-panel" id="sd-provinsi-panel" role="listbox">
+                        <div class="sd-search-wrap">
+                          <i class="bi bi-search sd-search-icon"></i>
+                          <input type="text" class="sd-search-input" id="sd-provinsi-search" placeholder="Cari provinsi..." autocomplete="off" aria-label="Cari provinsi" />
+                        </div>
+                        <div class="sd-options" id="sd-provinsi-options">
+                          <!-- Diisi di JS -->
+                        </div>
+                      </div>
+                      <input type="hidden" id="alumni-filter-provinsi" value="" />
+                    </div>
+                  </div>
+
+                  <!-- Tombol Cari -->
+                  <div>
+                    <button
+                      id="alumni-search-btn"
+                      class="btn btn-primary"
+                      style="width:100%; padding: 10px 20px; font-size:13px; font-weight:600; border-radius:8px; white-space:nowrap"
+                      onclick="handleAlumniSearch()"
+                      aria-label="Cari alumni"
+                    >
+                      <i class="bi bi-search"></i> Cari
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Reset filter -->
+                <div style="margin-top: 12px">
+                  <button
+                    id="alumni-reset-btn"
+                    onclick="handleAlumniReset()"
+                    style="background:none; border:none; color:var(--color-secondary); font-size:12px; cursor:pointer; padding:0; text-decoration:underline; font-weight:500"
+                    aria-label="Reset filter pencarian alumni"
+                  >Reset filter</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- HASIL PENCARIAN -->
+            <div id="alumni-result-section" style="display:none">
+              <div class="card card-table">
+                <div class="card-header">
+                  <h2 class="card-title">
+                    <i class="bi bi-table"></i>
+                    HASIL PENCARIAN
+                  </h2>
+                  <span class="badge badge-secondary" id="alumni-result-count">0 alumni ditemukan</span>
+                </div>
+                <div class="table-wrapper" style="overflow-x: auto">
+                  <table class="data-table" id="alumni-result-table" role="table" aria-label="Tabel hasil pencarian alumni">
+                    <thead>
+                      <tr>
+                        <th scope="col" style="width:40px; text-align:center">No</th>
+                        <th scope="col" style="min-width:160px">NIP</th>
+                        <th scope="col" style="min-width:180px">NAMA</th>
+                        <th scope="col" style="min-width:200px">JABATAN</th>
+                        <th scope="col" style="min-width:200px">UNIT KERJA</th>
+                        <th scope="col" style="min-width:140px">PROVINSI</th>
+                        <th scope="col" style="min-width:120px">PKP</th>
+                        <th scope="col" style="min-width:120px">PKA</th>
+                      </tr>
+                    </thead>
+                    <tbody id="alumni-result-tbody">
+                      <!-- Diisi JS -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!--== PAGE 5: STATISTIK ==-->
           <section id="page-statistik" class="section-page" aria-labelledby="heading-statistik">
             <div class="page-header">
               <div class="page-breadcrumb">

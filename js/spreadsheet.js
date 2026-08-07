@@ -15,6 +15,7 @@
 window.AppData = {
   webinars: [],
   pelatihan: [],
+  alumni: [],
   stats: {},
   lastUpdated: null,
   isLoading: false,
@@ -172,8 +173,8 @@ async function fetchSpreadsheet() {
   const res = await fetchWithTimeout(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   const data = await res.json();
-  if (!data.webinars && !data.pelatihan) {
-    throw new Error("Format response tidak sesuai. Pastikan Apps Script mengembalikan field webinars dan/atau pelatihan.");
+  if (!data.webinars && !data.pelatihan && !data.alumni) {
+    throw new Error("Format response tidak sesuai. Pastikan Apps Script mengembalikan field webinars, pelatihan, dan/atau alumni.");
   }
   return data;
 }
@@ -195,9 +196,30 @@ function processData(rawData) {
     proses: normalizeProsesStatus(p.proses),
   }));
 
+  // Filter dan normalisasi data alumni
+  let alumni = rawData.alumni || [];
+  alumni = alumni.filter(a => {
+    const nip  = String(a.Nip  || a.nip  || a.NIP  || '').trim();
+    const nama = String(a.Nama || a.nama || '').trim();
+    return nip !== '' || nama !== '';
+  });
+  alumni = alumni.map(a => ({
+    nip        : String(a.Nip        || a.nip        || a.NIP        || '').trim(),
+    nama       : String(a.Nama       || a.nama       || '').trim(),
+    jabatan    : String(a.Jabatan    || a.jabatan    || '').trim(),
+    unitKerja  : String(a['Unit Kerja'] || a.unitKerja || a['UnitKerja'] || '').trim(),
+    provinsi   : String(a.Provinsi   || a.provinsi   || '').trim(),
+    pkp        : String(a.Pkp        || a.pkp        || a.PKP        || '').trim(),
+    pka        : String(a.Pka        || a.pka        || a.PKA        || '').trim(),
+  }));
+
   window.AppData.webinars  = webinars;
   window.AppData.pelatihan = pelatihan;
+  window.AppData.alumni    = alumni;
   window.AppData.stats = hitungStatistik();
+
+  // Populate dropdown alumni setelah data siap
+  populateAlumniDropdowns();
 }
 
 /**
@@ -738,7 +760,103 @@ function formatWaktu(date) {
 }
 
 /* =====================================================
-   10. EXPORTS
+   10. ALUMNI SEARCH & RENDER
+   ===================================================== */
+
+/**
+ * Dropdown Unit Kerja dan Provinsi dari data alumni.
+ */
+function populateAlumniDropdowns() {
+  const alumni = window.AppData.alumni || [];
+
+  const unitKerjaSet = new Set();
+  const provinsiSet  = new Set();
+  alumni.forEach(a => {
+    if (a.unitKerja) unitKerjaSet.add(a.unitKerja);
+    if (a.provinsi)  provinsiSet.add(a.provinsi);
+  });
+
+  // Simpan nilai yang sudah dipilih
+  const currentUK   = document.getElementById('alumni-filter-unit-kerja')?.value || '';
+  const currentProv = document.getElementById('alumni-filter-provinsi')?.value  || '';
+
+  // Isi dropdown
+  if (typeof sdPopulate === 'function') {
+    sdPopulate('unit-kerja', [...unitKerjaSet].sort(), 'Semua Unit Kerja');
+    sdPopulate('provinsi',   [...provinsiSet].sort(),   'Semua Provinsi');
+
+    // Restore pilihan sebelumnya jika masih ada
+    if (currentUK && typeof sdSetValue === 'function') {
+      sdSetValue('unit-kerja', currentUK, currentUK);
+    }
+    if (currentProv && typeof sdSetValue === 'function') {
+      sdSetValue('provinsi', currentProv, currentProv);
+    }
+  }
+}
+
+
+/**
+ * Cari alumni berdasarkan query, unitKerja, dan provinsi.
+ */
+function searchAlumni(query, unitKerja, provinsi) {
+  const alumni = window.AppData.alumni || [];
+  const q = (query || '').toLowerCase().trim();
+
+  return alumni.filter(a => {
+    const matchQuery = !q ||
+      a.nip.toLowerCase().includes(q) ||
+      a.nama.toLowerCase().includes(q);
+    const matchUK   = !unitKerja || a.unitKerja === unitKerja;
+    const matchProv = !provinsi  || a.provinsi  === provinsi;
+    return matchQuery && matchUK && matchProv;
+  });
+}
+
+/**
+ * Render tabel hasil pencarian alumni.
+ */
+function renderAlumniResults(results) {
+  const tbody    = document.getElementById('alumni-result-tbody');
+  const section  = document.getElementById('alumni-result-section');
+  const countEl  = document.getElementById('alumni-result-count');
+
+  if (!tbody || !section) return;
+
+  section.style.display = 'block';
+
+  if (!results || results.length === 0) {
+    if (countEl) countEl.textContent = '0 alumni ditemukan';
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8">
+          <div class="empty-state">
+            <div class="empty-icon"><i class="bi bi-person-x"></i></div>
+            <div class="empty-title">Tidak ada alumni yang ditemukan.</div>
+            <div style="font-size:13px;color:var(--text-muted);margin-top:4px">Coba ubah kata kunci atau filter pencarian.</div>
+          </div>
+        </td>
+      </tr>`;
+    return;
+  }
+
+  if (countEl) countEl.textContent = `${results.length} alumni ditemukan`;
+
+  tbody.innerHTML = results.map((a, i) => `
+    <tr>
+      <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
+      <td style="font-family:monospace;font-size:13px;white-space:nowrap;font-weight:600;color:var(--text-primary)">${a.nip || '—'}</td>
+      <td style="font-weight:700;color:var(--text-primary);white-space:nowrap">${a.nama || '—'}</td>
+      <td style="font-size:12px;white-space:normal;min-width:180px;color:var(--text-primary)">${a.jabatan || '—'}</td>
+      <td style="font-size:12px;white-space:normal;min-width:180px">${a.unitKerja || '—'}</td>
+      <td style="font-size:12px;white-space:nowrap">${a.provinsi || '—'}</td>
+      <td style="font-size:12px;white-space:normal;min-width:120px;color:var(--text-secondary)">${a.pkp || '—'}</td>
+      <td style="font-size:12px;white-space:normal;min-width:120px;color:var(--text-secondary)">${a.pka || '—'}</td>
+    </tr>`).join('');
+}
+
+/* =====================================================
+   11. EXPORTS
    ===================================================== */
 window.loadData = loadData;
 window.fetchSpreadsheet = fetchSpreadsheet;
@@ -750,3 +868,6 @@ window.showToast = showToast;
 window.formatTanggal = formatTanggal;
 window.formatNumber = formatNumber;
 window.renderRankingTable = renderRankingTable;
+window.populateAlumniDropdowns = populateAlumniDropdowns;
+window.searchAlumni = searchAlumni;
+window.renderAlumniResults = renderAlumniResults;
