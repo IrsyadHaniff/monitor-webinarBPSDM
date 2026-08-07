@@ -285,16 +285,12 @@ window.handleAlumniReset  = handleAlumniReset;
    5c. SEARCHABLE DROPDOWN — Core Logic
    ===================================================== */
 
-/**
- * Konfigurasi semua searchable dropdown di halaman.
- * Setiap entri: { id: 'key', defaultLabel: '...' }
- */
 const SD_CONFIGS = [
   { id: 'unit-kerja', defaultLabel: 'Semua Unit Kerja' },
   { id: 'provinsi',   defaultLabel: 'Semua Provinsi'   },
 ];
 
-/** Buka/tutup satu dropdown, tutup yang lain */
+/** Buka/tutup satu dropdown, akan menututup yang lain */
 function sdToggle(id) {
   const wrap = document.getElementById(`dropdown-${id}`);
   if (!wrap) return;
@@ -315,8 +311,9 @@ function sdCloseAll() {
     wrap.classList.remove('open');
     wrap.querySelector('.sd-selected')?.setAttribute('aria-expanded', 'false');
     // Clear search
+    const id      = wrap.id.replace('dropdown-', '');
     const searchEl = wrap.querySelector('.sd-search-input');
-    if (searchEl) { searchEl.value = ''; sdFilterOptions(wrap.id.replace('dropdown-', '')); }
+    if (searchEl) { searchEl.value = ''; sdFilterOptions(id); }
   });
 }
 
@@ -328,8 +325,10 @@ function sdSetValue(id, value, label) {
 
   if (hidden) hidden.value = value;
   if (textEl) {
-    textEl.textContent = label || config?.defaultLabel || value || '';
-    textEl.classList.toggle('placeholder', !value);
+    const displayLabel = label || config?.defaultLabel || value || '';
+    textEl.textContent = displayLabel;
+    // Abu-abu hanya jika benar-benar tidak ada label
+    textEl.classList.toggle('placeholder', !displayLabel);
   }
 
   // Update selected state pada options
@@ -343,7 +342,7 @@ function sdSetValue(id, value, label) {
   sdCloseAll();
 }
 
-/** Filter opsi berdasarkan teks pencarian (dengan highlight) */
+/** Filter opsi berdasarkan teks pencarian */
 function sdFilterOptions(id) {
   const searchEl  = document.getElementById(`sd-${id}-search`);
   const optionsEl = document.getElementById(`sd-${id}-options`);
@@ -354,25 +353,13 @@ function sdFilterOptions(id) {
   let visibleCount = 0;
 
   opts.forEach(opt => {
-    const original = opt.dataset.label || '';
-    const match    = original.toLowerCase().includes(query);
+    const label = opt.dataset.label || '';
+    const match = label.toLowerCase().includes(query);
     opt.style.display = match ? '' : 'none';
-    if (match) {
-      visibleCount++;
-      // Highlight teks yang cocok
-      if (query) {
-        const re = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        opt.innerHTML = original.replace(re, '<mark>$1</mark>');
-        // Pertahankan data-* attributes
-        opt.dataset.value = opt.dataset.value;
-        opt.dataset.label = original;
-      } else {
-        opt.textContent = original;
-      }
-    }
+    if (match) visibleCount++;
   });
 
-  // Tampilkan/sembunyikan empty state
+  // Tampilkan/sembunyikan state
   let emptyEl = optionsEl.querySelector('.sd-empty');
   if (visibleCount === 0) {
     if (!emptyEl) {
@@ -392,10 +379,9 @@ function sdPopulate(id, values, defaultLabel) {
   const optionsEl = document.getElementById(`sd-${id}-options`);
   if (!optionsEl) return;
 
-  const config = SD_CONFIGS.find(c => c.id === id);
+  const config   = SD_CONFIGS.find(c => c.id === id);
   const defLabel = defaultLabel || config?.defaultLabel || 'Semua';
 
-  // Option "Semua"
   let html = `<div class="sd-option selected" data-value="" data-label="${defLabel}" onclick="sdSetValue('${id}', '', '${defLabel}')">${defLabel}</div>`;
   values.forEach(v => {
     const label = v || '(Tidak diketahui)';
@@ -413,7 +399,7 @@ function initSearchableDropdowns() {
     // Toggle buka/tutup saat klik area trigger
     selectedEl?.addEventListener('click', (e) => { e.stopPropagation(); sdToggle(id); });
 
-    // Keyboard pada trigger
+    // Keyboard trigger
     selectedEl?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
         e.preventDefault();
@@ -422,7 +408,7 @@ function initSearchableDropdowns() {
       if (e.key === 'Escape') sdCloseAll();
     });
 
-    // Input search → filter + keyboard nav
+    // Input search, filter, keyboard
     searchEl?.addEventListener('input', () => sdFilterOptions(id));
     searchEl?.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { sdCloseAll(); selectedEl?.focus(); }
@@ -452,7 +438,7 @@ function initSearchableDropdowns() {
   });
 }
 
-// Jalankan setelah DOM ready
+// Jalankan setelah DOM siap
 document.addEventListener('DOMContentLoaded', initSearchableDropdowns);
 
 // Expose ke global agar bisa dipanggil dari spreadsheet.js

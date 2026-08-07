@@ -520,8 +520,8 @@
             </div>
 
             <!-- SEARCH CARD -->
-            <div class="card" style="margin-bottom: 24px; overflow: visible">
-              <div class="card-body" style="padding: 28px 32px">
+            <div class="card alumni-search-card" style="margin-bottom: 24px; overflow: visible">
+              <div class="card-body alumni-search-body">
                 <!-- Label pencarian -->
                 <div style="text-align:center; margin-bottom: 20px">
                   <div style="font-size:13px; color: var(--color-secondary); font-weight:600; letter-spacing:0.02em">
@@ -531,7 +531,7 @@
                 </div>
 
                 <!-- Form baris filter -->
-                <div style="display: grid; grid-template-columns: 1fr 220px 180px auto; gap: 16px; align-items: end" id="alumni-filter-row">
+                <div class="alumni-filter-row" id="alumni-filter-row">
                   <!-- NIP / Nama -->
                   <div>
                     <label for="alumni-search-input" style="font-size:11px; font-weight:700; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; display:block; margin-bottom:6px">NAMA LENGKAP / NIP</label>
@@ -542,7 +542,7 @@
                         id="alumni-search-input"
                         placeholder="Contoh: Ridwan atau 198203..."
                         autocomplete="off"
-                        style="width:100%; padding: 10px 12px 10px 34px; border:1.5px solid var(--border-color); border-radius:8px; font-size:13px; color:var(--text-primary); background:var(--bg-card); outline:none; transition: border-color 0.2s"
+                        style="width:100%; padding: 10px 12px 10px 34px; border:1.5px solid var(--border-color); border-radius:8px; font-size:13px; color:var(--text-primary); background:var(--surface-card); outline:none; transition: border-color 0.2s"
                         onfocus="this.style.borderColor='var(--color-secondary)'"
                         onblur="this.style.borderColor='var(--border-color)'"
                         aria-label="Cari berdasarkan nama atau NIP"
