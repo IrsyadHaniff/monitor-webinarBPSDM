@@ -395,7 +395,7 @@ function processData(rawData) {
     pka        : String(a.Pka        || a.pka        || a.PKA        || '').trim(),
   }));
 
-  // Simpan rekapAlumni (referensi unit kerja & provinsi dari Rekap_Alumni)
+  // Simpan rekapAlumni (untuk unit kerja & provinsi dari Rekap_Alumni)
   const rekapAlumni = (rawData.rekapAlumni || []).filter(
     r => r.unitKerja && String(r.unitKerja).trim() !== ''
   );
