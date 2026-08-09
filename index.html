@@ -358,16 +358,44 @@
             </div>
 
             <!-- Filter + Actions -->
-            <div class="card" style="margin-bottom: 20px">
-              <div class="card-body" style="padding: 14px 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center">
-                <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary)"> <i class="bi bi-funnel-fill" style="color: var(--color-primary-dark)"></i> Filter Status: </span>
-                <button class="btn btn-ghost btn-sm filter-webinar-btn active" data-filter="all">Semua</button>
-                <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Selesai"><span class="badge-dot-sm" style="background: var(--color-success); display: inline-block"></span> Selesai</button>
-                <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Sedang Berlangsung"><span class="badge-dot-sm" style="background: var(--color-warning); display: inline-block"></span> Sedang Berlangsung</button>
-                <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Akan Datang"><span class="badge-dot-sm" style="background: var(--color-secondary); display: inline-block"></span> Akan Datang</button>
-                <div style="margin-left: auto; display: flex; gap: 8px">
-                  <button class="btn btn-ghost btn-sm" onclick="exportWebinarCSV()" aria-label="Export CSV"><i class="bi bi-download"></i> Export CSV</button>
-                  <button class="btn btn-primary btn-sm" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+            <div class="card filter-card" style="margin-bottom: 20px">
+              <div class="filter-bar">
+                <!-- Baris 1: filter status -->
+                <div class="filter-bar-chips">
+                  <span class="filter-label">
+                    <i class="bi bi-funnel-fill" aria-hidden="true"></i>
+                    Filter Status:
+                  </span>
+                  <button class="btn btn-ghost btn-sm filter-webinar-btn active" data-filter="all">Semua</button>
+                  <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Selesai"><span class="badge-dot-sm" style="background: var(--color-success); display: inline-block"></span> Selesai</button>
+                  <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Sedang Berlangsung"><span class="badge-dot-sm" style="background: var(--color-warning); display: inline-block"></span> Berlangsung</button>
+                  <button class="btn btn-ghost btn-sm filter-webinar-btn" data-filter="Akan Datang"><span class="badge-dot-sm" style="background: var(--color-secondary); display: inline-block"></span> Akan Datang</button>
+                </div>
+
+                <!-- Baris 2: Search + Actions -->
+                <div class="filter-bar-actions">
+                  <div class="table-search-wrap" id="webinar-search-wrap">
+                    <i class="bi bi-search table-search-icon" aria-hidden="true"></i>
+                    <input
+                      type="text"
+                      id="webinar-search-input"
+                      class="table-search-input"
+                      placeholder="Cari nama atou keynote"
+                      autocomplete="off"
+                      aria-label="Cari webinar berdasarkan nama atau keynote"
+                    />
+                    <button class="table-search-clear" id="webinar-search-clear" aria-label="Hapus pencarian" style="display:none">
+                      <i class="bi bi-x" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <button class="btn btn-ghost btn-sm filter-action-btn" onclick="exportWebinarCSV()" aria-label="Export CSV">
+                    <i class="bi bi-download"></i>
+                    <span class="btn-label-full">Export CSV</span>
+                  </button>
+                  <button class="btn btn-primary btn-sm" onclick="loadData()" aria-label="Refresh data">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    <span class="btn-label-full">Refresh</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -453,16 +481,44 @@
             </div>
 
             <!-- Filter -->
-            <div class="card" style="margin-bottom: 20px">
-              <div class="card-body" style="padding: 14px 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center">
-                <span style="font-size: 13px; font-weight: 600; color: var(--text-secondary)"> <i class="bi bi-funnel-fill" style="color: var(--color-primary-dark)"></i> Filter: </span>
-                <button class="btn btn-ghost btn-sm filter-plt-btn active" data-filter-plt="all">Semua</button>
-                <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Telah Terselenggara"><span class="badge-dot-sm" style="background: var(--color-success); display: inline-block"></span> Telah Terselenggara</button>
-                <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Sedang Berlangsung"><span class="badge-dot-sm" style="background: var(--color-warning); display: inline-block"></span> Sedang Berlangsung</button>
-                <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Akan Datang"><span class="badge-dot-sm" style="background: var(--color-secondary); display: inline-block"></span> Akan Datang</button>
-                <div style="margin-left: auto; display: flex; gap: 8px">
-                  <button class="btn btn-ghost btn-sm" onclick="exportPelatihanCSV()"><i class="bi bi-download"></i> Export CSV</button>
-                  <button class="btn btn-primary btn-sm" onclick="loadData()"><i class="bi bi-arrow-clockwise"></i> Refresh</button>
+            <div class="card filter-card" style="margin-bottom: 20px">
+              <div class="filter-bar">
+                <!-- Baris 1: filter -->
+                <div class="filter-bar-chips">
+                  <span class="filter-label">
+                    <i class="bi bi-funnel-fill" aria-hidden="true"></i>
+                    Filter:
+                  </span>
+                  <button class="btn btn-ghost btn-sm filter-plt-btn active" data-filter-plt="all">Semua</button>
+                  <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Telah Terselenggara"><span class="badge-dot-sm" style="background: var(--color-success); display: inline-block"></span> Terselenggara</button>
+                  <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Sedang Berlangsung"><span class="badge-dot-sm" style="background: var(--color-warning); display: inline-block"></span> Berlangsung</button>
+                  <button class="btn btn-ghost btn-sm filter-plt-btn" data-filter-plt="Akan Datang"><span class="badge-dot-sm" style="background: var(--color-secondary); display: inline-block"></span> Akan Datang</button>
+                </div>
+
+                <!-- Baris 2: Search + Actions -->
+                <div class="filter-bar-actions">
+                  <div class="table-search-wrap" id="pelatihan-search-wrap">
+                    <i class="bi bi-search table-search-icon" aria-hidden="true"></i>
+                    <input
+                      type="text"
+                      id="pelatihan-search-input"
+                      class="table-search-input"
+                      placeholder="Cari nama pelatihan"
+                      autocomplete="off"
+                      aria-label="Cari pelatihan berdasarkan nama"
+                    />
+                    <button class="table-search-clear" id="pelatihan-search-clear" aria-label="Hapus pencarian" style="display:none">
+                      <i class="bi bi-x" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <button class="btn btn-ghost btn-sm filter-action-btn" onclick="exportPelatihanCSV()" aria-label="Export CSV">
+                    <i class="bi bi-download"></i>
+                    <span class="btn-label-full">Export CSV</span>
+                  </button>
+                  <button class="btn btn-primary btn-sm" onclick="loadData()" aria-label="Refresh data">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    <span class="btn-label-full">Refresh</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -540,7 +596,7 @@
                       <input
                         type="text"
                         id="alumni-search-input"
-                        placeholder="Contoh: Ridwan atau 198203..."
+                        placeholder="Contoh: Ridwan atau 198203"
                         autocomplete="off"
                         style="width:100%; padding: 10px 12px 10px 34px; border:1.5px solid var(--border-color); border-radius:8px; font-size:13px; color:var(--text-primary); background:var(--surface-card); outline:none; transition: border-color 0.2s"
                         onfocus="this.style.borderColor='var(--color-secondary)'"

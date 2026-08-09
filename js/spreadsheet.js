@@ -570,6 +570,9 @@ function renderTable() {
   renderWebinarTable();
   renderPelatihanTable();
   renderRankingTable();
+  // Re-apply pencarian aktif setelah render ulang
+  if (typeof window.applyWebinarSearch  === 'function') window.applyWebinarSearch();
+  if (typeof window.applyPelatihanSearch === 'function') window.applyPelatihanSearch();
 }
 
 /* ----- Webinar Table ----- */
@@ -611,7 +614,7 @@ function renderWebinarTable() {
       const kriteria     = w.kriteriaPeserta || w["Kriteria Peserta"] || "—";
 
       return `
-      <tr data-status="${w.status}">
+      <tr data-status="${w.status}" data-nama="${(w.nama || '').replace(/"/g, '&quot;').toLowerCase()}" data-keynote="${(keynote === '—' ? '' : keynote).replace(/"/g, '&quot;').toLowerCase()}">
         <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
         <td style="max-width:350px; white-space:normal; overflow-wrap:break-word;">
           <div style="font-weight:700;color:var(--text-primary);line-height:1.4;margin-bottom:2px;">${w.nama}</div>
@@ -674,7 +677,7 @@ function renderPelatihanTable() {
       const tgl = p.tanggalMulai && p.tanggalSelesai ? `${formatTanggal(p.tanggalMulai)}<br><span style="font-size:10px;color:var(--text-muted)">s.d. ${formatTanggal(p.tanggalSelesai)}</span>` : formatTanggal(p.tanggalMulai) || "-";
 
       return `
-  <tr data-proses="${p.proses}">
+  <tr data-proses="${p.proses}" data-nama="${(p.nama || '').replace(/"/g, '&quot;').toLowerCase()}">
     <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
     <td style="white-space:normal">
       <div style="font-weight:700;color:var(--text-primary);line-height:1.4;margin-bottom:2px">${p.nama}</div>

@@ -558,3 +558,126 @@ console.log(
   "%cDashboard Monitoring Data Pusbangkom\nDeveloped by Irsyad Hanif Munawar",
   "color:#F0C332;font-size:6px;font-weight:bold;"
 );
+
+/* =====================================================
+   12. TABLE INLINE SEARCH
+   ===================================================== */
+
+/**
+ * Normalisasi teks: huruf kecil, hilangkan spasi berlebih
+ */
+function _normalizeText(str) {
+  return (str || '').toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Inisialisasi search webinar (by nama + keynote) dan
+ * search pelatihan (by nama).
+ * Dipanggil setelah DOM siap.
+ */
+function initTableSearch() {
+  /* ---------- WEBINAR SEARCH ---------- */
+  const webInput  = document.getElementById('webinar-search-input');
+  const webClear  = document.getElementById('webinar-search-clear');
+
+  function applyWebinarSearch() {
+    const q           = _normalizeText(webInput?.value);
+    const activeFilter = document.querySelector('.filter-webinar-btn.active')?.getAttribute('data-filter') || 'all';
+    let visible       = 0;
+
+    document.querySelectorAll('#webinar-tbody tr[data-status]').forEach(row => {
+      const nama    = _normalizeText(row.dataset.nama    || '');
+      const keynote = _normalizeText(row.dataset.keynote || '');
+      const status  = row.getAttribute('data-status') || '';
+
+      const matchSearch = !q || nama.includes(q) || keynote.includes(q);
+      const matchFilter = activeFilter === 'all' || status === activeFilter;
+
+      const show = matchSearch && matchFilter;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Update badge count
+    const badge = document.getElementById('webinar-count-badge');
+    if (badge) badge.textContent = `${visible} Webinar`;
+
+    // Tampilkan/sembunyikan tombol clear
+    if (webClear) webClear.style.display = q ? '' : 'none';
+  }
+
+  webInput?.addEventListener('input', applyWebinarSearch);
+
+  webClear?.addEventListener('click', () => {
+    if (webInput) webInput.value = '';
+    applyWebinarSearch();
+    webInput?.focus();
+  });
+
+  // Sinkronkan dengan tombol filter status webinar
+  document.querySelectorAll('.filter-webinar-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Tunggu class active dipindah dulu (event bubbling)
+      setTimeout(applyWebinarSearch, 0);
+    });
+  });
+
+  // Enter tidak submit form
+  webInput?.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { webInput.value = ''; applyWebinarSearch(); }
+  });
+
+  /* ---------- PELATIHAN SEARCH ---------- */
+  const pltInput = document.getElementById('pelatihan-search-input');
+  const pltClear = document.getElementById('pelatihan-search-clear');
+
+  function applyPelatihanSearch() {
+    const q           = _normalizeText(pltInput?.value);
+    const activeFilter = document.querySelector('.filter-plt-btn.active')?.getAttribute('data-filter-plt') || 'all';
+    let visible       = 0;
+
+    document.querySelectorAll('#pelatihan-tbody tr[data-proses]').forEach(row => {
+      const nama   = _normalizeText(row.dataset.nama  || '');
+      const proses = row.getAttribute('data-proses') || '';
+
+      const matchSearch = !q || nama.includes(q);
+      const matchFilter = activeFilter === 'all' || proses === activeFilter;
+
+      const show = matchSearch && matchFilter;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Update badge count
+    const badge = document.getElementById('pelatihan-count-badge');
+    if (badge) badge.textContent = `${visible} Pelatihan`;
+
+    // Tampilkan/sembunyikan tombol clear
+    if (pltClear) pltClear.style.display = q ? '' : 'none';
+  }
+
+  pltInput?.addEventListener('input', applyPelatihanSearch);
+
+  pltClear?.addEventListener('click', () => {
+    if (pltInput) pltInput.value = '';
+    applyPelatihanSearch();
+    pltInput?.focus();
+  });
+
+  // Sinkronkan dengan tombol filter status pelatihan
+  document.querySelectorAll('.filter-plt-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTimeout(applyPelatihanSearch, 0);
+    });
+  });
+
+  pltInput?.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { pltInput.value = ''; applyPelatihanSearch(); }
+  });
+
+  // Expose ke global agar bisa dipanggil ulang setelah data di-render ulang
+  window.applyWebinarSearch  = applyWebinarSearch;
+  window.applyPelatihanSearch = applyPelatihanSearch;
+}
+
+document.addEventListener('DOMContentLoaded', initTableSearch);

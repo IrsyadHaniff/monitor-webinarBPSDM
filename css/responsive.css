@@ -523,3 +523,88 @@
     gap: 8px;
   }
 }
+
+/* =========================================================
+   FILTER BAR — Responsive (Webinar & Pelatihan)
+   ========================================================= */
+
+/* --- Tablet (≤ 1023px): search input lebih kecil, tetap satu baris --- */
+@media (max-width: 1023px) {
+  .filter-bar {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+
+  .filter-bar-actions .table-search-input {
+    min-width: 120px;
+  }
+}
+
+/* --- Tablet kecil / Mobile Landscape (≤ 767px) --- */
+@media (max-width: 767px) {
+  .filter-bar {
+    padding: 12px 14px;
+    gap: 8px;
+  }
+
+  /* Chips wrap dengan baik */
+  .filter-bar-chips {
+    gap: 5px;
+    row-gap: 5px;
+  }
+
+  /* Actions tetap satu baris, search mengisi penuh */
+  .filter-bar-actions {
+    gap: 6px;
+  }
+
+  /* Sembunyikan label teks tombol, sisakan hanya ikon */
+  .btn-label-full {
+    display: none;
+  }
+
+  /* Padding tombol mengecil karena tidak ada label */
+  .filter-action-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* Search full width */
+  .filter-bar-actions .table-search-wrap {
+    flex: 1 1 auto;
+  }
+
+  .filter-bar-actions .table-search-input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Nonaktifkan animasi expand karena sudah penuh */
+  .filter-bar-actions .table-search-input:focus {
+    width: 100%;
+  }
+}
+
+/* --- Mobile sangat kecil (≤ 479px) --- */
+@media (max-width: 479px) {
+  .filter-bar {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .filter-bar-chips {
+    gap: 4px;
+    row-gap: 4px;
+  }
+
+  /* Chip filter sedikit lebih kecil */
+  .filter-bar-chips .btn.btn-sm {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  /* Refresh button juga hanya ikon */
+  .filter-bar-actions .btn-primary .btn-label-full {
+    display: none;
+  }
+}
