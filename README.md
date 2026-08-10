@@ -1,11 +1,11 @@
-# Dashboard Monitoring Webinar — Pusbangkom ASN
+# Dashboard Data Monitoring Pusbangkom - BPSDMPusbangkom
 
 [![Firebase Hosting](https://img.shields.io/badge/Hosting-Firebase-orange)](https://firebase.google.com/)
 [![HTML5](https://img.shields.io/badge/HTML-5-red)](https://developer.mozilla.org/en-US/docs/Web/HTML)
 [![CSS3](https://img.shields.io/badge/CSS-3-blue)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-Dashboard monitoring webinar modern untuk **Pusat Pengembangan Kompetensi**. Dibangun dengan HTML5, CSS3, dan Vanilla JavaScript ES6+ — tanpa framework frontend.
+Dashboard monitoring webinar modern untuk **Pusat Pengembangan Kompetensi**. Dibangun dengan HTML5, CSS3, dan Vanilla JavaScript ES6+, dengan koneksi data menggunakan spredsheet app script.
 
 ---
 
@@ -196,3 +196,6 @@ firebase deploy
 ## 📄 Lisensi
 
 Internal Pusbangkom — Seluruh hak cipta dilindungi.
+
+## 👤 Pengembang
+**Create** By [@IrsyadHaniff](https://github.com/IrsyadHaniff) **©**2026
