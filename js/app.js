@@ -571,9 +571,8 @@ function _normalizeText(str) {
 }
 
 /**
- * Inisialisasi search webinar (by nama + keynote) dan
+ * search webinar (by nama + keynote) dan
  * search pelatihan (by nama).
- * Dipanggil setelah DOM siap.
  */
 function initTableSearch() {
   /* ---------- WEBINAR SEARCH ---------- */
@@ -617,7 +616,7 @@ function initTableSearch() {
   // Sinkronkan dengan tombol filter status webinar
   document.querySelectorAll('.filter-webinar-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      // Tunggu class active dipindah dulu (event bubbling)
+      // Tunggu class active dipindah dulu
       setTimeout(applyWebinarSearch, 0);
     });
   });
@@ -680,4 +679,4 @@ function initTableSearch() {
   window.applyPelatihanSearch = applyPelatihanSearch;
 }
 
-document.addEventListener('DOMContentLoaded', initTableSearch);
+document.addEventListener('DOMContentLoaded', initTableSearch);
