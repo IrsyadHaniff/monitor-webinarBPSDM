@@ -1063,6 +1063,7 @@ button { cursor: pointer; font-family: var(--font-family); }
 .table-wrapper {
   overflow-x: auto;
   overflow-y: visible;
+  max-height: calc(100vh - var(--topbar-height)); /* scroll dalam wrapper */
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
   background: var(--surface-card);
@@ -1077,6 +1078,7 @@ button { cursor: pointer; font-family: var(--font-family); }
   font-size: var(--font-size-sm);
 }
 
+/* thead sticky di dalam scroll table-wrapper (top: 0 = atas container) */
 .data-table thead {
   background: var(--surface-bg);
   position: sticky;
