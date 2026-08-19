@@ -142,11 +142,12 @@ function closeMobileSidebar() {
 let currentPage = 'dashboard';
 
 const PAGE_TITLES = {
-  dashboard: 'Dashboard',
-  webinar:   'Rekap Webinar',
-  pelatihan: 'Monitoring Pelatihan',
-  alumni:    'Monitoring Alumni',
-  statistik: 'Statistik',
+  dashboard:     'Dashboard',
+  webinar:       'Rekap Webinar',
+  pelatihan:     'Monitoring Pelatihan',
+  alumni:        'Monitoring Alumni',
+  'rekap-alumni':'Rekap Alumni',
+  statistik:     'Statistik',
 };
 
 function initNavigation() {
@@ -209,6 +210,12 @@ function onPageEnter(page) {
     // Populate dropdown jika data sudah tersedia
     if (window.AppData.alumni?.length && typeof populateAlumniDropdowns === 'function') {
       populateAlumniDropdowns();
+    }
+  }
+  if (page === 'rekap-alumni') {
+    // Render tabel rekap alumni jika data sudah tersedia
+    if (typeof renderRekapAlumniTable === 'function') {
+      renderRekapAlumniTable();
     }
   }
 }
@@ -674,9 +681,62 @@ function initTableSearch() {
     if (e.key === 'Escape') { pltInput.value = ''; applyPelatihanSearch(); }
   });
 
+  /* ---------- REKAP ALUMNI SEARCH ---------- */
+  const raInput = document.getElementById('rekap-alumni-search-input');
+  const raClear = document.getElementById('rekap-alumni-search-clear');
+
+  function applyRekapAlumniSearch() {
+    const q            = _normalizeText(raInput?.value);
+    const activeFilter = document.querySelector('.filter-rekap-alumni-btn.active')?.getAttribute('data-filter-rekap-alumni') || 'all';
+    let visible        = 0;
+
+    document.querySelectorAll('#rekap-alumni-tbody tr[data-provinsi]').forEach(row => {
+      const provinsi = _normalizeText(row.dataset.provinsi || '');
+      const hasPKP   = row.getAttribute('data-has-pkp') === 'true';
+      const hasPKA   = row.getAttribute('data-has-pka') === 'true';
+
+      const matchSearch = !q || provinsi.includes(q);
+      const matchFilter =
+        activeFilter === 'all' ||
+        (activeFilter === 'pkp' && hasPKP) ||
+        (activeFilter === 'pka' && hasPKA);
+
+      const show = matchSearch && matchFilter;
+      row.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Update badge count
+    const badge = document.getElementById('rekap-alumni-count-badge');
+    if (badge) badge.textContent = `${visible} Provinsi`;
+
+    // Tampilkan/sembunyikan tombol clear
+    if (raClear) raClear.style.display = q ? '' : 'none';
+  }
+
+  raInput?.addEventListener('input', applyRekapAlumniSearch);
+
+  raClear?.addEventListener('click', () => {
+    if (raInput) raInput.value = '';
+    applyRekapAlumniSearch();
+    raInput?.focus();
+  });
+
+  // Sinkronkan dengan tombol filter rekap alumni
+  document.querySelectorAll('.filter-rekap-alumni-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      setTimeout(applyRekapAlumniSearch, 0);
+    });
+  });
+
+  raInput?.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { raInput.value = ''; applyRekapAlumniSearch(); }
+  });
+
   // Expose ke global agar bisa dipanggil ulang setelah data di-render ulang
-  window.applyWebinarSearch  = applyWebinarSearch;
-  window.applyPelatihanSearch = applyPelatihanSearch;
+  window.applyWebinarSearch     = applyWebinarSearch;
+  window.applyPelatihanSearch   = applyPelatihanSearch;
+  window.applyRekapAlumniSearch = applyRekapAlumniSearch;
 }
 
 document.addEventListener('DOMContentLoaded', initTableSearch);

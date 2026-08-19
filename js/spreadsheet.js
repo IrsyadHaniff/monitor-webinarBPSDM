@@ -395,10 +395,14 @@ function processData(rawData) {
     pka        : String(a.Pka        || a.pka        || a.PKA        || '').trim(),
   }));
 
-  // Simpan rekapAlumni (untuk unit kerja & provinsi dari Rekap_Alumni)
-  const rekapAlumni = (rawData.rekapAlumni || []).filter(
-    r => r.unitKerja && String(r.unitKerja).trim() !== ''
-  );
+  // Simpan rekapAlumni — dari sheet Rekap_Alumni (kolom: Provinsi, PKP, PKA)
+  const rekapAlumni = (rawData.rekapAlumni || [])
+    .map(r => ({
+      provinsi: String(r.Provinsi || r.provinsi || '').trim(),
+      pkp     : r.PKP  !== undefined ? r.PKP  : (r.pkp  !== undefined ? r.pkp  : ''),
+      pka     : r.PKA  !== undefined ? r.PKA  : (r.pka  !== undefined ? r.pka  : ''),
+    }))
+    .filter(r => r.provinsi !== '');
 
   window.AppData.webinars    = webinars;
   window.AppData.pelatihan   = pelatihan;
@@ -570,9 +574,57 @@ function renderTable() {
   renderWebinarTable();
   renderPelatihanTable();
   renderRankingTable();
+  renderRekapAlumniTable();
   // Re-apply pencarian aktif setelah render ulang
   if (typeof window.applyWebinarSearch  === 'function') window.applyWebinarSearch();
   if (typeof window.applyPelatihanSearch === 'function') window.applyPelatihanSearch();
+  if (typeof window.applyRekapAlumniSearch === 'function') window.applyRekapAlumniSearch();
+}
+
+/* ----- Rekap Alumni Table ----- */
+function renderRekapAlumniTable() {
+  const tbody = document.getElementById('rekap-alumni-tbody');
+  const data  = window.AppData.rekapAlumni || [];
+  if (!tbody) return;
+
+  // Update badge count
+  const badge = document.getElementById('rekap-alumni-count-badge');
+  if (badge) badge.textContent = `${data.length} Provinsi`;
+
+  // Update summary stat cards
+  const totalPKP = data.reduce((s, r) => s + (Number(r.pkp) || 0), 0);
+  const totalPKA = data.reduce((s, r) => s + (Number(r.pka) || 0), 0);
+  setElText('rekap-alumni-total-provinsi', formatNumber(data.length));
+  setElText('rekap-alumni-total-pkp', formatNumber(totalPKP));
+  setElText('rekap-alumni-total-pka', formatNumber(totalPKA));
+
+  if (!data.length) {
+    tbody.innerHTML = emptyRow(4, 'clipboard2-data', 'Belum ada data rekap alumni.');
+    return;
+  }
+
+  tbody.innerHTML = data.map((r, i) => {
+    const pkpVal  = (r.pkp !== null && r.pkp !== undefined && r.pkp !== '') ? Number(r.pkp) : null;
+    const pkaVal  = (r.pka !== null && r.pka !== undefined && r.pka !== '') ? Number(r.pka) : null;
+    const hasPKP  = pkpVal !== null && pkpVal > 0;
+    const hasPKA  = pkaVal !== null && pkaVal > 0;
+
+    return `
+    <tr data-provinsi="${(r.provinsi || '').toLowerCase()}" data-has-pkp="${hasPKP}" data-has-pka="${hasPKA}">
+      <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
+      <td style="font-weight:600;color:var(--text-primary)">${r.provinsi || '—'}</td>
+      <td style="text-align:center">
+        ${pkpVal !== null
+          ? `<div style="font-weight:700;font-size:15px;color:var(--color-success)">${formatNumber(pkpVal)}</div>`
+          : `<span style="font-size:11px;color:var(--text-muted)">—</span>`}
+      </td>
+      <td style="text-align:center">
+        ${pkaVal !== null
+          ? `<div style="font-weight:700;font-size:15px;color:var(--color-secondary)">${formatNumber(pkaVal)}</div>`
+          : `<span style="font-size:11px;color:var(--text-muted)">—</span>`}
+      </td>
+    </tr>`;
+  }).join('');
 }
 
 /* ----- Webinar Table ----- */
@@ -1070,6 +1122,7 @@ window.showToast = showToast;
 window.formatTanggal = formatTanggal;
 window.formatNumber = formatNumber;
 window.renderRankingTable = renderRankingTable;
+window.renderRekapAlumniTable = renderRekapAlumniTable;
 window.populateAlumniDropdowns = populateAlumniDropdowns;
 window.searchAlumni = searchAlumni;
 window.renderAlumniResults = renderAlumniResults;
