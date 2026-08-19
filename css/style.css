@@ -1104,7 +1104,7 @@ button { cursor: pointer; font-family: var(--font-family); }
   font-size: var(--font-size-sm);
 }
 
-/* thead sticky di dalam scroll table-wrapper (top: 0 = atas container) */
+/* thead sticky di dalam scroll table-wrapper */
 .data-table thead {
   background: var(--surface-bg);
   position: sticky;
