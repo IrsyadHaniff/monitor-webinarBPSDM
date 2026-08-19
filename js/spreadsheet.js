@@ -364,49 +364,49 @@ async function fetchSpreadsheet() {
 function processData(rawData) {
   // Filter dan normalisasi data webinar
   let webinars = rawData.webinars || [];
-  webinars = webinars.filter(w => w.nama && String(w.nama).trim() !== '');
-  webinars = webinars.map(w => ({
+  webinars = webinars.filter((w) => w.nama && String(w.nama).trim() !== "");
+  webinars = webinars.map((w) => ({
     ...w,
     status: normalizeWebinarStatus(w.status),
   }));
 
   // Filter dan normalisasi data pelatihan
   let pelatihan = rawData.pelatihan || [];
-  pelatihan = pelatihan.filter(p => p.nama && String(p.nama).trim() !== '');
-  pelatihan = pelatihan.map(p => ({
+  pelatihan = pelatihan.filter((p) => p.nama && String(p.nama).trim() !== "");
+  pelatihan = pelatihan.map((p) => ({
     ...p,
     proses: normalizeProsesStatus(p.proses),
   }));
 
   // Filter dan normalisasi data alumni
   let alumni = rawData.alumni || [];
-  alumni = alumni.filter(a => {
-    const nip  = String(a.Nip  || a.nip  || a.NIP  || '').trim();
-    const nama = String(a.Nama || a.nama || '').trim();
-    return nip !== '' || nama !== '';
+  alumni = alumni.filter((a) => {
+    const nip = String(a.Nip || a.nip || a.NIP || "").trim();
+    const nama = String(a.Nama || a.nama || "").trim();
+    return nip !== "" || nama !== "";
   });
-  alumni = alumni.map(a => ({
-    nip        : String(a.Nip        || a.nip        || a.NIP        || '').trim(),
-    nama       : String(a.Nama       || a.nama       || '').trim(),
-    jabatan    : String(a.Jabatan    || a.jabatan    || '').trim(),
-    unitKerja  : String(a['Unit Kerja'] || a.unitKerja || a['UnitKerja'] || '').trim(),
-    provinsi   : String(a.Provinsi   || a.provinsi   || '').trim(),
-    pkp        : String(a.Pkp        || a.pkp        || a.PKP        || '').trim(),
-    pka        : String(a.Pka        || a.pka        || a.PKA        || '').trim(),
+  alumni = alumni.map((a) => ({
+    nip: String(a.Nip || a.nip || a.NIP || "").trim(),
+    nama: String(a.Nama || a.nama || "").trim(),
+    jabatan: String(a.Jabatan || a.jabatan || "").trim(),
+    unitKerja: String(a["Unit Kerja"] || a.unitKerja || a["UnitKerja"] || "").trim(),
+    provinsi: String(a.Provinsi || a.provinsi || "").trim(),
+    pkp: String(a.Pkp || a.pkp || a.PKP || "").trim(),
+    pka: String(a.Pka || a.pka || a.PKA || "").trim(),
   }));
 
   // Simpan rekapAlumni — dari sheet Rekap_Alumni (kolom: Provinsi, PKP, PKA)
   const rekapAlumni = (rawData.rekapAlumni || [])
-    .map(r => ({
-      provinsi: String(r.Provinsi || r.provinsi || '').trim(),
-      pkp     : r.PKP  !== undefined ? r.PKP  : (r.pkp  !== undefined ? r.pkp  : ''),
-      pka     : r.PKA  !== undefined ? r.PKA  : (r.pka  !== undefined ? r.pka  : ''),
+    .map((r) => ({
+      provinsi: String(r.Provinsi || r.provinsi || "").trim(),
+      pkp: r.PKP !== undefined ? r.PKP : r.pkp !== undefined ? r.pkp : "",
+      pka: r.PKA !== undefined ? r.PKA : r.pka !== undefined ? r.pka : "",
     }))
-    .filter(r => r.provinsi !== '');
+    .filter((r) => r.provinsi !== "");
 
-  window.AppData.webinars    = webinars;
-  window.AppData.pelatihan   = pelatihan;
-  window.AppData.alumni      = alumni;
+  window.AppData.webinars = webinars;
+  window.AppData.pelatihan = pelatihan;
+  window.AppData.alumni = alumni;
   window.AppData.rekapAlumni = rekapAlumni;
   window.AppData.stats = hitungStatistik();
 
@@ -419,22 +419,26 @@ function processData(rawData) {
  * Spreadsheet bisa menggunakan variasi nama status.
  */
 function normalizeWebinarStatus(status) {
-  const s = String(status || '').trim().toLowerCase();
-  if (s === 'selesai' || s === 'telah terselenggara' || s === 'telah diselenggarakan') return 'Selesai';
-  if (s === 'sedang berlangsung') return 'Sedang Berlangsung';
-  if (s === 'akan datang' || s === 'akan diselenggarakan' || s === 'belum dimulai' || s === '') return 'Akan Datang';
-  return status || 'Akan Datang';
+  const s = String(status || "")
+    .trim()
+    .toLowerCase();
+  if (s === "selesai" || s === "telah terselenggara" || s === "telah diselenggarakan") return "Selesai";
+  if (s === "sedang berlangsung") return "Sedang Berlangsung";
+  if (s === "akan datang" || s === "akan diselenggarakan" || s === "belum dimulai" || s === "") return "Akan Datang";
+  return status || "Akan Datang";
 }
 
 /**
  * Normalisasi proses pelatihan.
  */
 function normalizeProsesStatus(proses) {
-  const s = String(proses || '').trim().toLowerCase();
-  if (s === 'telah terselenggara' || s === 'selesai') return 'Telah Terselenggara';
-  if (s === 'sedang berlangsung') return 'Sedang Berlangsung';
-  if (s === 'akan datang' || s === 'akan diselenggarakan' || s === '' || s === 'belum dimulai') return 'Akan Datang';
-  return proses || 'Akan Datang';
+  const s = String(proses || "")
+    .trim()
+    .toLowerCase();
+  if (s === "telah terselenggara" || s === "selesai") return "Telah Terselenggara";
+  if (s === "sedang berlangsung") return "Sedang Berlangsung";
+  if (s === "akan datang" || s === "akan diselenggarakan" || s === "" || s === "belum dimulai") return "Akan Datang";
+  return proses || "Akan Datang";
 }
 
 function hitungStatistik() {
@@ -576,55 +580,53 @@ function renderTable() {
   renderRankingTable();
   renderRekapAlumniTable();
   // Re-apply pencarian aktif setelah render ulang
-  if (typeof window.applyWebinarSearch  === 'function') window.applyWebinarSearch();
-  if (typeof window.applyPelatihanSearch === 'function') window.applyPelatihanSearch();
-  if (typeof window.applyRekapAlumniSearch === 'function') window.applyRekapAlumniSearch();
+  if (typeof window.applyWebinarSearch === "function") window.applyWebinarSearch();
+  if (typeof window.applyPelatihanSearch === "function") window.applyPelatihanSearch();
+  if (typeof window.applyRekapAlumniSearch === "function") window.applyRekapAlumniSearch();
 }
 
 /* ----- Rekap Alumni Table ----- */
 function renderRekapAlumniTable() {
-  const tbody = document.getElementById('rekap-alumni-tbody');
-  const data  = window.AppData.rekapAlumni || [];
+  const tbody = document.getElementById("rekap-alumni-tbody");
+  const data = window.AppData.rekapAlumni || [];
   if (!tbody) return;
 
   // Update badge count
-  const badge = document.getElementById('rekap-alumni-count-badge');
+  const badge = document.getElementById("rekap-alumni-count-badge");
   if (badge) badge.textContent = `${data.length} Provinsi`;
 
   // Update summary stat cards
   const totalPKP = data.reduce((s, r) => s + (Number(r.pkp) || 0), 0);
   const totalPKA = data.reduce((s, r) => s + (Number(r.pka) || 0), 0);
-  setElText('rekap-alumni-total-provinsi', formatNumber(data.length));
-  setElText('rekap-alumni-total-pkp', formatNumber(totalPKP));
-  setElText('rekap-alumni-total-pka', formatNumber(totalPKA));
+  setElText("rekap-alumni-total-provinsi", formatNumber(data.length));
+  setElText("rekap-alumni-total-pkp", formatNumber(totalPKP));
+  setElText("rekap-alumni-total-pka", formatNumber(totalPKA));
 
   if (!data.length) {
-    tbody.innerHTML = emptyRow(4, 'clipboard2-data', 'Belum ada data rekap alumni.');
+    tbody.innerHTML = emptyRow(4, "clipboard2-data", "Belum ada data rekap alumni.");
     return;
   }
 
-  tbody.innerHTML = data.map((r, i) => {
-    const pkpVal  = (r.pkp !== null && r.pkp !== undefined && r.pkp !== '') ? Number(r.pkp) : null;
-    const pkaVal  = (r.pka !== null && r.pka !== undefined && r.pka !== '') ? Number(r.pka) : null;
-    const hasPKP  = pkpVal !== null && pkpVal > 0;
-    const hasPKA  = pkaVal !== null && pkaVal > 0;
+  tbody.innerHTML = data
+    .map((r, i) => {
+      const pkpVal = r.pkp !== null && r.pkp !== undefined && r.pkp !== "" ? Number(r.pkp) : null;
+      const pkaVal = r.pka !== null && r.pka !== undefined && r.pka !== "" ? Number(r.pka) : null;
+      const hasPKP = pkpVal !== null && pkpVal > 0;
+      const hasPKA = pkaVal !== null && pkaVal > 0;
 
-    return `
-    <tr data-provinsi="${(r.provinsi || '').toLowerCase()}" data-has-pkp="${hasPKP}" data-has-pka="${hasPKA}">
+      return `
+    <tr data-provinsi="${(r.provinsi || "").toLowerCase()}" data-has-pkp="${hasPKP}" data-has-pka="${hasPKA}">
       <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
-      <td style="font-weight:600;color:var(--text-primary)">${r.provinsi || '—'}</td>
+      <td style="font-weight:600;color:var(--text-primary)">${r.provinsi || "—"}</td>
       <td style="text-align:center">
-        ${pkpVal !== null
-          ? `<div style="font-weight:700;font-size:15px;color:var(--color-success)">${formatNumber(pkpVal)}</div>`
-          : `<span style="font-size:11px;color:var(--text-muted)">—</span>`}
+        ${pkpVal !== null ? `<div style="font-weight:700;font-size:15px;color:var(--color-success)">${formatNumber(pkpVal)}</div>` : `<span style="font-size:11px;color:var(--text-muted)">—</span>`}
       </td>
       <td style="text-align:center">
-        ${pkaVal !== null
-          ? `<div style="font-weight:700;font-size:15px;color:var(--color-secondary)">${formatNumber(pkaVal)}</div>`
-          : `<span style="font-size:11px;color:var(--text-muted)">—</span>`}
+        ${pkaVal !== null ? `<div style="font-weight:700;font-size:15px;color:var(--color-secondary)">${formatNumber(pkaVal)}</div>` : `<span style="font-size:11px;color:var(--text-muted)">—</span>`}
       </td>
     </tr>`;
-  }).join('');
+    })
+    .join("");
 }
 
 /* ----- Webinar Table ----- */
@@ -660,13 +662,13 @@ function renderWebinarTable() {
 
       // Field narasumber, moderator, keynoteSpeaker, kriteriaPeserta
       // Nama field harus sesuai dengan header kolom di spreadsheet (case-sensitive)
-      const narasumber   = w.narasumber    || w.Narasumber    || "—";
-      const moderator    = w.moderator     || w.Moderator     || "—";
-      const keynote      = w.keynoteSpeaker || w["Keynote Speech"] || w.keynoteSpeech || "—";
-      const kriteria     = w.kriteriaPeserta || w["Kriteria Peserta"] || "—";
+      const narasumber = w.narasumber || w.Narasumber || "—";
+      const moderator = w.moderator || w.Moderator || "—";
+      const keynote = w.keynoteSpeaker || w["Keynote Speech"] || w.keynoteSpeech || "—";
+      const kriteria = w.kriteriaPeserta || w["Kriteria Peserta"] || "—";
 
       return `
-      <tr data-status="${w.status}" data-nama="${(w.nama || '').replace(/"/g, '&quot;').toLowerCase()}" data-keynote="${(keynote === '—' ? '' : keynote).replace(/"/g, '&quot;').toLowerCase()}">
+      <tr data-status="${w.status}" data-nama="${(w.nama || "").replace(/"/g, "&quot;").toLowerCase()}" data-keynote="${(keynote === "—" ? "" : keynote).replace(/"/g, "&quot;").toLowerCase()}">
         <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
         <td style="max-width:350px; white-space:normal; overflow-wrap:break-word;">
           <div style="font-weight:700;color:var(--text-primary);line-height:1.4;margin-bottom:2px;">${w.nama}</div>
@@ -729,7 +731,7 @@ function renderPelatihanTable() {
       const tgl = p.tanggalMulai && p.tanggalSelesai ? `${formatTanggal(p.tanggalMulai)}<br><span style="font-size:10px;color:var(--text-muted)">s.d. ${formatTanggal(p.tanggalSelesai)}</span>` : formatTanggal(p.tanggalMulai) || "-";
 
       return `
-  <tr data-proses="${p.proses}" data-nama="${(p.nama || '').replace(/"/g, '&quot;').toLowerCase()}">
+  <tr data-proses="${p.proses}" data-nama="${(p.nama || "").replace(/"/g, "&quot;").toLowerCase()}">
     <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
     <td style="white-space:normal">
       <div style="font-weight:700;color:var(--text-primary);line-height:1.4;margin-bottom:2px">${p.nama}</div>
@@ -1011,58 +1013,55 @@ function formatWaktu(date) {
  */
 function populateAlumniDropdowns() {
   const rekapAlumni = window.AppData.rekapAlumni || [];
-  const alumni      = window.AppData.alumni      || [];
+  const alumni = window.AppData.alumni || [];
 
   const unitKerjaSet = new Set();
-  const provinsiSet  = new Set();
+  const provinsiSet = new Set();
 
   if (rekapAlumni.length > 0) {
     // Prioritaskan data dari Rekap_Alumni (daftar lengkap unit kerja ATR/BPN)
-    rekapAlumni.forEach(r => {
+    rekapAlumni.forEach((r) => {
       if (r.unitKerja) unitKerjaSet.add(r.unitKerja);
-      if (r.provinsi)  provinsiSet.add(r.provinsi);
+      if (r.provinsi) provinsiSet.add(r.provinsi);
     });
   } else {
     // Fallback: ambil dari data alumni jika rekapAlumni belum tersedia
-    alumni.forEach(a => {
+    alumni.forEach((a) => {
       if (a.unitKerja) unitKerjaSet.add(a.unitKerja);
-      if (a.provinsi)  provinsiSet.add(a.provinsi);
+      if (a.provinsi) provinsiSet.add(a.provinsi);
     });
   }
 
   // Simpan nilai yang sudah dipilih
-  const currentUK   = document.getElementById('alumni-filter-unit-kerja')?.value || '';
-  const currentProv = document.getElementById('alumni-filter-provinsi')?.value  || '';
+  const currentUK = document.getElementById("alumni-filter-unit-kerja")?.value || "";
+  const currentProv = document.getElementById("alumni-filter-provinsi")?.value || "";
 
   // Isi dropdown
-  if (typeof sdPopulate === 'function') {
-    sdPopulate('unit-kerja', [...unitKerjaSet].sort(), 'Semua Unit Kerja');
-    sdPopulate('provinsi',   [...provinsiSet].sort(),   'Semua Provinsi');
+  if (typeof sdPopulate === "function") {
+    sdPopulate("unit-kerja", [...unitKerjaSet].sort(), "Semua Unit Kerja");
+    sdPopulate("provinsi", [...provinsiSet].sort(), "Semua Provinsi");
 
     // Restore pilihan sebelumnya jika masih ada
-    if (currentUK && typeof sdSetValue === 'function') {
-      sdSetValue('unit-kerja', currentUK, currentUK);
+    if (currentUK && typeof sdSetValue === "function") {
+      sdSetValue("unit-kerja", currentUK, currentUK);
     }
-    if (currentProv && typeof sdSetValue === 'function') {
-      sdSetValue('provinsi', currentProv, currentProv);
+    if (currentProv && typeof sdSetValue === "function") {
+      sdSetValue("provinsi", currentProv, currentProv);
     }
   }
 }
-
 
 /**
  * Cari alumni berdasarkan query, unitKerja, dan provinsi.
  */
 function searchAlumni(query, unitKerja, provinsi) {
   const alumni = window.AppData.alumni || [];
-  const q = (query || '').toLowerCase().trim();
+  const q = (query || "").toLowerCase().trim();
 
-  return alumni.filter(a => {
-    const matchQuery = !q ||
-      a.nip.toLowerCase().includes(q) ||
-      a.nama.toLowerCase().includes(q);
-    const matchUK   = !unitKerja || a.unitKerja === unitKerja;
-    const matchProv = !provinsi  || a.provinsi  === provinsi;
+  return alumni.filter((a) => {
+    const matchQuery = !q || a.nip.toLowerCase().includes(q) || a.nama.toLowerCase().includes(q);
+    const matchUK = !unitKerja || a.unitKerja === unitKerja;
+    const matchProv = !provinsi || a.provinsi === provinsi;
     return matchQuery && matchUK && matchProv;
   });
 }
@@ -1071,16 +1070,16 @@ function searchAlumni(query, unitKerja, provinsi) {
  * Render tabel hasil pencarian alumni.
  */
 function renderAlumniResults(results) {
-  const tbody    = document.getElementById('alumni-result-tbody');
-  const section  = document.getElementById('alumni-result-section');
-  const countEl  = document.getElementById('alumni-result-count');
+  const tbody = document.getElementById("alumni-result-tbody");
+  const section = document.getElementById("alumni-result-section");
+  const countEl = document.getElementById("alumni-result-count");
 
   if (!tbody || !section) return;
 
-  section.style.display = 'block';
+  section.style.display = "block";
 
   if (!results || results.length === 0) {
-    if (countEl) countEl.textContent = '0 alumni ditemukan';
+    if (countEl) countEl.textContent = "0 alumni ditemukan";
     tbody.innerHTML = `
       <tr>
         <td colspan="8">
@@ -1096,17 +1095,21 @@ function renderAlumniResults(results) {
 
   if (countEl) countEl.textContent = `${results.length} alumni ditemukan`;
 
-  tbody.innerHTML = results.map((a, i) => `
+  tbody.innerHTML = results
+    .map(
+      (a, i) => `
     <tr>
       <td style="text-align:center;font-weight:700;color:var(--text-muted)">${i + 1}</td>
-      <td style="font-family:monospace;font-size:13px;white-space:nowrap;font-weight:600;color:var(--text-primary)">${a.nip || '—'}</td>
-      <td style="font-weight:700;color:var(--text-primary);white-space:nowrap">${a.nama || '—'}</td>
-      <td style="font-size:12px;white-space:normal;min-width:180px;color:var(--text-primary)">${a.jabatan || '—'}</td>
-      <td style="font-size:12px;white-space:normal;min-width:180px">${a.unitKerja || '—'}</td>
-      <td style="font-size:12px;white-space:nowrap">${a.provinsi || '—'}</td>
-      <td style="font-size:12px;white-space:normal;min-width:120px;color:var(--text-secondary)">${a.pkp || '—'}</td>
-      <td style="font-size:12px;white-space:normal;min-width:120px;color:var(--text-secondary)">${a.pka || '—'}</td>
-    </tr>`).join('');
+      <td style="font-family:monospace;font-size:13px;white-space:nowrap;font-weight:600;color:var(--text-primary)">${a.nip || "—"}</td>
+      <td style="font-weight:700;color:var(--text-primary);white-space:nowrap">${a.nama || "—"}</td>
+      <td style="font-size:12px;white-space:normal;min-width:180px;color:var(--text-primary)">${a.jabatan || "—"}</td>
+      <td style="font-size:12px;white-space:normal;min-width:180px">${a.unitKerja || "—"}</td>
+      <td style="font-size:12px;white-space:nowrap">${a.provinsi || "—"}</td>
+      <td style="font-size:12px;white-space:normal;min-width:120px;color:var(--text-secondary)">${a.pkp || "—"}</td>
+      <td style="font-size:12px;white-space:normal;min-width:120px;color:var(--text-secondary)">${a.pka || "—"}</td>
+    </tr>`,
+    )
+    .join("");
 }
 
 /* =====================================================
