@@ -404,10 +404,16 @@ function processData(rawData) {
     }))
     .filter((r) => r.provinsi !== "");
 
+  const unitKerjaList = (rawData.unitKerjaList || [])
+    .map((u) => String(u || "").trim())
+    .filter((u) => u !== "")
+    .sort();
+
   window.AppData.webinars = webinars;
   window.AppData.pelatihan = pelatihan;
   window.AppData.alumni = alumni;
   window.AppData.rekapAlumni = rekapAlumni;
+  window.AppData.unitKerjaList = unitKerjaList;
   window.AppData.stats = hitungStatistik();
 
   // Populate dropdown alumni setelah data siap
@@ -1011,23 +1017,72 @@ function formatWaktu(date) {
 /**
  * Dropdown Unit Kerja dan Provinsi dari data alumni.
  */
+// function populateAlumniDropdowns() {
+//   const rekapAlumni = window.AppData.rekapAlumni || [];
+//   const alumni = window.AppData.alumni || [];
+
+//   const unitKerjaSet = new Set();
+//   const provinsiSet = new Set();
+
+//   if (rekapAlumni.length > 0) {
+//     // Prioritaskan data dari Rekap_Alumni (daftar lengkap unit kerja ATR/BPN)
+//     rekapAlumni.forEach((r) => {
+//       if (r.unitKerja) unitKerjaSet.add(r.unitKerja);
+//       if (r.provinsi) provinsiSet.add(r.provinsi);
+//     });
+//   } else {
+//     // Fallback: ambil dari data alumni jika rekapAlumni belum tersedia
+//     alumni.forEach((a) => {
+//       if (a.unitKerja) unitKerjaSet.add(a.unitKerja);
+//       if (a.provinsi) provinsiSet.add(a.provinsi);
+//     });
+//   }
+
+//   // Simpan nilai yang sudah dipilih
+//   const currentUK = document.getElementById("alumni-filter-unit-kerja")?.value || "";
+//   const currentProv = document.getElementById("alumni-filter-provinsi")?.value || "";
+
+//   // Isi dropdown
+//   if (typeof sdPopulate === "function") {
+//     sdPopulate("unit-kerja", [...unitKerjaSet].sort(), "Semua Unit Kerja");
+//     sdPopulate("provinsi", [...provinsiSet].sort(), "Semua Provinsi");
+
+//     // Restore pilihan sebelumnya jika masih ada
+//     if (currentUK && typeof sdSetValue === "function") {
+//       sdSetValue("unit-kerja", currentUK, currentUK);
+//     }
+//     if (currentProv && typeof sdSetValue === "function") {
+//       sdSetValue("provinsi", currentProv, currentProv);
+//     }
+//   }
+// }
 function populateAlumniDropdowns() {
   const rekapAlumni = window.AppData.rekapAlumni || [];
+  const unitKerjaList = window.AppData.unitKerjaList || [];
   const alumni = window.AppData.alumni || [];
 
   const unitKerjaSet = new Set();
   const provinsiSet = new Set();
 
+  // Unit Kerja: ambil dari unitKerjaList (sumber: Monitoring_Alumni)
+  if (unitKerjaList.length > 0) {
+    unitKerjaList.forEach((u) => {
+      if (u) unitKerjaSet.add(u);
+    });
+  } else {
+    // Fallback kalau unitKerjaList kosong
+    alumni.forEach((a) => {
+      if (a.unitKerja) unitKerjaSet.add(a.unitKerja);
+    });
+  }
+
+  // Provinsi: tetap prioritaskan dari Rekap_Alumni (daftar lengkap provinsi)
   if (rekapAlumni.length > 0) {
-    // Prioritaskan data dari Rekap_Alumni (daftar lengkap unit kerja ATR/BPN)
     rekapAlumni.forEach((r) => {
-      if (r.unitKerja) unitKerjaSet.add(r.unitKerja);
       if (r.provinsi) provinsiSet.add(r.provinsi);
     });
   } else {
-    // Fallback: ambil dari data alumni jika rekapAlumni belum tersedia
     alumni.forEach((a) => {
-      if (a.unitKerja) unitKerjaSet.add(a.unitKerja);
       if (a.provinsi) provinsiSet.add(a.provinsi);
     });
   }
@@ -1041,7 +1096,6 @@ function populateAlumniDropdowns() {
     sdPopulate("unit-kerja", [...unitKerjaSet].sort(), "Semua Unit Kerja");
     sdPopulate("provinsi", [...provinsiSet].sort(), "Semua Provinsi");
 
-    // Restore pilihan sebelumnya jika masih ada
     if (currentUK && typeof sdSetValue === "function") {
       sdSetValue("unit-kerja", currentUK, currentUK);
     }
