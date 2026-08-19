@@ -122,6 +122,11 @@
             <span class="nav-label">Monitoring Alumni</span>
           </div>
 
+          <div class="nav-item" data-page="rekap-alumni" role="menuitem" tabindex="0" data-label="Rekap Alumni" aria-label="Rekap Alumni">
+            <i class="bi bi-clipboard2-data-fill" aria-hidden="true"></i>
+            <span class="nav-label">Rekap Alumni</span>
+          </div>
+
           <div class="nav-section-label" style="margin-top: 8px">Analitik</div>
 
           <div class="nav-item" data-page="statistik" role="menuitem" tabindex="0" data-label="Statistik" aria-label="Statistik">
@@ -707,7 +712,123 @@
             </div>
           </section>
 
-          <!--== PAGE 5: STATISTIK ==-->
+          <!--== PAGE 5: REKAP ALUMNI ==-->
+          <section id="page-rekap-alumni" class="section-page" aria-labelledby="heading-rekap-alumni">
+            <div class="page-header">
+              <div class="page-breadcrumb">
+                <span>Pusbangkom</span>
+                <span class="sep"><i class="bi bi-chevron-right"></i></span>
+                <span class="current">Rekap Alumni</span>
+              </div>
+              <h1 id="heading-rekap-alumni" class="page-title">Rekap <span>Alumni</span></h1>
+              <p class="page-subtitle">Rekap data alumni berdasarkan provinsi beserta jumlah alumni yang telah mengikuti PKP dan PKA.</p>
+            </div>
+
+            <!-- Summary Cards -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px">
+              <article class="stat-card card-secondary" style="cursor: default" aria-label="Total Provinsi">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-map-fill"></i></div>
+                </div>
+                <div class="stat-value" id="rekap-alumni-total-provinsi">0</div>
+                <div class="stat-label">Total Provinsi</div>
+              </article>
+              <article class="stat-card card-success" style="cursor: default" aria-label="Total Alumni PKP">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-person-check-fill"></i></div>
+                </div>
+                <div class="stat-value" id="rekap-alumni-total-pkp">0</div>
+                <div class="stat-label">Total Alumni PKP</div>
+              </article>
+              <article class="stat-card card-info" style="cursor: default" aria-label="Total Alumni PKA">
+                <div class="stat-card-header">
+                  <div class="stat-icon"><i class="bi bi-award-fill"></i></div>
+                </div>
+                <div class="stat-value" id="rekap-alumni-total-pka">0</div>
+                <div class="stat-label">Total Alumni PKA</div>
+              </article>
+            </div>
+
+            <!-- Filter + Actions -->
+            <div class="card filter-card" style="margin-bottom: 20px">
+              <div class="filter-bar">
+                <!-- Baris 1: filter -->
+                <div class="filter-bar-chips">
+                  <span class="filter-label">
+                    <i class="bi bi-funnel-fill" aria-hidden="true"></i>
+                    Filter:
+                  </span>
+                  <button class="btn btn-ghost btn-sm filter-rekap-alumni-btn active" data-filter-rekap-alumni="all">Semua</button>
+                  <button class="btn btn-ghost btn-sm filter-rekap-alumni-btn" data-filter-rekap-alumni="pkp">
+                    <span class="badge-dot-sm" style="background: var(--color-success); display: inline-block"></span> PKP
+                  </button>
+                  <button class="btn btn-ghost btn-sm filter-rekap-alumni-btn" data-filter-rekap-alumni="pka">
+                    <span class="badge-dot-sm" style="background: var(--color-info, var(--color-secondary)); display: inline-block"></span> PKA
+                  </button>
+                </div>
+
+                <!-- Baris 2: Search + Actions -->
+                <div class="filter-bar-actions">
+                  <div class="table-search-wrap" id="rekap-alumni-search-wrap">
+                    <i class="bi bi-search table-search-icon" aria-hidden="true"></i>
+                    <input
+                      type="text"
+                      id="rekap-alumni-search-input"
+                      class="table-search-input"
+                      placeholder="Cari provinsi"
+                      autocomplete="off"
+                      aria-label="Cari rekap alumni berdasarkan provinsi"
+                    />
+                    <button class="table-search-clear" id="rekap-alumni-search-clear" aria-label="Hapus pencarian" style="display:none">
+                      <i class="bi bi-x" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <button class="btn btn-ghost btn-sm filter-action-btn" onclick="exportRekapAlumniCSV()" aria-label="Export CSV">
+                    <i class="bi bi-download"></i>
+                    <span class="btn-label-full">Export CSV</span>
+                  </button>
+                  <button class="btn btn-primary btn-sm" onclick="loadData()" aria-label="Refresh data">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    <span class="btn-label-full">Refresh</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Rekap Alumni Table -->
+            <div class="card card-table">
+              <div class="card-header">
+                <h2 class="card-title">
+                  <i class="bi bi-table"></i>
+                  Rekap Data Alumni per Provinsi
+                </h2>
+                <span class="badge badge-secondary" id="rekap-alumni-count-badge">0 Provinsi</span>
+              </div>
+              <div class="table-wrapper" style="overflow-x: auto">
+                <table class="data-table" id="rekap-alumni-table-main" role="table" aria-label="Tabel rekap alumni per provinsi">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 40px; text-align: center">No</th>
+                      <th scope="col" style="min-width: 200px">Provinsi</th>
+                      <th scope="col" style="text-align: center; min-width: 100px">PKP</th>
+                      <th scope="col" style="text-align: center; min-width: 100px">PKA</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rekap-alumni-tbody">
+                    <tr>
+                      <td colspan="4">
+                        <div class="skeleton skeleton-line" style="height: 40px; margin: 8px 0"></div>
+                        <div class="skeleton skeleton-line" style="height: 40px; margin: 8px 0"></div>
+                        <div class="skeleton skeleton-line" style="height: 40px; margin: 8px 0"></div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <!--== PAGE 6: STATISTIK ==-->
           <section id="page-statistik" class="section-page" aria-labelledby="heading-statistik">
             <div class="page-header">
               <div class="page-breadcrumb">
@@ -856,6 +977,23 @@
             row.style.display = filter === "all" || pr === filter ? "" : "none";
           });
         }
+        // Filter Rekap Alumni
+        const btnRA = e.target.closest(".filter-rekap-alumni-btn");
+        if (btnRA) {
+          document.querySelectorAll(".filter-rekap-alumni-btn").forEach((b) => b.classList.remove("active"));
+          btnRA.classList.add("active");
+          const filter = btnRA.getAttribute("data-filter-rekap-alumni");
+          if (typeof window.applyRekapAlumniSearch === 'function') {
+            setTimeout(window.applyRekapAlumniSearch, 0);
+          } else {
+            document.querySelectorAll("#rekap-alumni-tbody tr[data-provinsi]").forEach((row) => {
+              if (filter === "all") { row.style.display = ""; return; }
+              const hasPKP = row.getAttribute("data-has-pkp") === "true";
+              const hasPKA = row.getAttribute("data-has-pka") === "true";
+              row.style.display = (filter === "pkp" && hasPKP) || (filter === "pka" && hasPKA) ? "" : "none";
+            });
+          }
+        }
       });
 
       /* =====================================================
@@ -893,6 +1031,18 @@
         a.download = filename;
         a.click();
         URL.revokeObjectURL(url);
+      }
+
+      function exportRekapAlumniCSV() {
+        const data = window.AppData?.rekapAlumni || [];
+        if (!data.length) {
+          showToast("info", "Export CSV", "Tidak ada data untuk diekspor.");
+          return;
+        }
+        const header = ["No", "Provinsi", "PKP", "PKA"];
+        const rows = data.map((r, i) => [i + 1, r.provinsi, r.pkp ?? "", r.pka ?? ""]);
+        downloadFile("rekap-alumni.csv", "text/csv;charset=utf-8;", [header, ...rows].map((r) => r.map((v) => `"${v}"`).join(",")).join("\n"));
+        showToast("success", "Export Berhasil", `${data.length} baris berhasil diekspor.`);
       }
 
       /* =====================================================
