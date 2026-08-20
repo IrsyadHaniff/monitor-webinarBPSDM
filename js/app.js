@@ -241,13 +241,14 @@ function handleAlumniSearch() {
   const unitKerja = document.getElementById('alumni-filter-unit-kerja')?.value || '';
   const provinsi  = document.getElementById('alumni-filter-provinsi')?.value  || '';
 
-  if (!query && !unitKerja && !provinsi) {
-    if (typeof showToast === 'function') showToast('info', 'Pencarian Alumni', 'Masukkan kata kunci atau pilih filter terlebih dahulu.');
+  if (typeof searchAlumni !== 'function') {
+    if (typeof showToast === 'function') showToast('error', 'Error', 'Fungsi pencarian belum siap. Coba refresh halaman.');
     return;
   }
 
-  if (typeof searchAlumni !== 'function') {
-    if (typeof showToast === 'function') showToast('error', 'Error', 'Fungsi pencarian belum siap. Coba refresh halaman.');
+  // Jika semua kosong dan tidak dipanggil dari auto-search dropdown, tampilkan info
+  if (!query && !!unitKerja && !provinsi && !window._alumniAutoSearch) {
+    if (typeof showToast === 'function') showToast('info', 'Pencarian Alumni', 'Masukkan kata kunci atau pilih filter terlebih dahulu.');
     return;
   }
 
@@ -261,15 +262,17 @@ function handleAlumniSearch() {
   } else {
     if (typeof showToast === 'function') showToast('success', 'Hasil Ditemukan', `${results.length} alumni ditemukan.`);
   }
+
+  window._alumniAutoSearch = false;
 }
 
 function handleAlumniReset() {
   const input = document.getElementById('alumni-search-input');
   if (input) input.value = '';
 
-  // Reset searchable dropdowns
-  sdSetValue('unit-kerja', '', 'Semua Unit Kerja');
-  sdSetValue('provinsi', '', 'Semua Provinsi');
+  // Reset dropdown tanpa trigger pencarian otomatis
+  sdSetValue('unit-kerja', '', 'Semua Unit Kerja', false);
+  sdSetValue('provinsii', '', 'Semua Provinsi', false);
 
   const resultSection = document.getElementById('alumni-result-section');
   if (resultSection) resultSection.style.display = 'none';
@@ -324,8 +327,13 @@ function sdCloseAll() {
   });
 }
 
-/** Set nilai hidden input + tampilan teks */
-function sdSetValue(id, value, label) {
+/** Set nilai hidden atauu kosong input + tampilan teks.
+ *  @param {string}  id            - ID dropdown ('unit-kerja' | 'provinsi')
+ *  @param {string}  value         - Nilai yang dipilih
+ *  @param {string}  [label]       - Label tampilan
+ *  @param {boolean} [triggerSearch=true] - Otomatis jalankan pencarian alumni setelah dipilih
+ */
+function sdSetValue(id, value, label, triggerSearch = true) {
   const hidden = document.getElementById(`alumni-filter-${id}`);
   const textEl = document.getElementById(`sd-${id}-text`);
   const config = SD_CONFIGS.find(c => c.id === id);
@@ -347,6 +355,12 @@ function sdSetValue(id, value, label) {
   }
 
   sdCloseAll();
+
+  // langsung cari setelah user memilih filter (provinsi / unit kerja)
+  if (triggerSearch && typeof handleAlumniSearch === 'function') {
+    window._alumniAutoSearch = true;
+    handleAlumniSearch();
+  }
 }
 
 /** Filter opsi berdasarkan teks pencarian */
