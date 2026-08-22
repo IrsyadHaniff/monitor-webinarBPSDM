@@ -142,12 +142,13 @@ function closeMobileSidebar() {
 let currentPage = 'dashboard';
 
 const PAGE_TITLES = {
-  dashboard:     'Dashboard',
-  webinar:       'Rekap Webinar',
-  pelatihan:     'Monitoring Pelatihan',
-  alumni:        'Monitoring Alumni',
-  'rekap-alumni':'Rekap Alumni',
-  statistik:     'Statistik',
+  dashboard:          'Dashboard',
+  webinar:            'Rekap Webinar',
+  pelatihan:          'Monitoring Pelatihan',
+  alumni:             'Monitoring Alumni',
+  'rekap-alumni':     'Rekap Alumni',
+  'daftar-kegiatan':  'Daftar Kegiatan',
+  statistik:          'Statistik',
 };
 
 function initNavigation() {
@@ -216,6 +217,12 @@ function onPageEnter(page) {
     // Render tabel rekap alumni jika data sudah tersedia
     if (typeof renderRekapAlumniTable === 'function') {
       renderRekapAlumniTable();
+    }
+  }
+  if (page === 'daftar-kegiatan') {
+    // Render tabel daftar kegiatan
+    if (typeof renderKegiatanTable === 'function') {
+      renderKegiatanTable();
     }
   }
 }

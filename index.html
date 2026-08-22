@@ -130,7 +130,7 @@
           <div class="nav-section-label" style="margin-top: 8px">Kegiatan</div>
           
           <div class="nav-item" data-page="daftar-kegiatan" role="menuitem" tabindex="0" data-label="Daftar Kegiatan" aria-label="Daftar Kegiatan">
-            <i class="bi bi-bar-chart-line-fill" aria-hidden="true"></i>
+            <i class="bi bi-calendar3-fill" aria-hidden="true"></i>
             <span class="nav-label">Daftar Kegiatan</span>
           </div>
 
@@ -836,6 +836,131 @@
           </section>
 
           <!--== PAGE 6: DAFTAR KEGIATAN ==-->
+          <section id="page-daftar-kegiatan" class="section-page" aria-labelledby="heading-kegiatan">
+            <!-- Page Header -->
+            <div class="page-header">
+              <div class="page-breadcrumb">
+                <span>Pusbangkom</span>
+                <span class="sep"><i class="bi bi-chevron-right"></i></span>
+                <span class="current">Daftar Kegiatan</span>
+              </div>
+              <h1 id="heading-kegiatan" class="page-title">Daftar <span>Kegiatan</span></h1>
+              <p class="page-subtitle">Kelola seluruh kegiatan webinar dan pelatihan Pusbangkom. Tambah, ubah, dan hapus data kegiatan dengan mudah.</p>
+            </div>
+
+            <!-- Summary Stats Kegiatan -->
+            <div class="kegiatan-stats-row" role="region" aria-label="Ringkasan status kegiatan">
+              <div class="kegiatan-stat-chip chip-all" id="kg-chip-all" onclick="filterKegiatanByStatus('all')" role="button" tabindex="0" aria-pressed="true">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+                <div class="chip-info">
+                  <span class="chip-count" id="kg-count-all">0</span>
+                  <span class="chip-label">Semua</span>
+                </div>
+              </div>
+              <div class="kegiatan-stat-chip chip-berlangsung" id="kg-chip-berlangsung" onclick="filterKegiatanByStatus('Sedang Berlangsung')" role="button" tabindex="0" aria-pressed="false">
+                <i class="bi bi-broadcast"></i>
+                <div class="chip-info">
+                  <span class="chip-count" id="kg-count-berlangsung">0</span>
+                  <span class="chip-label">Sedang Berlangsung</span>
+                </div>
+              </div>
+              <div class="kegiatan-stat-chip chip-datang" id="kg-chip-datang" onclick="filterKegiatanByStatus('Akan Datang')" role="button" tabindex="0" aria-pressed="false">
+                <i class="bi bi-calendar-event-fill"></i>
+                <div class="chip-info">
+                  <span class="chip-count" id="kg-count-datang">0</span>
+                  <span class="chip-label">Akan Datang</span>
+                </div>
+              </div>
+              <div class="kegiatan-stat-chip chip-selesai" id="kg-chip-selesai" onclick="filterKegiatanByStatus('Selesai')" role="button" tabindex="0" aria-pressed="false">
+                <i class="bi bi-check-circle-fill"></i>
+                <div class="chip-info">
+                  <span class="chip-count" id="kg-count-selesai">0</span>
+                  <span class="chip-label">Selesai</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Toolbar: Search + Add -->
+            <div class="card card-table">
+              <div class="card-header" style="flex-wrap: wrap; gap: 12px;">
+                <h2 class="card-title">
+                  <i class="bi bi-calendar3"></i>
+                  Tabel Daftar Kegiatan
+                </h2>
+                <div class="kegiatan-toolbar">
+                  <div class="kegiatan-search-wrap">
+                    <i class="bi bi-search kegiatan-search-icon"></i>
+                    <input
+                      type="search"
+                      id="kegiatan-search-input"
+                      class="kegiatan-search-input"
+                      placeholder="Cari nama, lokasi..."
+                      aria-label="Cari kegiatan"
+                      oninput="searchKegiatan()"
+                    />
+                  </div>
+                  <button
+                    id="btn-export-kegiatan"
+                    class="btn-kegiatan btn-export"
+                    onclick="exportKegiatanCSV()"
+                    title="Export ke CSV"
+                    aria-label="Export kegiatan ke CSV"
+                  >
+                    <i class="bi bi-download"></i>
+                    <span>Export CSV</span>
+                  </button>
+                  <button
+                    id="btn-tambah-kegiatan"
+                    class="btn-kegiatan btn-primary-kg"
+                    onclick="openKegiatanModal()"
+                    aria-label="Tambah kegiatan baru"
+                  >
+                    <i class="bi bi-plus-lg"></i>
+                    <span>Tambah Kegiatan</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Table -->
+              <div class="table-wrapper" style="overflow-x: auto;">
+                <table class="data-table kegiatan-table" id="kegiatan-table" role="table" aria-label="Tabel daftar kegiatan">
+                  <thead>
+                    <tr>
+                      <th scope="col" style="width: 48px; text-align: center;">No</th>
+                      <th scope="col" style="min-width: 220px;" class="sortable" data-col="nama" onclick="sortKegiatan('nama')">
+                        Nama Kegiatan <i class="bi bi-arrow-down-up sort-icon"></i>
+                      </th>
+                      <th scope="col" style="min-width: 120px;" class="sortable" data-col="tanggal" onclick="sortKegiatan('tanggal')">
+                        Tanggal <i class="bi bi-arrow-down-up sort-icon"></i>
+                      </th>
+                      <th scope="col" style="min-width: 105px; text-align: center;" class="sortable" data-col="jam" onclick="sortKegiatan('jam')">
+                        Jam Mulai <i class="bi bi-arrow-down-up sort-icon"></i>
+                      </th>
+                      <th scope="col" style="min-width: 105px; text-align: center;">Jam Selesai</th>
+                      <th scope="col" style="min-width: 160px;">Lokasi</th>
+                      <th scope="col" style="min-width: 140px; text-align: center;">Status</th>
+                      <th scope="col" style="width: 110px; text-align: center;">Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="kegiatan-tbody">
+                    <tr>
+                      <td colspan="8">
+                        <div class="skeleton skeleton-line" style="height: 44px; margin: 6px 0;"></div>
+                        <div class="skeleton skeleton-line" style="height: 44px; margin: 6px 0;"></div>
+                        <div class="skeleton skeleton-line" style="height: 44px; margin: 6px 0;"></div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Pagination / counter -->
+              <div class="kegiatan-footer">
+                <span id="kegiatan-count-info" class="kegiatan-count-info">Menampilkan 0 kegiatan</span>
+                <div class="kegiatan-pagination" id="kegiatan-pagination" role="navigation" aria-label="Navigasi halaman kegiatan"></div>
+              </div>
+            </div>
+          </section>
 
           <!--== PAGE 7: STATISTIK ==-->
           <section id="page-statistik" class="section-page" aria-labelledby="heading-statistik">
@@ -1065,5 +1190,192 @@
         }
       });
     </script>
+    <!--== MODAL KEGIATAN (Tambah / Edit) ==-->
+    <div id="kegiatan-modal" class="modal-overlay kg-modal-overlay" role="dialog" aria-labelledby="kg-modal-title" aria-modal="true" style="display:none;">
+      <div class="modal-box kg-modal-box" role="document">
+        <div class="modal-header kg-modal-header">
+          <div class="kg-modal-header-left">
+            <div class="kg-modal-icon-wrap">
+              <i class="bi bi-calendar-plus-fill"></i>
+            </div>
+            <h2 class="modal-title" id="kg-modal-title">Tambah Kegiatan</h2>
+          </div>
+          <button id="kg-modal-close-btn" class="modal-close" aria-label="Tutup modal kegiatan" onclick="closeKegiatanModal()">
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+        <form id="kegiatan-form" class="kg-form" onsubmit="submitKegiatanForm(event)" novalidate>
+          <input type="hidden" id="kg-form-id" />
+
+          <!-- Nama Kegiatan -->
+          <div class="kg-form-group kg-form-full">
+            <label for="kg-nama" class="kg-label">
+              <i class="bi bi-card-text"></i> Nama Kegiatan <span class="kg-required">*</span>
+            </label>
+            <input
+              type="text"
+              id="kg-nama"
+              class="kg-input"
+              placeholder="Contoh: Webinar KPKSeries - Literasi Korupsi"
+              maxlength="200"
+              required
+              aria-describedby="kg-nama-err"
+            />
+            <span class="kg-error" id="kg-nama-err" role="alert"></span>
+          </div>
+
+          <!-- Tanggal — Custom Datepicker -->
+          <div class="kg-form-group kg-form-full">
+            <label class="kg-label">
+              <i class="bi bi-calendar3"></i> Tanggal <span class="kg-required">*</span>
+            </label>
+            <div class="kg-datepicker-wrap" id="kg-datepicker-wrap">
+              <button type="button" class="kg-datepicker-trigger" id="kg-datepicker-trigger">
+                <i class="bi bi-calendar3"></i>
+                <span id="kg-datepicker-display">Pilih tanggal</span>
+                <i class="bi bi-chevron-down kg-dp-chevron"></i>
+              </button>
+              <input type="hidden" id="kg-tanggal" />
+              <div class="kg-datepicker-popup" id="kg-datepicker-popup" style="display:none;">
+                <div class="kg-cal-header">
+                  <button type="button" class="kg-cal-nav" id="kg-cal-prev"><i class="bi bi-chevron-left"></i></button>
+                  <div class="kg-cal-month-year">
+                    <button type="button" class="kg-cal-month-btn" id="kg-cal-month-btn"></button>
+                    <button type="button" class="kg-cal-year-btn" id="kg-cal-year-btn"></button>
+                  </div>
+                  <button type="button" class="kg-cal-nav" id="kg-cal-next"><i class="bi bi-chevron-right"></i></button>
+                </div>
+                <div class="kg-cal-month-panel" id="kg-cal-month-panel" style="display:none;"></div>
+                <div class="kg-cal-year-panel" id="kg-cal-year-panel" style="display:none;"></div>
+                <div class="kg-cal-day-panel" id="kg-cal-day-panel">
+                  <div class="kg-cal-weekdays">
+                    <span>Min</span><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span>
+                  </div>
+                  <div class="kg-cal-days" id="kg-cal-days"></div>
+                </div>
+                <div class="kg-cal-footer">
+                  <button type="button" class="kg-cal-today-btn" id="kg-cal-today">Hari Ini</button>
+                  <button type="button" class="kg-cal-clear-btn" id="kg-cal-clear">Hapus</button>
+                </div>
+              </div>
+            </div>
+            <span class="kg-error" id="kg-tanggal-err" role="alert"></span>
+          </div>
+
+          <!-- Row: Jam Mulai & Jam Selesai — Custom Timepicker -->
+          <div class="kg-form-row">
+            <div class="kg-form-group">
+              <label class="kg-label">
+                <i class="bi bi-clock-fill"></i> Jam Mulai <span class="kg-required">*</span>
+              </label>
+              <div class="kg-timepicker-wrap" id="kg-tp-mulai-wrap">
+                <button type="button" class="kg-timepicker-trigger" id="kg-tp-mulai-trigger">
+                  <i class="bi bi-clock"></i>
+                  <span id="kg-tp-mulai-display">--:--</span>
+                  <i class="bi bi-chevron-down kg-dp-chevron"></i>
+                </button>
+                <input type="hidden" id="kg-jam" />
+                <div class="kg-timepicker-popup" id="kg-tp-mulai-popup" style="display:none;">
+                  <div class="kg-tp-cols">
+                    <div class="kg-tp-col" id="kg-tp-mulai-h"></div>
+                    <div class="kg-tp-sep">:</div>
+                    <div class="kg-tp-col" id="kg-tp-mulai-m"></div>
+                  </div>
+                </div>
+              </div>
+              <span class="kg-error" id="kg-jam-err" role="alert"></span>
+            </div>
+            <div class="kg-form-group">
+              <label class="kg-label">
+                <i class="bi bi-clock-history"></i> Jam Selesai
+              </label>
+              <div class="kg-timepicker-wrap" id="kg-tp-selesai-wrap">
+                <button type="button" class="kg-timepicker-trigger" id="kg-tp-selesai-trigger">
+                  <i class="bi bi-clock"></i>
+                  <span id="kg-tp-selesai-display">--:--</span>
+                  <i class="bi bi-chevron-down kg-dp-chevron"></i>
+                </button>
+                <input type="hidden" id="kg-jam-selesai" />
+                <div class="kg-timepicker-popup" id="kg-tp-selesai-popup" style="display:none;">
+                  <div class="kg-tp-cols">
+                    <div class="kg-tp-col" id="kg-tp-selesai-h"></div>
+                    <div class="kg-tp-sep">:</div>
+                    <div class="kg-tp-col" id="kg-tp-selesai-m"></div>
+                  </div>
+                </div>
+              </div>
+              <span class="kg-error" id="kg-jam-selesai-err" role="alert"></span>
+            </div>
+          </div>
+
+
+          <!-- Lokasi -->
+          <div class="kg-form-group kg-form-full">
+            <label for="kg-lokasi" class="kg-label">
+              <i class="bi bi-geo-alt-fill"></i> Lokasi <span class="kg-required">*</span>
+            </label>
+            <input
+              type="text"
+              id="kg-lokasi"
+              class="kg-input"
+              placeholder="Contoh: Zoom Meeting / Aula BPSDM ATR-BPN Jakarta"
+              maxlength="200"
+              required
+              aria-describedby="kg-lokasi-err"
+            />
+            <span class="kg-error" id="kg-lokasi-err" role="alert"></span>
+          </div>
+
+          <!-- Status -->
+          <div class="kg-form-group kg-form-full">
+            <label for="kg-status" class="kg-label">
+              <i class="bi bi-signal"></i> Status <span class="kg-required">*</span>
+            </label>
+            <div class="kg-select-wrap">
+              <select id="kg-status" class="kg-select" required aria-describedby="kg-status-err">
+                <option value="" disabled selected>Pilih status kegiatan</option>
+                <option value="Sedang Berlangsung">🔴 Sedang Berlangsung</option>
+                <option value="Akan Datang">🟡 Akan Datang</option>
+                <option value="Selesai">🟢 Selesai</option>
+              </select>
+              <i class="bi bi-chevron-down kg-select-arrow"></i>
+            </div>
+            <span class="kg-error" id="kg-status-err" role="alert"></span>
+          </div>
+
+          <!-- Form Actions -->
+          <div class="kg-form-actions">
+            <button type="button" class="btn-kg-cancel" onclick="closeKegiatanModal()">
+              <i class="bi bi-x"></i> Batal
+            </button>
+            <button type="submit" class="btn-kg-submit" id="kg-submit-btn">
+              <i class="bi bi-floppy-fill"></i> <span id="kg-submit-label">Simpan Kegiatan</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!--== MODAL KONFIRMASI HAPUS KEGIATAN ==-->
+    <div id="kegiatan-delete-modal" class="modal-overlay kg-modal-overlay" role="dialog" aria-labelledby="kg-delete-title" aria-modal="true" style="display:none;">
+      <div class="modal-box kg-delete-box" role="document">
+        <div class="kg-delete-icon-wrap">
+          <i class="bi bi-trash3-fill"></i>
+        </div>
+        <h2 id="kg-delete-title" class="kg-delete-title">Hapus Kegiatan?</h2>
+        <p class="kg-delete-desc">Kegiatan <strong id="kg-delete-nama"></strong> akan dihapus secara permanen. Tindakan ini tidak dapat dibatalkan.</p>
+        <div class="kg-delete-actions">
+          <button class="btn-kg-cancel" onclick="closeDeleteModal()">
+            <i class="bi bi-x"></i> Batal
+          </button>
+          <button class="btn-kg-danger" id="kg-confirm-delete-btn" onclick="confirmDeleteKegiatan()">
+            <i class="bi bi-trash3-fill"></i> Ya, Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/kegiatan.js" defer></script>
+
   </body>
 </html>
