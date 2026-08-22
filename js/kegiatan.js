@@ -2,14 +2,19 @@
  * kegiatan.js — Modul Daftar Kegiatan v1.0
  * Dashboard Monitoring Webinar & Pelatihan | Pusbangkom
  * =====================================================
+ * Sumber data: Google Spreadsheet (sheet "Kegiatan")
+ *   - Data dibaca dari window.AppData.kegiatan (diisi oleh spreadsheet.js)
+ *   - Data tambahan user (ditambah via form) disimpan di localStorage
+ *     dengan key KG_LOCAL_KEY dan digabung saat render
  * Fitur:
  *  - CRUD kegiatan (Tambah, Baca, Ubah, Hapus)
+ *    • Tambah/Edit/Hapus hanya berlaku pada data lokal (localStorage)
+ *    • Data dari spreadsheet bersifat read-only
  *  - Filter status (Semua, Sedang Berlangsung, Akan Datang, Selesai)
  *  - Search real-time
  *  - Sort per kolom
  *  - Paginasi (10 baris per halaman)
  *  - Export CSV
- *  - Persistensi data di localStorage
  * =====================================================
  */
 
@@ -25,83 +30,9 @@ function _kgToast(type, title, msg) {
 /* =====================================================
    STORAGE KEY & INISIALISASI DATA
    ===================================================== */
-const KG_STORAGE_KEY = 'pmw-kegiatan-data';
+const KG_STORAGE_KEY  = 'pmw-kegiatan-data'; // legacy - tidak dipakai lagi
+const KG_LOCAL_KEY    = 'pmw-kegiatan-local'; // data tambahan dari form user
 
-/** Data default (diambil dari webinar + pelatihan sebagai demo awal) */
-const KG_DEFAULT_DATA = [
-  {
-    id: 'KG001',
-    nama: 'Webinar KPKSeries: Literasi Tindak Pidana Korupsi dan Edukasi ke Aksi',
-    tanggal: '2026-01-22',
-    jam: '09:00',
-    jamSelesai: '11:00',
-    lokasi: 'Zoom Meeting',
-    status: 'Selesai',
-  },
-  {
-    id: 'KG002',
-    nama: 'Strategi Optimalisasi AI di Kementerian ATR/BPN',
-    tanggal: '2026-01-29',
-    jam: '13:00',
-    jamSelesai: '15:30',
-    lokasi: 'Zoom Meeting & YouTube Live',
-    status: 'Selesai',
-  },
-  {
-    id: 'KG003',
-    nama: 'Sosialisasi Peraturan Menteri ATR/BPN No. 1 Tahun 2026 tentang Manajemen Risiko',
-    tanggal: '2026-02-05',
-    jam: '09:00',
-    jamSelesai: '12:00',
-    lokasi: 'Zoom Meeting',
-    status: 'Selesai',
-  },
-  {
-    id: 'KG004',
-    nama: 'Pelatihan Dasar CPNS Gelombang 4',
-    tanggal: '2025-12-15',
-    jam: '08:00',
-    jamSelesai: '17:00',
-    lokasi: 'BPSDM ATR/BPN Jakarta',
-    status: 'Selesai',
-  },
-  {
-    id: 'KG005',
-    nama: 'Coaching dan Mentoring untuk Pengembangan SDM Organisasi',
-    tanggal: '2026-06-20',
-    jam: '10:00',
-    jamSelesai: '12:00',
-    lokasi: 'Zoom Meeting',
-    status: 'Sedang Berlangsung',
-  },
-  {
-    id: 'KG006',
-    nama: 'Bimtek Pelayanan Pertanahan Berbasis Elektronik',
-    tanggal: '2026-06-01',
-    jam: '08:30',
-    jamSelesai: '16:00',
-    lokasi: 'Online (MOOC)',
-    status: 'Sedang Berlangsung',
-  },
-  {
-    id: 'KG007',
-    nama: 'Reformasi Birokrasi dan Pelayanan Prima ATR/BPN 2026',
-    tanggal: '2026-08-15',
-    jam: '09:00',
-    jamSelesai: '12:00',
-    lokasi: 'Zoom Meeting & Aula BPSDM Jakarta',
-    status: 'Akan Datang',
-  },
-  {
-    id: 'KG008',
-    nama: 'Pelatihan Kepemimpinan Pengawas Angkatan II',
-    tanggal: '2026-09-01',
-    jam: '08:00',
-    jamSelesai: '17:00',
-    lokasi: 'BPSDM ATR/BPN',
-    status: 'Akan Datang',
-  },
-];
 
 /* =====================================================
    STATE
@@ -122,7 +53,9 @@ let kegiatanDeleteId    = null;   // id yg akan dihapus
    INIT
    ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-  loadKegiatanFromStorage();
+  // Muat data gabungan (spreadsheet + lokal)
+  // Jika AppData.kegiatan belum terisi (belum fetch selesai), hanya data lokal yang tampil
+  loadKegiatanData();
 
   // Keyboard handler untuk chip-chips
   document.querySelectorAll('.kegiatan-stat-chip').forEach(chip => {
@@ -152,26 +85,59 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* =====================================================
-   STORAGE
+   STORAGE — LOCAL ADDITIONS ONLY
    ===================================================== */
-function loadKegiatanFromStorage() {
-  try {
-    const raw = localStorage.getItem(KG_STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      // Backward compat: tambahkan jamSelesai jika belum ada
-      kegiatanData = parsed.map(k => ({ jamSelesai: '', ...k }));
-    } else {
-      kegiatanData = [...KG_DEFAULT_DATA];
-    }
-  } catch {
-    kegiatanData = [...KG_DEFAULT_DATA];
-  }
+
+/**
+ * Ambil data kegiatan gabungan:
+ *   1. Data dari spreadsheet (window.AppData.kegiatan) — read-only, ditandai isLocal=false
+ *   2. Data tambahan user dari localStorage — dapat di-edit/hapus, isLocal=true
+ *
+ * Dipanggil setiap kali renderKegiatanTable() atau renderKegiatanFromSpreadsheet().
+ */
+function loadKegiatanData() {
+  const fromSheet = (window.AppData && window.AppData.kegiatan) || [];
+  const fromLocal = loadLocalKegiatan();
+
+  // Tandai sumber data
+  const sheetItems = fromSheet.map(k => ({ ...k, isLocal: false }));
+  const localItems = fromLocal.map(k => ({ ...k, isLocal: true }));
+
+  // Gabung: spreadsheet duluan, lalu data lokal di bawah
+  kegiatanData = [...sheetItems, ...localItems];
 }
 
-function saveKegiatanToStorage() {
-  localStorage.setItem(KG_STORAGE_KEY, JSON.stringify(kegiatanData));
+/**
+ * Baca data lokal dari localStorage (data yang ditambah via form).
+ */
+function loadLocalKegiatan() {
+  try {
+    const raw = localStorage.getItem(KG_LOCAL_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      return parsed.map(k => ({ jamSelesai: '', ...k }));
+    }
+  } catch { /* ignore */ }
+  return [];
 }
+
+/**
+ * Simpan hanya data lokal (isLocal=true) ke localStorage.
+ */
+function saveKegiatanToStorage() {
+  const localOnly = kegiatanData.filter(k => k.isLocal);
+  localStorage.setItem(KG_LOCAL_KEY, JSON.stringify(localOnly));
+}
+
+/**
+ * Dipanggil oleh spreadsheet.js → renderTable() setiap kali data baru tiba.
+ * Reload data gabungan lalu render ulang tabel.
+ */
+function renderKegiatanFromSpreadsheet() {
+  loadKegiatanData();
+  renderKegiatanTable();
+}
+window.renderKegiatanFromSpreadsheet = renderKegiatanFromSpreadsheet;
 
 /* =====================================================
    RENDER TABEL
@@ -455,8 +421,41 @@ function goKegiatanPage(page) {
 }
 
 /* =====================================================
-   MODAL CRUD — TAMBAH / EDIT
+   APPS SCRIPT WRITE — POST ke spreadsheet
    ===================================================== */
+
+/**
+ * Kirim operasi write ke Apps Script.
+ * action: 'create' | 'update' | 'delete'
+ * payload: object data kegiatan
+ */
+async function kgPostToSheet(action, payload) {
+  const url = window.CONFIG?.SPREADSHEET_URL;
+  if (!url) throw new Error('SPREADSHEET_URL belum dikonfigurasi.');
+
+  const body = JSON.stringify({ action, sheet: 'Kegiatan', data: payload });
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // Apps Script butuh text/plain untuk doPost
+    body,
+  });
+
+  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+
+  const result = await res.json();
+  if (result.status === 'error') throw new Error(result.message || 'Gagal menyimpan data.');
+  return result;
+}
+
+/**
+ * Refresh data dari spreadsheet setelah operasi write berhasil.
+ */
+async function kgRefreshFromSheet() {
+  if (typeof window.loadData === 'function') {
+    await window.loadData();
+  }
+}
 function openKegiatanModal(id = null) {
   kegiatanEditId = id;
   const modal   = document.getElementById('kegiatan-modal');
@@ -476,7 +475,7 @@ function openKegiatanModal(id = null) {
   kgResetTimepicker('selesai');
 
   if (id) {
-    // Mode Edit
+    // Mode Edit — semua data bisa diedit (akan sync ke spreadsheet)
     const item = kegiatanData.find(k => k.id === id);
     if (!item) return;
 
@@ -532,23 +531,45 @@ function submitKegiatanForm(e) {
   const lokasi     = document.getElementById('kg-lokasi').value.trim();
   const status     = document.getElementById('kg-status').value;
 
-  if (kegiatanEditId) {
-    // UPDATE
-    const idx = kegiatanData.findIndex(k => k.id === kegiatanEditId);
-    if (idx !== -1) {
-      kegiatanData[idx] = { ...kegiatanData[idx], nama, tanggal, jam, jamSelesai, lokasi, status };
-      _kgToast('success', 'Berhasil Diubah', `Kegiatan "${nama}" berhasil diperbarui.`);
-    }
-  } else {
-    // CREATE
-    const newId = generateKegiatanId();
-    kegiatanData.push({ id: newId, nama, tanggal, jam, jamSelesai, lokasi, status });
-    _kgToast('success', 'Kegiatan Ditambahkan', `Kegiatan "${nama}" berhasil ditambahkan.`);
+  // Disable tombol submit selama proses
+  const submitBtn = document.getElementById('kg-submit-btn');
+  const origLabel = document.getElementById('kg-submit-label')?.textContent;
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    const lbl = document.getElementById('kg-submit-label');
+    if (lbl) lbl.textContent = 'Menyimpan...';
   }
 
-  saveKegiatanToStorage();
-  closeKegiatanModal();
-  renderKegiatanTable();
+  const isEdit  = !!kegiatanEditId;
+  const item    = isEdit ? kegiatanData.find(k => k.id === kegiatanEditId) : null;
+  const payload = {
+    id        : isEdit ? kegiatanEditId : null,
+    rowIndex  : item?.rowIndex ?? null,  // rowIndex dari spreadsheet untuk update
+    nama, tanggal, jam, jamSelesai, lokasi, status,
+  };
+
+  kgPostToSheet(isEdit ? 'update' : 'create', payload)
+    .then(() => {
+      _kgToast('success',
+        isEdit ? 'Berhasil Diubah' : 'Kegiatan Ditambahkan',
+        isEdit
+          ? `Kegiatan "${nama}" berhasil diperbarui.`
+          : `Kegiatan "${nama}" berhasil ditambahkan.`
+      );
+      closeKegiatanModal();
+      return kgRefreshFromSheet();
+    })
+    .catch(err => {
+      console.error('[submitKegiatanForm]', err);
+      _kgToast('error', 'Gagal Menyimpan', err.message || 'Terjadi kesalahan. Coba lagi.');
+    })
+    .finally(() => {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        const lbl = document.getElementById('kg-submit-label');
+        if (lbl && origLabel) lbl.textContent = origLabel;
+      }
+    });
 }
 
 /* =====================================================
@@ -645,11 +666,31 @@ function closeDeleteModal() {
 function confirmDeleteKegiatan() {
   if (!kegiatanDeleteId) return;
   const item = kegiatanData.find(k => k.id === kegiatanDeleteId);
-  kegiatanData = kegiatanData.filter(k => k.id !== kegiatanDeleteId);
-  saveKegiatanToStorage();
-  closeDeleteModal();
-  renderKegiatanTable();
-  if (item) _kgToast('info', 'Kegiatan Dihapus', `Kegiatan "${item.nama}" telah dihapus.`);
+  if (!item) { closeDeleteModal(); return; }
+
+  // Disable tombol konfirmasi selama proses
+  const confirmBtn = document.getElementById('kg-confirm-delete-btn');
+  if (confirmBtn) {
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'Menghapus...';
+  }
+
+  kgPostToSheet('delete', { id: item.id, rowIndex: item.rowIndex ?? null })
+    .then(() => {
+      closeDeleteModal();
+      _kgToast('info', 'Kegiatan Dihapus', `Kegiatan "${item.nama}" telah dihapus.`);
+      return kgRefreshFromSheet();
+    })
+    .catch(err => {
+      console.error('[confirmDeleteKegiatan]', err);
+      _kgToast('error', 'Gagal Menghapus', err.message || 'Terjadi kesalahan. Coba lagi.');
+    })
+    .finally(() => {
+      if (confirmBtn) {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Hapus';
+      }
+    });
 }
 
 /* =====================================================
@@ -696,7 +737,7 @@ function kgFormatTanggal(dateStr) {
   if (!dateStr) return '-';
   try {
     const d = new Date(dateStr + 'T00:00:00');
-    return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    return d.toLocaleDateString('id-ID', { day: '2-digit', month: 'long', year: 'numeric' });
   } catch {
     return dateStr;
   }

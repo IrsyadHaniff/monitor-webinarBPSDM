@@ -17,6 +17,7 @@ window.AppData = {
   pelatihan: [],
   alumni: [],
   rekapAlumni: [], // daftar unit kerja & provinsi dari sheet Rekap_Alumni
+  kegiatan: [],    // data dari sheet Kegiatan
   stats: {},
   lastUpdated: null,
   isLoading: false,
@@ -355,8 +356,8 @@ async function fetchSpreadsheet() {
   const res = await fetchWithTimeout(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
   const data = await res.json();
-  if (!data.webinars && !data.pelatihan && !data.alumni) {
-    throw new Error("Format response tidak sesuai. Pastikan Apps Script mengembalikan field webinars, pelatihan, dan/atau alumni.");
+  if (!data.webinars && !data.pelatihan && !data.alumni && !data.kegiatan) {
+    throw new Error("Format response tidak sesuai. Pastikan Apps Script mengembalikan field webinars, pelatihan, alumni, dan/atau kegiatan.");
   }
   return data;
 }
@@ -409,11 +410,26 @@ function processData(rawData) {
     .filter((u) => u !== "")
     .sort();
 
+  // Filter dan normalisasi data kegiatan
+  let kegiatan = (rawData.kegiatan || []).filter(
+    (k) => k.nama && String(k.nama).trim() !== ""
+  );
+  kegiatan = kegiatan.map((k, i) => ({
+    id: k.id || "KG" + String(i + 1).padStart(3, "0"),
+    rowIndex: k.rowIndex ?? null,   // nomor baris di spreadsheet (dikirim Apps Script)
+    nama: String(k.nama || "").trim(),
+    tanggal: normalizeKegiatanTanggal(k.tanggal),
+    jam: normalizeKegiatanJam(k.jam),
+    jamSelesai: normalizeKegiatanJam(k.jamSelesai),
+    lokasi: String(k.lokasi || "").trim(),
+    status: normalizeKegiatanStatus(k.status),
+  }));
   window.AppData.webinars = webinars;
   window.AppData.pelatihan = pelatihan;
   window.AppData.alumni = alumni;
   window.AppData.rekapAlumni = rekapAlumni;
   window.AppData.unitKerjaList = unitKerjaList;
+  window.AppData.kegiatan = kegiatan;
   window.AppData.stats = hitungStatistik();
 
   // Populate dropdown alumni setelah data siap
@@ -445,6 +461,72 @@ function normalizeProsesStatus(proses) {
   if (s === "sedang berlangsung") return "Sedang Berlangsung";
   if (s === "akan datang" || s === "akan diselenggarakan" || s === "" || s === "belum dimulai") return "Akan Datang";
   return proses || "Akan Datang";
+}
+
+/**
+ * Normalisasi status kegiatan dari sheet Kegiatan.
+ */
+function normalizeKegiatanStatus(status) {
+  const s = String(status || "")
+    .trim()
+    .toLowerCase();
+  if (s === "selesai" || s === "telah terselenggara" || s === "telah diselenggarakan") return "Selesai";
+  if (s === "sedang berlangsung") return "Sedang Berlangsung";
+  if (s === "akan datang" || s === "akan diselenggarakan" || s === "belum dimulai" || s === "") return "Akan Datang";
+  return status || "Akan Datang";
+}
+
+/**
+ * Normalisasi tanggal kegiatan.
+ * Apps Script bisa kirim:
+ *   - string "yyyy-MM-dd"  → langsung pakai
+ *   - string Date panjang  → parse lalu format ulang
+ *   - kosong / null        → ""
+ */
+function normalizeKegiatanTanggal(val) {
+  if (!val) return "";
+  const s = String(val).trim();
+  // Sudah format yyyy-MM-dd
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  // Coba parse sebagai Date
+  const d = new Date(s);
+  if (isNaN(d)) return "";
+  const yyyy = d.getFullYear();
+  const mm   = String(d.getMonth() + 1).padStart(2, "0");
+  const dd   = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+/**
+ * Normalisasi jam kegiatan.
+ * Apps Script bisa kirim:
+ *   - string "HH:MM"            → langsung pakai
+ *   - string Date panjang/penuh → ambil HH:MM saja
+ *   - angka desimal (Excel time) → konversi ke HH:MM
+ *   - kosong / null              → ""
+ */
+function normalizeKegiatanJam(val) {
+  if (val === null || val === undefined || val === "") return "";
+  const s = String(val).trim();
+  // Sudah format HH:MM atau HH:MM:SS
+  if (/^\d{1,2}:\d{2}(:\d{2})?$/.test(s)) {
+    const parts = s.split(":");
+    return `${parts[0].padStart(2, "0")}:${parts[1]}`;
+  }
+  // Angka desimal (Excel/Sheets time fraction, mis. 0.333... = 08:00)
+  if (/^\d+(\.\d+)?$/.test(s)) {
+    const frac = parseFloat(s) % 1; // ambil bagian desimal saja
+    const totalMin = Math.round(frac * 24 * 60);
+    const h = Math.floor(totalMin / 60);
+    const m = totalMin % 60;
+    return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+  }
+  // String Date panjang (mis. "Sat Dec 30 1899 08:00:00 GMT+...")
+  const d = new Date(s);
+  if (!isNaN(d)) {
+    return `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  }
+  return "";
 }
 
 function hitungStatistik() {
@@ -585,6 +667,10 @@ function renderTable() {
   renderPelatihanTable();
   renderRankingTable();
   renderRekapAlumniTable();
+  // Render tabel kegiatan dari data spreadsheet
+  if (typeof window.renderKegiatanFromSpreadsheet === "function") {
+    window.renderKegiatanFromSpreadsheet();
+  }
   // Re-apply pencarian aktif setelah render ulang
   if (typeof window.applyWebinarSearch === "function") window.applyWebinarSearch();
   if (typeof window.applyPelatihanSearch === "function") window.applyPelatihanSearch();

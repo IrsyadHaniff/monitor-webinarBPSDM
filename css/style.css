@@ -145,6 +145,22 @@
 }
 
 /* =========================================================
+     DARK MODE — Kegiatan overrides
+     ========================================================= */
+  [data-theme="dark"] .kegiatan-stat-chip {
+    background: var(--surface-card);
+  }
+  
+  [data-theme="dark"] .badge-berlangsung { background: rgba(239,68,68,.18); }
+  [data-theme="dark"] .badge-datang      { background: rgba(245,158,11,.18); }
+  [data-theme="dark"] .badge-selesai     { background: rgba(34,197,94,.18); }
+  
+  [data-theme="dark"] .kg-modal-box    { background: var(--surface-card); }
+  [data-theme="dark"] .kg-delete-box   { background: var(--surface-card); }
+  [data-theme="dark"] .kg-input,
+  [data-theme="dark"] .kg-select       { background: var(--bg-base); border-color: var(--border-color); }
+  
+/* =========================================================
    3. RESET & BASE
    ========================================================= */
 *, *::before, *::after {
@@ -2516,6 +2532,30 @@ button { cursor: pointer; font-family: var(--font-family); }
 .kg-row { transition: background 0.15s; }
 .kg-row:hover { background: var(--bg-hover); }
 
+/* --- Tombol aksi disabled (data dari spreadsheet) --- */
+.btn-aksi-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* --- Badge sumber data spreadsheet --- */
+.kg-source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-secondary-dark);
+  background: rgba(3,160,238,.1);
+  border: 1px solid rgba(3,160,238,.2);
+  border-radius: var(--radius-full);
+  padding: 1px 7px;
+  margin-left: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
 /* --- Empty State --- */
 .kg-empty { padding: 48px 0 !important; }
 .kg-empty-inner {
@@ -3097,21 +3137,6 @@ button { cursor: pointer; font-family: var(--font-family); }
 
 .btn-kg-danger:active { transform: scale(0.98); }
 
-/* =========================================================
-   DARK MODE — Kegiatan overrides
-   ========================================================= */
-[data-theme="dark"] .kegiatan-stat-chip {
-  background: var(--surface-card);
-}
-
-[data-theme="dark"] .badge-berlangsung { background: rgba(239,68,68,.18); }
-[data-theme="dark"] .badge-datang      { background: rgba(245,158,11,.18); }
-[data-theme="dark"] .badge-selesai     { background: rgba(34,197,94,.18); }
-
-[data-theme="dark"] .kg-modal-box    { background: var(--surface-card); }
-[data-theme="dark"] .kg-delete-box   { background: var(--surface-card); }
-[data-theme="dark"] .kg-input,
-[data-theme="dark"] .kg-select       { background: var(--bg-base); border-color: var(--border-color); }
 
 /* =========================================================
    RESPONSIVE — Kegiatan
