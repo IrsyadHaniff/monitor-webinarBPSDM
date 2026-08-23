@@ -414,16 +414,22 @@ function processData(rawData) {
   let kegiatan = (rawData.kegiatan || []).filter(
     (k) => k.nama && String(k.nama).trim() !== ""
   );
-  kegiatan = kegiatan.map((k, i) => ({
-    id: k.id || "KG" + String(i + 1).padStart(3, "0"),
-    rowIndex: k.rowIndex ?? null,   // nomor baris di spreadsheet (dikirim Apps Script)
-    nama: String(k.nama || "").trim(),
-    tanggal: normalizeKegiatanTanggal(k.tanggal),
-    jam: normalizeKegiatanJam(k.jam),
-    jamSelesai: normalizeKegiatanJam(k.jamSelesai),
-    lokasi: String(k.lokasi || "").trim(),
-    status: normalizeKegiatanStatus(k.status),
-  }));
+  kegiatan = kegiatan.map((k, i) => {
+    const tanggal    = normalizeKegiatanTanggal(k.tanggal);
+    const jam        = normalizeKegiatanJam(k.jam);
+    const jamSelesai = normalizeKegiatanJam(k.jamSelesai);
+    return {
+      id: k.id || "KG" + String(i + 1).padStart(3, "0"),
+      rowIndex: k.rowIndex ?? null,
+      nama: String(k.nama || "").trim(),
+      tanggal,
+      jam,
+      jamSelesai,
+      lokasi: String(k.lokasi || "").trim(),
+      // Status dihitung real-time dari tanggal+jam, bukan dari spreadsheet
+      status: deriveKegiatanStatus(tanggal, jam, jamSelesai),
+    };
+  });
   window.AppData.webinars = webinars;
   window.AppData.pelatihan = pelatihan;
   window.AppData.alumni = alumni;
@@ -434,6 +440,9 @@ function processData(rawData) {
 
   // Populate dropdown alumni setelah data siap
   populateAlumniDropdowns();
+
+  // Live ticker status kegiatan (sekali aja)
+  startKegiatanStatusTicker();
 }
 
 /**
@@ -464,16 +473,65 @@ function normalizeProsesStatus(proses) {
 }
 
 /**
- * Normalisasi status kegiatan dari sheet Kegiatan.
+ * Hitung status kegiatan secara real-time berdasarkan tanggal + jam,
+ * sama seperti logika di website absensikegiatan.
+ *
+ * - Tanggal belum tiba                       → "Akan Datang"
+ * - Tanggal hari ini, sebelum jam mulai      → "Akan Datang"
+ * - Tanggal hari ini, antara mulai & selesai → "Sedang Berlangsung"
+ * - Sudah melewati jam selesai / tanggal lalu → "Selesai"
  */
-function normalizeKegiatanStatus(status) {
-  const s = String(status || "")
-    .trim()
-    .toLowerCase();
-  if (s === "selesai" || s === "telah terselenggara" || s === "telah diselenggarakan") return "Selesai";
-  if (s === "sedang berlangsung") return "Sedang Berlangsung";
-  if (s === "akan datang" || s === "akan diselenggarakan" || s === "belum dimulai" || s === "") return "Akan Datang";
-  return status || "Akan Datang";
+function deriveKegiatanStatus(tanggal, jam, jamSelesai) {
+  if (!tanggal) return "Akan Datang";
+
+  const now      = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+
+  if (tanggal > todayStr) return "Akan Datang";
+  if (tanggal < todayStr) return "Selesai";
+
+  // Tanggal = hari ini → cek jam
+  const parseLocalDT = (dateStr, timeStr) => {
+    if (!timeStr) return null;
+    const d = new Date(`${dateStr}T${timeStr}:00`);
+    return isNaN(d) ? null : d;
+  };
+
+  const startDt = parseLocalDT(tanggal, jam);
+  const endDt   = parseLocalDT(tanggal, jamSelesai);
+
+  if (endDt   && now > endDt)   return "Selesai";
+  if (startDt && now < startDt) return "Akan Datang";
+  return "Sedang Berlangsung";
+}
+
+/**
+ * Live ticker — recalculate status setiap 30 detik tanpa fetch ulang.
+ * Dipanggil sekali setelah data pertama kali berhasil diload.
+ */
+let _kegiatanTickerStarted = false;
+function startKegiatanStatusTicker() {
+  if (_kegiatanTickerStarted) return;
+  _kegiatanTickerStarted = true;
+
+  setInterval(() => {
+    const list = window.AppData?.kegiatan;
+    if (!list || list.length === 0) return;
+
+    let changed = false;
+    list.forEach(k => {
+      const newStatus = deriveKegiatanStatus(k.tanggal, k.jam, k.jamSelesai);
+      if (newStatus !== k.status) {
+        k.status = newStatus;
+        changed = true;
+      }
+    });
+
+    // Re-render tabel hanya jika ada status yang berubah
+    if (changed && typeof window.renderKegiatanFromSpreadsheet === "function") {
+      window.renderKegiatanFromSpreadsheet();
+    }
+  }, 30_000); // cek setiap 30 detik
 }
 
 /**
