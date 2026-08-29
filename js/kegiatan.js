@@ -212,6 +212,7 @@ function renderKegiatanRows() {
         <td class="td-nama">
           <div class="kg-nama-wrap">
             <span class="kg-nama-text" title="${escapeHtml(item.nama)}">${escapeHtml(item.nama)}</span>
+            <span class="kg-id-badge">${escapeHtml(item.id)}</span>
           </div>
         </td>
         <td class="td-tanggal">
