@@ -191,7 +191,7 @@ function renderKegiatanRows() {
   if (slice.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="8" class="kg-empty">
+        <td colspan="9" class="kg-empty">
           <div class="kg-empty-inner">
             <i class="bi bi-calendar-x"></i>
             <p>Tidak ada kegiatan ditemukan</p>
@@ -214,6 +214,11 @@ function renderKegiatanRows() {
             <span class="kg-nama-text" title="${escapeHtml(item.nama)}">${escapeHtml(item.nama)}</span>
             <span class="kg-id-badge">${escapeHtml(item.id)}</span>
           </div>
+        </td>
+        <td class="td-keterangan">
+          ${item.keterangan
+            ? `<span class="kg-keterangan-text">${escapeHtml(item.keterangan)}</span>`
+            : `<span class="kg-keterangan-empty">—</span>`}
         </td>
         <td class="td-tanggal">
           <div class="kg-tanggal-wrap">
@@ -484,10 +489,11 @@ function openKegiatanModal(id = null) {
     if (icon) icon.className = 'bi bi-pencil-fill';
     if (label) label.textContent = 'Simpan Perubahan';
 
-    document.getElementById('kg-form-id').value = item.id;
-    document.getElementById('kg-nama').value    = item.nama;
-    document.getElementById('kg-lokasi').value  = item.lokasi;
-    document.getElementById('kg-status').value  = item.status;
+    document.getElementById('kg-form-id').value      = item.id;
+    document.getElementById('kg-nama').value          = item.nama;
+    document.getElementById('kg-lokasi').value        = item.lokasi;
+    document.getElementById('kg-status').value        = item.status;
+    document.getElementById('kg-keterangan').value    = item.keterangan || '';
     // Custom pickers
     if (item.tanggal) kgSetDate(item.tanggal);
     if (item.jam)     kgSetTime('mulai', item.jam);
@@ -525,12 +531,13 @@ function submitKegiatanForm(e) {
 
   if (!validateKegiatanForm()) return;
 
-  const nama       = document.getElementById('kg-nama').value.trim();
-  const tanggal    = document.getElementById('kg-tanggal').value;
-  const jam        = document.getElementById('kg-jam').value;
-  const jamSelesai = document.getElementById('kg-jam-selesai').value;
-  const lokasi     = document.getElementById('kg-lokasi').value.trim();
-  const status     = document.getElementById('kg-status').value;
+  const nama        = document.getElementById('kg-nama').value.trim();
+  const tanggal     = document.getElementById('kg-tanggal').value;
+  const jam         = document.getElementById('kg-jam').value;
+  const jamSelesai  = document.getElementById('kg-jam-selesai').value;
+  const lokasi      = document.getElementById('kg-lokasi').value.trim();
+  const status      = document.getElementById('kg-status').value;
+  const keterangan  = document.getElementById('kg-keterangan').value.trim();
 
   // Disable tombol submit selama proses
   const submitBtn = document.getElementById('kg-submit-btn');
@@ -546,7 +553,7 @@ function submitKegiatanForm(e) {
   const payload = {
     id        : isEdit ? kegiatanEditId : null,
     rowIndex  : item?.rowIndex ?? null,  // rowIndex dari spreadsheet untuk update
-    nama, tanggal, jam, jamSelesai, lokasi, status,
+    nama, tanggal, jam, jamSelesai, lokasi, status, keterangan,
   };
 
   kgPostToSheet(isEdit ? 'update' : 'create', payload)

@@ -927,9 +927,10 @@
                   <thead>
                     <tr>
                       <th scope="col" style="width: 48px; text-align: center;">No</th>
-                      <th scope="col" style="min-width: 220px;" class="sortable" data-col="nama" onclick="sortKegiatan('nama')">
+                      <th scope="col" style="min-width: 180px; max-width: 220px;" class="sortable" data-col="nama" onclick="sortKegiatan('nama')">
                         Nama Kegiatan <i class="bi bi-arrow-down-up sort-icon"></i>
                       </th>
+                      <th scope="col" style="min-width: 160px; max-width: 220px;">Keterangan</th>
                       <th scope="col" style="min-width: 120px;" class="sortable" data-col="tanggal" onclick="sortKegiatan('tanggal')">
                         Tanggal <i class="bi bi-arrow-down-up sort-icon"></i>
                       </th>
@@ -944,7 +945,7 @@
                   </thead>
                   <tbody id="kegiatan-tbody">
                     <tr>
-                      <td colspan="8">
+                      <td colspan="9">
                         <div class="skeleton skeleton-line" style="height: 44px; margin: 6px 0;"></div>
                         <div class="skeleton skeleton-line" style="height: 44px; margin: 6px 0;"></div>
                         <div class="skeleton skeleton-line" style="height: 44px; margin: 6px 0;"></div>
@@ -1222,6 +1223,22 @@
               aria-describedby="kg-nama-err"
             />
             <span class="kg-error" id="kg-nama-err" role="alert"></span>
+          </div>
+
+          <!-- Keterangan / Agenda -->
+          <div class="kg-form-group kg-form-full">
+            <label for="kg-keterangan" class="kg-label">
+              <i class="bi bi-card-list"></i> Keterangan / Agenda <span class="kg-label-optional">(opsional)</span>
+            </label>
+            <textarea
+              id="kg-keterangan"
+              class="kg-textarea"
+              placeholder=""
+              rows="4"
+              maxlength="500"
+              aria-describedby="kg-keterangan-err"
+            ></textarea>
+            <span class="kg-error" id="kg-keterangan-err" role="alert"></span>
           </div>
 
           <!-- Tanggal — Custom Datepicker -->

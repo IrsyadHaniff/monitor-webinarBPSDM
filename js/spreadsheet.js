@@ -422,6 +422,7 @@ function processData(rawData) {
       id: k.id || "KG" + String(i + 1).padStart(3, "0"),
       rowIndex: k.rowIndex ?? null,
       nama: String(k.nama || "").trim(),
+      keterangan: String(k.keterangan || "").trim(),
       tanggal,
       jam,
       jamSelesai,
