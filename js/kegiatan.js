@@ -436,8 +436,10 @@ function goKegiatanPage(page) {
  * payload: object data kegiatan
  */
 async function kgPostToSheet(action, payload) {
-  const url = window.CONFIG?.SPREADSHEET_URL;
-  if (!url) throw new Error('SPREADSHEET_URL belum dikonfigurasi.');
+  // Gunakan SECONDARY_URL jika tersedia (sheet kedua untuk kegiatan),
+  // fallback ke SPREADSHEET_URL agar backward-compatible.
+  const url = (window.CONFIG?.SECONDARY_URL) || window.CONFIG?.SPREADSHEET_URL;
+  if (!url) throw new Error('SPREADSHEET_URL atau SECONDARY_URL belum dikonfigurasi.');
 
   const body = JSON.stringify({ action, sheet: 'Kegiatan', data: payload });
 

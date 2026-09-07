@@ -29,15 +29,24 @@ window.AppData = {
    ===================================================== */
 const CONFIG = {
   /**
-   * Ganti ke false + isi SPREADSHEET_URL untuk data real.
+   * Ganti ke false + isi URL untuk data real.
    */
   USE_DUMMY: false,
 
   /**
-   * URL Google Apps Script Web App.
+   * URL Apps Script spreadsheet UTAMA.
+   * Mengembalikan: webinars, pelatihan
    * Format: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'
    */
   SPREADSHEET_URL: "https://script.google.com/macros/s/AKfycbzXnuyvcNt6Z9NSoavRjKFIWSgK45-rweqNGYy2WneFn1-G4hu-OCqNsvgxaVyTYePQjg/exec",
+
+  /**
+   * URL Apps Script spreadsheet KEDUA (dataSiapel-AbsensiKegiatan).
+   * Mengembalikan: alumni, rekapAlumni, unitKerjaList, kegiatan
+   * Juga menerima doPost untuk CRUD kegiatan & simpan presensi.
+   * Kosongkan ("") jika semua data masih digabung di SPREADSHEET_URL.
+   */
+  SECONDARY_URL: "https://script.google.com/macros/s/AKfycbzKwr0mZkJfKBe9Kbwd5g7FUk1H4bJNa5tLrHy2-v7TAwa7dGql9zaa06FjFlmWKAt7/exec",
 
   DUMMY_PATH: "data/dummy.json",
   REFRESH_INTERVAL: 3600000,
@@ -348,18 +357,66 @@ function getAlumni(ss) {
 
   }
  */
+/**
+ * fetchSpreadsheet() — Fetch data dari 2 Apps Script endpoint.
+ *
+ * Strategi pemisahan URL:
+ *  - SPREADSHEET_URL : wajib → mengembalikan webinars & pelatihan
+ *  - SECONDARY_URL   : opsional → mengembalikan alumni, rekapAlumni,
+ *                      unitKerjaList, & kegiatan (sheet kedua)
+ *                      Jika kosong, semua data diambil dari SPREADSHEET_URL.
+ *
+ * Kedua fetch dijalankan secara PARALEL (Promise.all) agar tetap cepat.
+ */
 async function fetchSpreadsheet() {
   if (!CONFIG.SPREADSHEET_URL) {
     throw new Error("SPREADSHEET_URL belum dikonfigurasi.");
   }
-  const url = `${CONFIG.SPREADSHEET_URL}?t=${Date.now()}`;
-  const res = await fetchWithTimeout(url);
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-  const data = await res.json();
-  if (!data.webinars && !data.pelatihan && !data.alumni && !data.kegiatan) {
-    throw new Error("Format response tidak sesuai. Pastikan Apps Script mengembalikan field webinars, pelatihan, alumni, dan/atau kegiatan.");
+
+  const t = Date.now();
+
+  // --- Tentukan URL ---
+  const urlUtama = `${CONFIG.SPREADSHEET_URL}?t=${t}`;
+  const urlSecondary = CONFIG.SECONDARY_URL ? `${CONFIG.SECONDARY_URL}?t=${t}` : null;
+
+  // --- Helper: fetch satu URL ---
+  async function safeFetch(url) {
+    const res = await fetchWithTimeout(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    return res.json();
   }
-  return data;
+
+  // --- Fetch paralel ---
+  const [dataUtama, dataSecondary] = await Promise.all([
+    safeFetch(urlUtama),
+    urlSecondary ? safeFetch(urlSecondary) : Promise.resolve(null),
+  ]);
+
+  // --- Gabungkan hasil ---
+  // Jika SECONDARY_URL terisi → alumni & kegiatan diambil dari sana.
+  // Jika kosong → semua diambil dari dataUtama (backward-compatible).
+  const src = dataSecondary ?? dataUtama;
+  const merged = {
+    webinars: dataUtama.webinars || [],
+    pelatihan: dataUtama.pelatihan || [],
+    alumni: src.alumni || [],
+    rekapAlumni: src.rekapAlumni || [],
+    unitKerjaList: src.unitKerjaList || [],
+    kegiatan: src.kegiatan || [],
+  };
+
+  if (
+    !merged.webinars.length &&
+    !merged.pelatihan.length &&
+    !merged.alumni.length &&
+    !merged.kegiatan.length
+  ) {
+    throw new Error(
+      "Format response tidak sesuai. Pastikan Apps Script mengembalikan field yang dibutuhkan."
+    );
+  }
+
+  return merged;
 }
 
 function processData(rawData) {
@@ -415,8 +472,8 @@ function processData(rawData) {
     (k) => k.nama && String(k.nama).trim() !== ""
   );
   kegiatan = kegiatan.map((k, i) => {
-    const tanggal    = normalizeKegiatanTanggal(k.tanggal);
-    const jam        = normalizeKegiatanJam(k.jam);
+    const tanggal = normalizeKegiatanTanggal(k.tanggal);
+    const jam = normalizeKegiatanJam(k.jam);
     const jamSelesai = normalizeKegiatanJam(k.jamSelesai);
     return {
       id: k.id || "KG" + String(i + 1).padStart(3, "0"),
@@ -485,8 +542,8 @@ function normalizeProsesStatus(proses) {
 function deriveKegiatanStatus(tanggal, jam, jamSelesai) {
   if (!tanggal) return "Akan Datang";
 
-  const now      = new Date();
-  const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}-${String(now.getDate()).padStart(2,"0")}`;
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
 
   if (tanggal > todayStr) return "Akan Datang";
   if (tanggal < todayStr) return "Selesai";
@@ -499,9 +556,9 @@ function deriveKegiatanStatus(tanggal, jam, jamSelesai) {
   };
 
   const startDt = parseLocalDT(tanggal, jam);
-  const endDt   = parseLocalDT(tanggal, jamSelesai);
+  const endDt = parseLocalDT(tanggal, jamSelesai);
 
-  if (endDt   && now > endDt)   return "Selesai";
+  if (endDt && now > endDt) return "Selesai";
   if (startDt && now < startDt) return "Akan Datang";
   return "Sedang Berlangsung";
 }
@@ -551,8 +608,8 @@ function normalizeKegiatanTanggal(val) {
   const d = new Date(s);
   if (isNaN(d)) return "";
   const yyyy = d.getFullYear();
-  const mm   = String(d.getMonth() + 1).padStart(2, "0");
-  const dd   = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
   return `${yyyy}-${mm}-${dd}`;
 }
 
