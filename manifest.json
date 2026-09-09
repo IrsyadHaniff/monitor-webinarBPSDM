@@ -10,13 +10,13 @@
   "lang": "id",
   "icons": [
     {
-      "src": "assets/icon/icon-192.png",
+      "src": "img/icon.webp",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "assets/icon/icon-512.png",
+      "src": "img/bannerBangkom.webp",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
