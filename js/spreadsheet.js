@@ -4,8 +4,8 @@
  * =====================================================
  * Sumber data: dummy.json (saat ini)
  * Untuk connect ke Google Spreadsheet:
- *   → Set CONFIG.USE_DUMMY = false
- *   → Isi CONFIG.SPREADSHEET_URL dengan URL Apps Script
+ *    Set CONFIG.USE_DUMMY = false
+ *    Isi CONFIG.SPREADSHEET_URL dengan URL Apps Script
  * =====================================================
  */
 
@@ -43,8 +43,6 @@ const CONFIG = {
   /**
    * URL Apps Script spreadsheet KEDUA (dataSiapel-AbsensiKegiatan).
    * Mengembalikan: alumni, rekapAlumni, unitKerjaList, kegiatan
-   * Juga menerima doPost untuk CRUD kegiatan & simpan presensi.
-   * Kosongkan ("") jika semua data masih digabung di SPREADSHEET_URL.
    */
   SECONDARY_URL: "https://script.google.com/macros/s/AKfycbzKwr0mZkJfKBe9Kbwd5g7FUk1H4bJNa5tLrHy2-v7TAwa7dGql9zaa06FjFlmWKAt7/exec",
 
